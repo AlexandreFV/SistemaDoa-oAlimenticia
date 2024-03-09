@@ -2,12 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 @import '~bootstrap/dist/css/bootstrap.min.css';
-
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
 
 body {
   
   background-color: #D3D3D3;
+  font-family: 'Carter One';
+
 }
 
 @layer utilities {
