@@ -1,8 +1,6 @@
 
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from './components/navbar'; // Import the component
-import Footer from './components/footer';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,18 +24,12 @@ export default function RootLayout({ children }) {
       </head>
          
       <body>
-
-      <div style={{ backgroundImage: `url("/Background_-_Tela_Inicial.png")`,
-       backgroundSize: "100% 100%", height: "100vh", filter: "brightness(85%)"}}>
-      <Navbar></Navbar>
+     
     
        {/* Layout UI */}
 
       <main>{children}</main>
-
-      </div>
-    
-      <Footer />
+      
 
 
       </body>
