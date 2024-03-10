@@ -5,16 +5,24 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 
-export default function Navbar({ isAuthenticated, userEmail }) {
+export default function Navbar({ isAuthenticated, userEmail, userType }) {
   const router = useRouter();
-
+  
   const handleLogout = () => {
     // Limpar o token do armazenamento local
     localStorage.removeItem('token');
-
+    localStorage.removeItem('userType');
     // Redirecionar o usuário para a página de login
     router.push('/Cadastrar');
   };
+
+  const handleRedirectToMinhasDoacoes = () => {
+    // Definir o userType no localStorage
+    localStorage.setItem('userType', userType);
+    // Redirecionar o usuário para a página MinhasDoacoes
+    router.push('/MinhasDoacoes');
+  };
+
   return (
     <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "rgba(120, 148, 74, 0.8)", height: "90px", borderBottomLeftRadius: "40px", borderBottomRightRadius: "40px" }}>
       <strong>
@@ -47,9 +55,20 @@ export default function Navbar({ isAuthenticated, userEmail }) {
             Mais
           </button>
           <div className="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <button className="dropdown-item" type="button">Action</button>
-            <button className="dropdown-item" type="button">Another action</button>
-            <button className="dropdown-item" type="button">Something else here</button>
+          <button className="dropdown-item" type="button">Anuncio de Doações</button>
+          <button className="dropdown-item" type="button">Ranking de Doações</button>
+          <button className="dropdown-item" type="button">Meu perfil</button>
+
+            {/* Exibir itens do menu de forma condicional */}
+            {userType === 'intermediario' && (
+              <button className="dropdown-item" type="button">Meus Intermediários</button>
+            )}
+            {userType === 'doador' && (
+        <button className="dropdown-item" type="button" onClick={handleRedirectToMinhasDoacoes}>Minhas Doações</button>
+            )}
+            {userType === 'beneficiario' && (
+              <button className="dropdown-item" type="button">Doações Recebidas</button>
+            )}
           </div>
         </div>
 

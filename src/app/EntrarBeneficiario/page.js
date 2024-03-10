@@ -3,6 +3,7 @@ import Link from "next/link";
 import Navbar from "../components/layoutCadastroLogin";
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
+import { jwtDecode } from "jwt-decode";
 
 export default function EntrarBeneficiario(){
     const [cpf, setCpf] = useState("");
@@ -27,12 +28,18 @@ export default function EntrarBeneficiario(){
               if (response.ok) {
                 const data = await response.json(); // Extrai o corpo da resposta como JSON
                 const token = data.token; // Assume que a resposta contém um campo 'token'
-
+                const userType = data.userType;
+                const decoded = jwtDecode(token);
+                const userId = decoded.id;
                 console.log("Entrou!" + token);
                 console.log("Token de autenticação:", token);
-                
+                console.log("id:", userId);
+
                 // Armazene o token no cabeçalho
                 localStorage.setItem("token",token);
+                localStorage.setItem("userType",userType);
+                localStorage.setItem('userId', userId); // Armazena o ID do usuário logado
+
                 router.push("/");
     
               } else {

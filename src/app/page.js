@@ -11,7 +11,8 @@ export default function Home() {
   const [authenticated, setAuthenticated] = useState(false);
   const [userName, setUserName] = useState(""); // Estado para armazenar o nome do usuário
   const [userEmail, setUserEmail] = useState("");
-
+  const [userType, setUserType] = useState(""); // Adicione o estado para o tipo de usuário
+  
   useEffect(() => {
     const token = localStorage.getItem('token'); // Verifica se há um token no armazenamento local
 
@@ -37,11 +38,30 @@ export default function Home() {
 
       if (response.ok) {
         const data = await response.json();
+        const tipoUsuario = data.tipoUsuario; // Extrai o tipo de usuário dos detalhes retornados pelo servidor
+
+        // Redireciona ou renderiza a página Home com base no tipo de usuário
+        if (tipoUsuario === 'doador') {
         // Extrai o nome do usuário dos detalhes retornados pelo servidor
         const { nome, email } = data;
         setUserName(nome);
         setUserEmail(email);
-        setAuthenticated(true);
+        setAuthenticated(true);  
+        setUserType(tipoUsuario); // Defina o tipo de usuário
+
+      } else if (tipoUsuario === 'intermediario') {
+        // Redireciona para a página específica do intermediário
+        router.push('/intermediario');
+      } else if (tipoUsuario === 'beneficiario') {
+        // Extrai o nome do usuário dos detalhes retornados pelo servidor
+        const { nome, email } = data;
+        setUserName(nome);
+        setUserEmail(email);
+        setAuthenticated(true);  
+        setUserType(tipoUsuario); // Defina o tipo de usuário
+
+      }
+
       } else {
         // Se a solicitação falhar, redirecione para a página de login
         router.push('/Cadastrar');
@@ -61,7 +81,7 @@ export default function Home() {
     <div>
 
     <div className="background-image">
-    <Navbar isAuthenticated={authenticated} userEmail={userEmail} />
+    <Navbar isAuthenticated={authenticated} userEmail={userEmail} userType={userType} />
 
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
         <div style={{ textAlign: 'center' }}>

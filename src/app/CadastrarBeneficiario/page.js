@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Link from "next/link"
 import Navbar from "../components/layoutCadastroLogin";
 import { useState } from "react";
+import erroCadastro from '../components/erroCadastro';
 
 export default function CadastrarBeneficiario(){
     const [nome, setNome] = useState("");
@@ -12,10 +13,13 @@ export default function CadastrarBeneficiario(){
     const [senha, setSenha] = useState("");
     const [cadastroConcluido, setCadastroConcluido] = useState(false); // Estado para indicar se o cadastro foi concluído
     const router = useRouter();
+    const [erroCadastro, setErroCadastro] = useState(""); // Estado para armazenar a mensagem de erro
 
     const handleSubmit = async (event) => {
         event.preventDefault();
     
+        if(nome != "" && email != "" && cpf != "" && senha != ""){
+
         try {
           const response = await fetch("http://localhost:3001/cadastrarBeneficiario", {
             method: "POST",
@@ -29,14 +33,19 @@ export default function CadastrarBeneficiario(){
               senha,
             }),
           });
-    
+          
           if (response.ok) {
             console.log("Cadastro realizado com sucesso!");
             // Redirecionar ou exibir uma mensagem de sucesso aqui
             setCadastroConcluido(true); // Atualiza o estado para indicar que o cadastro foi concluído
-            router.push('/');
-
+            // Redireciona o usuário para a tela de login
+            router.push('/EntrarBeneficiario');
           } else {
+
+            const responseData = await response.json();
+            if (responseData.msg === 'Usuario já existe!') {
+              setErroCadastro("CPF Já Cadastrado!");
+            }
             console.error("Erro ao cadastrar beneficiário:", response.statusText);
             // Exibir uma mensagem de erro aqui
           }
@@ -44,7 +53,10 @@ export default function CadastrarBeneficiario(){
           console.error("Erro ao realizar requisição:", error.message);
           // Exibir uma mensagem de erro aqui
         }
-      };
+      } else {
+        setErroCadastro("Preencha todos os campos!");
+      }      
+    };
     
     
     return(
@@ -104,9 +116,14 @@ export default function CadastrarBeneficiario(){
         style={{backgroundColor:"transparent"}} name="senha" 
         value={senha} onChange={(e) => setSenha(e.target.value)}/>
     </div>
+
+    
+    {erroCadastro && (<erroCadastro />)}
+
         <center>
-        <button className="btn" type="submit" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color: "white",marginTop:"40px"}}>Cadastrar</button>
-        </center>
+        <button className="btn" type="submit" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color: "white",marginTop:"0px"}}>Cadastrar</button>
+        </center> 
+
     </form>
 
     </div>
