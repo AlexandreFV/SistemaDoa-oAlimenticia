@@ -1,10 +1,10 @@
 "use client"
+
 import { jwtDecode } from "jwt-decode";
 import Link from "next/link";
 import Navbar from "../components/layoutCadastroLogin";
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
-
 
 export default function EntrarDoador(){
     const [cpf, setCpf] = useState("");
@@ -25,7 +25,7 @@ export default function EntrarDoador(){
                   cpf,
                 }),
               });
-        
+
               if (response.ok) {
                 const data = await response.json(); // Extrai o corpo da resposta como JSON
                 const token = data.token; // Assume que a resposta contém um campo 'token'
@@ -35,12 +35,12 @@ export default function EntrarDoador(){
                 console.log("Entrou!" + token);
                 console.log("Token de autenticação:", token);
                 console.log("id:", userId);
+                console.log("userType:", userType);
 
                 // Armazene o token no cabeçalho
                 localStorage.setItem("token",token);
                 localStorage.setItem("userType",userType);
                 localStorage.setItem('userId', userId); // Armazena o ID do usuário logado
-
                 router.push("/");
     
               } else {

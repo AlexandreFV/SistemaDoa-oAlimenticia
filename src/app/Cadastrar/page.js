@@ -1,61 +1,58 @@
 import Link from "next/link";
 import { FaInfoCircle } from 'react-icons/fa';
 import Navbar from "../components/layoutCadastroLogin";
+import Input from "../components/input";
+import CustomButton from '../components/customButton';
+import "./style.css";
 
 export default function Cadastrar() {
   return (
-    <div style={{ height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+    <div className="DivPai">
       <div className="background-Cadastro">
         
       <Navbar />
 
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "100px" }}>
-        <div style={{ backgroundColor: "#EDEDED", height: "450px", width: "60%", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "10px" }}>
+        <div className="DivNeto">
+        <div className="DivBisNeto">
         
         <div id="fundoDoador">
-            <span style={{display:"flex"}} id="span" data-toggle="modal" data-target="#modalDoador">
+            <span className="spanUser" id="span" data-toggle="modal" data-target="#modalDoador">
             <p>Doador</p>    
             <FaInfoCircle id="info"/>
             </span>          
               <img src="/Loign.png" width={"150px"}/>
 
-            <div style={{ display: "flex", justifyContent: "space-around", width: "100%" }}>
-            <Link href="/EntrarDoador"><button class="btn" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color:"white",
-            width:"100px",height:"40px"}}>Entrar</button></Link>
-            <Link href="/CadastrarDoador"><button class="btn" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color:"white",
-            width:"100px",height:"40px"}}>Cadastrar</button></Link>     
+            <div className="DivButtonUser">
+            <CustomButton href="/EntrarDoador" className="button btn" buttonText="Entrar"/>
+            <CustomButton href="/CadastrarDoador" className="button btn" buttonText="Cadastrar"/>
             </div>
 
         </div>
 
         <div id="fundoIntermediario">
-        <span style={{display:"flex"}} id="span" data-toggle="modal" data-target="#modalIntermediario">
+        <span className="spanUser" id="span" data-toggle="modal" data-target="#modalIntermediario">
             <p>Intermediario</p>    
             <FaInfoCircle id="info"/>
             </span>
             <img src="/Loign.png" width={"150px"}/>
 
             <div style={{ display: "flex", justifyContent: "space-around", width: "100%" }}>
-            <Link href="/EntrarIntermediario"><button class="btn" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color:"white",
-             width:"100px",height:"40px", visibility:"0"}}>Entrar</button></Link>
-             <Link href="/CadastrarIntermediario"><button class="btn" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color:"white",
-             width:"100px",height:"40px", visibility:"0"}}>Cadastrar</button></Link>
+            <CustomButton href="/EntrarIntermediario" className="button btn" buttonText="Entrar"/>
+            <CustomButton href="/CadastrarIntermediario" className="button btn" buttonText="Cadastrar"/>
             </div>
 
         </div>
 
         <div id="fundoReceptor">
-        <span style={{display:"flex"}} id="span" data-toggle="modal" data-target="#modalReceptor">
+        <span className="spanUser" id="span" data-toggle="modal" data-target="#modalReceptor">
             <p>Beneficiário</p>    
             <FaInfoCircle id="info"/>
             </span>          
-              <img src="/Loign.png" width={"150px"}/>
+            <img src="/Loign.png" className="imgLogin"/>
 
-            <div style={{ display: "flex", justifyContent: "space-around", width: "100%" }}>
-            <Link href="/EntrarBeneficiario"><button class="btn" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color:"white",
-            width:"100px",height:"40px"}}>Entrar</button></Link>
-            <Link href="/CadastrarBeneficiario"><button class="btn" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color:"white",
-            width:"100px",height:"40px"}}>Cadastrar</button>   </Link>  
+            <div className="DivButtonUser">
+            <CustomButton href="/EntrarBeneficiario" className="button btn" buttonText="Entrar"/>
+            <CustomButton href="/CadastrarBeneficiario" className="button btn" buttonText="Cadastrar"/>
             </div>
             
         </div>

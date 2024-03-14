@@ -27,7 +27,12 @@ export default function MinhasDoacoes(){
     useEffect(() => {
         const fetchDoacoes = async () => {
           try {
-            const response = await fetch(`http://localhost:3001/MinhasDoacoes/${usuariodoadorId}`);
+            const token = localStorage.getItem('token');
+            const response = await fetch(`http://localhost:3001/MinhasDoacoes/${usuariodoadorId}`, {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            });
             if (response.ok) {
               const data = await response.json();
               setDoacoes(data.doacoes);

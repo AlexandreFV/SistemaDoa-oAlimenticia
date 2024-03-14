@@ -1,0 +1,221 @@
+body {
+  
+    background-color: #D3D3D3;
+    font-family: 'Carter One';
+  
+  }
+
+.button{
+
+    background-color: rgba(63, 173, 180, 0.87);
+    color: white;
+    width: 100px; 
+    height: 40px;
+}
+
+.button:hover,
+.button:focus,
+.button:active {
+  background-color: rgba(63, 173, 180, 1); /* Mantém a cor de fundo ao passar o mouse, focar ou clicar */
+}
+
+.imgLogin{
+
+    width: 150px;
+}
+
+.DivPai {
+    height: 100vh;
+     display: flex; 
+     justify-content: center; 
+     align-items: center; 
+}
+
+.background-Cadastro{
+
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("/Background_-_Cadastro.png");
+    background-size: 100% 100%;
+    filter: brightness(85%);
+  }
+
+.DivNeto{
+
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    margin-top: 100px;
+}
+
+.DivBisNeto{
+
+    background-color: #EDEDED;
+     height: 450px; 
+     width: 60%; 
+     display: flex; 
+     justify-content: center; 
+     align-items: center; 
+     border-radius: 10px;
+}
+
+
+
+  
+  #fundoIntermediario {
+    background-color: #FFFFFF;
+    height: 400px;
+    width: 30%;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    transition: background-color 0.8s, height 0.8s, width 0.8s; /* Adiciona uma transição suave */
+  }
+  
+  #fundoIntermediario:hover {
+    background-color: #578925;
+    height: 500px; /* Altera a altura para 80% quando o mouse passa sobre a div */
+    width: 35%;
+  }
+  
+  
+  #fundoIntermediario:hover button {
+    visibility: visible; /* Torna os botões visíveis durante o hover */
+    margin-top: 20px;
+  }
+  
+  #fundoIntermediario button {
+    visibility: hidden; /* Inicialmente, os botões estão ocultos */
+  }
+  
+  #fundoIntermediario:hover img {
+    visibility: visible; /* Torna os botões visíveis durante o hover */
+    height: 250px;
+    width: 250px;
+  }
+  
+  #fundoIntermediario:hover p {
+    visibility: visible; /* Torna os botões visíveis durante o hover */
+    color:white;  
+  }
+  #fundoIntermediario:hover #info {
+    visibility: visible; /* Torna os botões visíveis durante o hover */
+    color:white;  
+  }
+  
+  
+  #fundoReceptor {
+    background-color: #FFFFFF;
+    height: 400px;
+    width: 30%;
+    margin-right: auto;
+    margin-left: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    margin-right: 5%;
+    transition: background-color 0.8s, height 0.8s, width 0.8s; /* Adiciona uma transição suave */
+  }
+  
+  #fundoReceptor:hover {
+    background-color: #578925;
+    height: 500px; /* Altera a altura para 80% quando o mouse passa sobre a div */
+    width: 35%;
+  }
+  
+  
+  #fundoReceptor:hover button {
+    visibility: visible; /* Torna os botões visíveis durante o hover */
+    margin-top: 20px;
+  }
+  
+  #fundoReceptor button {
+    visibility: hidden; /* Inicialmente, os botões estão ocultos */
+  }
+  
+  #fundoReceptor:hover img {
+    visibility: visible; /* Torna os botões visíveis durante o hover */
+    height: 250px;
+    width: 250px;
+  }
+  
+  #fundoReceptor:hover p {
+    visibility: visible; /* Torna os botões visíveis durante o hover */
+    color:white;  
+  }
+  #fundoReceptor:hover #info {
+    visibility: visible; /* Torna os botões visíveis durante o hover */
+    color:white;  
+  }
+  
+  
+  #fundoDoador {
+    background-color: #FFFFFF;
+    height: 400px;
+    width: 30%;
+    margin-right: auto;
+    margin-left: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    margin-right: 5%;
+    transition: background-color 0.8s, height 0.8s, width 0.8s; /* Adiciona uma transição suave */
+  }
+  
+  #fundoDoador:hover {
+    background-color: #578925;
+    height: 500px; /* Altera a altura para 80% quando o mouse passa sobre a div */
+    width: 35%;
+  }
+  
+  
+  #fundoDoador:hover button {
+    visibility: visible; /* Torna os botões visíveis durante o hover */
+    margin-top: 20px;
+  }
+  
+  #fundoDoador button {
+    visibility: hidden; /* Inicialmente, os botões estão ocultos */
+  }
+  
+  #fundoDoador:hover img {
+    visibility: visible; /* Torna os botões visíveis durante o hover */
+    height: 250px;
+    width: 250px;
+  }
+  
+  #fundoDoador:hover p {
+    visibility: visible; /* Torna os botões visíveis durante o hover */
+    color:white;  
+  }
+  
+  #fundoDoador:hover #info {
+    visibility: visible; /* Torna os botões visíveis durante o hover */
+    color:white;  
+  }
+  
+  #info {
+  
+    height: 25px;
+  }
+  
+
+.spanUser{
+
+    display: flex;
+}
+
+.DivButtonUser{
+
+    display: flex; 
+    justify-content: space-around;
+     width: 100%;
+}

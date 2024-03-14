@@ -36,27 +36,32 @@ connection.connect((err) => {
   });
 
 
-  // Middleware para verificar se o usuário está logado e é do tipo usuariodoador
-const verificarUsuarioDoador = async (req, res, next) => {
-  // Verifique se o usuário está autenticado (você pode usar a lógica adequada aqui, como verificar a presença de um token JWT válido)
-  const usuarioAutenticado = req.usuarioAutenticado;
-
-  if (!usuarioAutenticado) {
-    // Se o usuário não estiver autenticado, envie uma resposta de erro
-    return res.status(401).json({ mensagem: 'Acesso não autorizado. Faça login para acessar esta rota.' });
-  }
-
-  // Verifique se o usuário é do tipo usuariodoador
-  const userType = localStorage.getItem('userType'); // Supondo que userType esteja armazenado no localStorage
-
-  if (userType !== 'doador') {
-    // Se o usuário não for do tipo usuariodoador, envie uma resposta de erro
-    return res.status(403).json({ mensagem: 'Acesso proibido. Você não tem permissão para acessar esta rota.' });
-  }
-
-  // Se o usuário estiver autenticado e for do tipo usuariodoador, prossiga para a próxima função de rota
-  next();
-};
+  const verificarUsuarioDoador = async (req, res, next) => {
+    // Verifique se o usuário está autenticado
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ mensagem: 'Acesso não autorizado. Faça login para acessar esta rota.' });
+    }
+  
+    // Verifique se o token é válido
+    try {
+      const secret = process.env.SECRET;
+      const decodedToken = jwt.verify(token, secret);
+  
+      // Verifique se o usuário é do tipo usuariodoador
+      const userId = decodedToken.id;
+      const user = await usuariodoador.findOne({ where: { id: userId } });
+      if (!user) {
+        return res.status(403).json({ mensagem: 'Acesso proibido. Você não tem permissão para acessar esta rota.' });
+      }
+  
+      // Se o usuário estiver autenticado e for do tipo usuariodoador, prossiga para a próxima função de rota
+      next();
+    } catch (error) {
+      return res.status(401).json({ mensagem: 'Token inválido.' });
+    }
+  };
 
 // Aplique o Middleware às Rotas Protegidas
 app.get('/MinhasDoacoes', verificarUsuarioDoador, function(req, res) {
@@ -231,7 +236,7 @@ app.post("/EntrarBeneficiario", async function(req, res) {
     const secret = process.env.SECRET;
     const token = jwt.sign({ id: user.id }, secret);
     const userType = 'beneficiario';
-    return res.status(200).json({ msg: 'Autenticação bem-sucedida', token });
+    return res.status(200).json({ msg: 'Autenticação bem-sucedida', token, userType });
   } catch (error) {
     console.error('Erro:', error); // Log do erro específico
     return res.status(500).json({ msg: 'Ocorreu um erro ao autenticar o usuário' });
@@ -261,7 +266,7 @@ app.post("/EntrarDoador", async function(req, res) {
     const token = jwt.sign({ id: user.id }, secret);
     const userType = 'doador';
 
-    return res.status(200).json({ msg: 'Autenticação bem-sucedida', token });
+    return res.status(200).json({ msg: 'Autenticação bem-sucedida', token, userType });
   } catch (error) {
     console.error('Erro:', error); // Log do erro específico
     return res.status(500).json({ msg: 'Ocorreu um erro ao autenticar o usuário' });
@@ -291,7 +296,7 @@ app.post("/EntrarIntermediario", async function(req, res) {
     const token = jwt.sign({ id: user.id }, secret);
     const userType = 'intermediario';
 
-    return res.status(200).json({ msg: 'Autenticação bem-sucedida', token });
+    return res.status(200).json({ msg: 'Autenticação bem-sucedida', token, userType });
   } catch (error) {
     console.error('Erro:', error); // Log do erro específico
     return res.status(500).json({ msg: 'Ocorreu um erro ao autenticar o usuário' });
