@@ -17,6 +17,7 @@ const usuariobeneficiario = require("./models/usuarioBeneficiario");
 const usuariodoador = require("./models/usuariodoador");
 const usuariointermediario = require("./models/usuarioIntermediario");
 const doacao = require("./models/doacao");
+const e = require('express');
 
 // Configurações de conexão com o banco de dados
 const connection = mysql.createConnection({
@@ -51,7 +52,9 @@ connection.connect((err) => {
   
       // Verifique se o usuário é do tipo usuariodoador
       const userId = decodedToken.id;
-      const user = await usuariodoador.findOne({ where: { id: userId } });
+      const userEmail = decodedToken.email;
+      const user = await usuariodoador.findOne({ where: { id: userId, email: userEmail } });
+
       if (!user) {
         return res.status(403).json({ mensagem: 'Acesso proibido. Você não tem permissão para acessar esta rota.' });
       }
@@ -73,13 +76,21 @@ app.get('/MinhasDoacoes', verificarUsuarioDoador, function(req, res) {
 app.post("/CadastrarBeneficiario", async function(req, res){
     const { nome, email, cpf, senha } = req.body;
 
+    if (!nome || !email || !cpf || !senha) {
+      return res.status(400).json({ msg: 'Por favor, preencha todos os campos obrigatórios.' });
+    }
+
     try{
-    // Verifique se o usuário já existe pelo CPF
-    const userExists = await usuariobeneficiario.findOne({ where: { cpf: cpf } });
 
-    if(userExists){
+      // Verifique se o e-mail já está em uso por qualquer tipo de usuário
+      const [doador, intermediario, beneficiario] = await Promise.all([
+        usuariodoador.findOne({ where: { email: email } }),
+        usuariointermediario.findOne({ where: { email: email } }),
+        usuariobeneficiario.findOne({ where: { email: email } })
+      ]);
 
-      return res.status(422).json({msg: 'Usuario já existe!'})
+     if (doador || intermediario || beneficiario) {
+      return res.status(422).json({ msg: 'E-mail já está em uso por outro usuário!' });
     }
     
         // Crie um hash da senha usando bcrypt
@@ -112,15 +123,23 @@ app.post("/CadastrarBeneficiario", async function(req, res){
 app.post("/CadastrarDoador", async function(req, res){
   const { nome, email, cpf, senha } = req.body;
 
-  try{
-  // Verifique se o usuário já existe pelo CPF
-  const userExists = await usuariodoador.findOne({ where: { cpf: cpf } });
-
-  if(userExists){
-
-    return res.status(422).json({msg: 'Usuario já existe!'})
+  if (!nome || !email || !cpf || !senha) {
+    return res.status(400).json({ msg: 'Por favor, preencha todos os campos obrigatórios.' });
   }
-  
+
+  try{
+
+    // Verifique se o e-mail já está em uso por qualquer tipo de usuário
+    const [doador, intermediario, beneficiario] = await Promise.all([
+      usuariodoador.findOne({ where: { email: email } }),
+      usuariointermediario.findOne({ where: { email: email } }),
+      usuariobeneficiario.findOne({ where: { email: email } })
+    ]);
+
+  if (doador || intermediario || beneficiario) {
+    return res.status(422).json({ msg: 'E-mail já está em uso por outro usuário!' });
+  }
+
       // Crie um hash da senha usando bcrypt
   const salt = await bcrypt.genSalt(12);
   const passwordHash = await bcrypt.hash(senha, salt);
@@ -146,18 +165,24 @@ res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
 });
 
 
-
-
 app.post("/CadastrarIntermediario", async function(req, res){
   const { nome, email, cnpj, senha } = req.body;
 
+  if (!nome || !email || !cnpj || !senha) {
+    return res.status(400).json({ msg: 'Por favor, preencha todos os campos obrigatórios.' });
+  }
+
   try{
-  // Verifique se o usuário já existe pelo CPF
-  const userExists = await usuariointermediario.findOne({ where: { cnpj: cnpj } });
 
-  if(userExists){
+   // Verifique se o e-mail já está em uso por qualquer tipo de usuário
+   const [doador, intermediario, beneficiario] = await Promise.all([
+    usuariodoador.findOne({ where: { email: email } }),
+    usuariointermediario.findOne({ where: { email: email } }),
+    usuariobeneficiario.findOne({ where: { email: email } })
+  ]);
 
-    return res.status(422).json({msg: 'Usuario já existe!'})
+  if (doador || intermediario || beneficiario) {
+    return res.status(422).json({ msg: 'E-mail já está em uso por outro usuário!' });
   }
   
       // Crie um hash da senha usando bcrypt
@@ -178,7 +203,7 @@ res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
   } catch (error){
 
     res.status(500).json({msg: error})
-    res.status(500).json({ msg: "Erro ao cadastrar beneficiário", error: error.message });
+    res.status(500).json({ msg: "Erro ao cadastrar Intermediario", error: error.message });
 
   }
 
@@ -188,13 +213,13 @@ res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
 
 app.get("/", checkToken, async function(req, res) {
   try {
-    // Obtenha o ID do usuário do objeto de solicitação
-    const userId = req.userId;
+    // Obtenha o e-mail do usuário do objeto de solicitação
+    const userEmail = req.userEmail;
 
-   // Consulte o banco de dados para verificar em qual tabela o usuário está presente
-    const doador = await usuariodoador.findOne({ where: { id: userId } });
-    const intermediario = await usuariointermediario.findOne({ where: { id: userId } });
-    const beneficiario = await usuariobeneficiario.findOne({ where: { id: userId } });
+    // Consulte o banco de dados para verificar em qual tabela o usuário está presente
+    const doador = await usuariodoador.findOne({ where: { email: userEmail } });
+    const intermediario = await usuariointermediario.findOne({ where: { email: userEmail } });
+    const beneficiario = await usuariobeneficiario.findOne({ where: { email: userEmail } });
 
      // Verifique em qual tabela o usuário está presente
      if (doador) {
@@ -218,10 +243,14 @@ app.get("/", checkToken, async function(req, res) {
 
 
 app.post("/EntrarBeneficiario", async function(req, res) {
-  const { cpf, senha } = req.body;
+  const { email, senha } = req.body;
+
+  if (!email || !senha) {
+    return res.status(400).json({ msg: 'Por favor, forneça Email e senha.' });
+  }
 
   try {
-    const user = await usuariobeneficiario.findOne({ where: { cpf: cpf } });
+    const user = await usuariobeneficiario.findOne({ where: { email: email } });
 
     if (!user) {
       return res.status(404).json({ msg: 'Usuário não encontrado!' });
@@ -234,9 +263,9 @@ app.post("/EntrarBeneficiario", async function(req, res) {
     }
 
     const secret = process.env.SECRET;
-    const token = jwt.sign({ id: user.id }, secret);
-    const userType = 'beneficiario';
-    return res.status(200).json({ msg: 'Autenticação bem-sucedida', token, userType });
+    const token = jwt.sign({ id: user.id, email: user.email }, secret);
+
+    return res.status(200).json({ msg: 'Autenticação bem-sucedida', token });
   } catch (error) {
     console.error('Erro:', error); // Log do erro específico
     return res.status(500).json({ msg: 'Ocorreu um erro ao autenticar o usuário' });
@@ -247,10 +276,14 @@ app.post("/EntrarBeneficiario", async function(req, res) {
 
 
 app.post("/EntrarDoador", async function(req, res) {
-  const { cpf, senha } = req.body;
+  const { email, senha } = req.body;
+
+  if (!email || !senha) {
+    return res.status(400).json({ msg: 'Por favor, forneça email e senha.' });
+  }
 
   try {
-    const user = await usuariodoador.findOne({ where: { cpf: cpf } });
+    const user = await usuariodoador.findOne({ where: { email: email } });
 
     if (!user) {
       return res.status(404).json({ msg: 'Usuário não encontrado!' });
@@ -263,10 +296,9 @@ app.post("/EntrarDoador", async function(req, res) {
     }
 
     const secret = process.env.SECRET;
-    const token = jwt.sign({ id: user.id }, secret);
-    const userType = 'doador';
+    const token = jwt.sign({ id: user.id, email: user.email }, secret);
 
-    return res.status(200).json({ msg: 'Autenticação bem-sucedida', token, userType });
+    return res.status(200).json({ msg: 'Autenticação bem-sucedida', token });
   } catch (error) {
     console.error('Erro:', error); // Log do erro específico
     return res.status(500).json({ msg: 'Ocorreu um erro ao autenticar o usuário' });
@@ -277,10 +309,14 @@ app.post("/EntrarDoador", async function(req, res) {
 
 
 app.post("/EntrarIntermediario", async function(req, res) {
-  const { cnpj, senha } = req.body;
+  const { email, senha } = req.body;
+
+  if (!email || !senha) {
+    return res.status(400).json({ msg: 'Por favor, forneça email e senha.' });
+  }
 
   try {
-    const user = await usuariointermediario.findOne({ where: { cnpj: cnpj } });
+    const user = await usuariointermediario.findOne({ where: { email: email } });
 
     if (!user) {
       return res.status(404).json({ msg: 'Usuário não encontrado!' });
@@ -293,10 +329,9 @@ app.post("/EntrarIntermediario", async function(req, res) {
     }
 
     const secret = process.env.SECRET;
-    const token = jwt.sign({ id: user.id }, secret);
-    const userType = 'intermediario';
+    const token = jwt.sign({ id: user.id, email: user.email }, secret);
 
-    return res.status(200).json({ msg: 'Autenticação bem-sucedida', token, userType });
+    return res.status(200).json({ msg: 'Autenticação bem-sucedida', token });
   } catch (error) {
     console.error('Erro:', error); // Log do erro específico
     return res.status(500).json({ msg: 'Ocorreu um erro ao autenticar o usuário' });
@@ -318,8 +353,9 @@ function checkToken (req, res, next){
 
           const secret = process.env.SECRET;
           const decodedToken = jwt.verify(token, secret);
-
-          req.userId = decodedToken.id;
+          
+          req.userEmail = decodedToken.email; // Extrai o e-mail do token decodificado
+          req.userId = decodedToken.id; // Extrai o e-mail do token decodificado
 
           next();
          }catch(error){
@@ -335,9 +371,14 @@ app.listen(3001, () => {
 
 
 app.post("/EnviarDoacao", async function(req, res) {
-  const { nome_alimento, quantidade, foto, endereco, usuariodoadorId } = req.body;
+  const { nome_alimento, quantidade, foto, endereco } = req.body;
 
   try {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+    const usuariodoadorId = decodedToken.id;
+
     const novaDoacao = await doacao.create({
       nome_alimento: nome_alimento,
       quantidade: quantidade,
@@ -355,7 +396,7 @@ app.post("/EnviarDoacao", async function(req, res) {
 });
 
 
-app.get("/MinhasDoacoes/:usuariodoadorId", verificarUsuarioDoador, async function(req, res) {
+app.get("/MinhasDoacoes/:usuariodoadorId", checkToken, verificarUsuarioDoador, async function(req, res) {
   const usuariodoadorId = req.params.usuariodoadorId;
 
   try {

@@ -36,7 +36,7 @@
     border-radius: 10px;
 }
 
-.DivInfCadast{
+.DivInfEntrar{
 
     display: flex;
     flex-direction: column;
@@ -45,6 +45,7 @@
     left:0;
     margin-left:100px;
 }
+
 
 .button{
 
@@ -82,10 +83,10 @@
      margin-right:50px;
 }
 
-.h1Cadastrar{
+.h1Entrar{
 
     font-size: 25px;
-     margin-top: 30px;
+     margin-top: 100px;
     font-family: Poller One cursive;
      font-weight: 800;
 }

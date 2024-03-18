@@ -4,14 +4,20 @@ import Navbar from "../components/layoutCadastroLogin";
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import { jwtDecode } from "jwt-decode";
+import ErroEntrar from '../components/ErroEntrar';
+import CustomButton from '../components/customButton';
+import "./style.css";
 
 export default function EntrarBeneficiario(){
-    const [cpf, setCpf] = useState("");
+    const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const router = useRouter();
+    const [erroEntrar, setErroEntrar] = useState("");
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        if(email != "" && senha != ""){
 
         try{
             const response = await fetch("http://localhost:3001/EntrarBeneficiario", {
@@ -21,28 +27,28 @@ export default function EntrarBeneficiario(){
                 },
                 body: JSON.stringify({
                   senha,
-                  cpf,
+                  email,
                 }),
               });
         
               if (response.ok) {
                 const data = await response.json(); // Extrai o corpo da resposta como JSON
                 const token = data.token; // Assume que a resposta contém um campo 'token'
-                const userType = data.userType;
-                const decoded = jwtDecode(token);
-                const userId = decoded.id;
                 console.log("Entrou!" + token);
-                console.log("Token de autenticação:", token);
-                console.log("id:", userId);
 
                 // Armazene o token no cabeçalho
                 localStorage.setItem("token",token);
-                localStorage.setItem("userType",userType);
-                localStorage.setItem('userId', userId); // Armazena o ID do usuário logado
+     
 
                 router.push("/");
     
               } else {
+                const responseData = await response.json();
+                if (responseData.msg === 'Usuário não encontrado!') {
+                  setErroEntrar("Email Não Cadastrado!");
+                } else if (responseData.msg === 'Senha inválida!'){
+                  setErroEntrar("Senha ou Email Incorreto!");
+                }
                 console.error("Erro ao entrar beneficiário:", response.statusText);
                 // Exibir uma mensagem de erro aqui
               }
@@ -50,31 +56,34 @@ export default function EntrarBeneficiario(){
               console.error("Erro ao realizar requisição:", error.message);
               // Exibir uma mensagem de erro aqui
             } 
+          } else {
+              setErroEntrar("Preencha todos os campos!");
+            }      
         };
 
     
     return(
 
-        <div style={{ height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+      <div className='DivPai' >
         <div className="background-Cadastro">
 
         <Navbar />
 
 
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "100px" }}>
-    <div style={{ backgroundColor: "#EDEDED", height: "450px", width: "60%", position: "relative", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "10px" }}>
+    <div className="DivNeto">
+    <div className="DivBisNeto">
 
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center",position:"absolute",left:0,marginLeft:"100px" }}>
+    <div className="DivInfEntrar">
       <h1 style={{ fontSize: "25px", marginBottom: "10px", marginTop: "10px", fontFamily: "Inter", fontWeight: "800" }}>Não possui conta?</h1>
       <p style={{ fontFamily: "Inter", fontWeight: "400" }}>Cadastre-se e concretize seus</p>
       <p style={{ fontFamily: "Inter", fontWeight: "400", marginBottom: "20px" }}>objetivos e demandas.</p>
-      <Link href="/CadastrarBeneficiario"><button className="btn" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color: "white", width: "100px", height: "40px" }}>Cadastrar</button></Link>
+      <CustomButton href="/CadastrarIntermediario" className="button btn" buttonText="Cadastrar"/>
     </div>
 
 
-    <div style={{ color: "white", backgroundColor: "#578925", width: "430px", height: "500px", borderRadius: "10px", position: "absolute", right: 0, marginRight: "50px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+    <div className="DivFundoBranco">
         <center>
-        <h1 style={{ fontSize: "25px", marginTop: "30px", fontFamily: "Poller One cursive", fontWeight: "800" }}> Entrar como Beneficiário</h1>
+        <h1 className='h1Entrar'>Entrar como Beneficiário</h1>
         </center>
         <form onSubmit={handleSubmit}>
 
@@ -82,8 +91,8 @@ export default function EntrarBeneficiario(){
         <label for="exampleInputEmail1">CPF</label>
         <input type="text" class="form-control" id="exampleInputEmail1" 
         aria-describedby="emailHelp" placeholder="XXX.XXX.XXX-XX" 
-        style={{backgroundColor:"transparent"}} name="cpf"
-        value={cpf} onChange={(e) => setCpf(e.target.value)}/>
+        style={{backgroundColor:"transparent"}} name="email"
+        value={email} onChange={(e) => setEmail(e.target.value)}/>
     </div>
 
     <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"20px"}}>
@@ -96,8 +105,10 @@ export default function EntrarBeneficiario(){
         <a href="#" style={{ color: "#ffffff", textDecoration: "underline" }}>Esqueceu sua senha?</a>
         </div>
     </div>
+    {erroEntrar && <ErroEntrar erro={erroEntrar} />}
+
         <center>
-        <button className="btn" type="submit" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color: "white",marginTop:"60px"}}>Entrar</button>
+        <button className="btn" type="submit" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color: "white",marginTop:"35px"}}>Entrar</button>
         </center>
         </form>
 

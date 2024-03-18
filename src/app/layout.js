@@ -21,6 +21,8 @@ export default function RootLayout({ children }) {
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>  
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" />
       <link href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap" rel="stylesheet" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poller+One&display=swap" />
+
       </head>
          
       <body>

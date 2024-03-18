@@ -3,6 +3,9 @@ import Link from "next/link";
 import Navbar from "../components/layoutCadastroLogin";
 import { useRouter } from 'next/navigation';
 import { useState } from "react";
+import ErroCadastro from '../components/ErroCadastro';
+import CustomButton from '../components/customButton';
+import "./style.css";
 
 export default function CadastroDoador(){
 
@@ -41,8 +44,8 @@ export default function CadastroDoador(){
 
           } else {
             const responseData = await response.json();
-            if (responseData.msg === 'Usuario já existe!') {
-              setErroCadastro("CPF Já Cadastrado!");
+            if (responseData.msg === 'E-mail já está em uso por outro usuário!') {
+              setErroCadastro("E-mail já está em uso!");
             }
             console.error("Erro ao cadastrar doador:", response.statusText);
             // Exibir uma mensagem de erro aqui
@@ -59,24 +62,24 @@ export default function CadastroDoador(){
     
     return(
 
-        <div style={{ height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <div className="background-Cadastro">
+      <div className='DivPai' >
+      <div className="background-Cadastro">
 
         <Navbar />
 
 
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "100px" }}>
-    <div style={{ backgroundColor: "#EDEDED", height: "450px", width: "60%", position: "relative", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "10px" }}>
+        <div className='DivNeto' >
+        <div className='DivBisNeto'>
 
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center",position:"absolute",left:0,marginLeft:"100px" }}>
+        <div className='DivInfCadast'>
       <h1 style={{ fontSize: "25px", marginBottom: "10px", marginTop: "10px", fontFamily: "Inter", fontWeight: "800" }}>Já possui conta?</h1>
       <p style={{ fontFamily: "Inter", fontWeight: "400", marginBottom: "20px" }}>Entre e seja Solidário.</p>
-      <Link href="/EntrarDoador"><button className="btn" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color: "white", width: "100px", height: "40px" }}>Entrar</button></Link>
+      <CustomButton href="/EntrarDoador" className="button btn" buttonText="Entrar"/>
     </div>
 
-    <div style={{color:"white", backgroundColor: "#578925", width: "430px", height: "500px", borderRadius: "10px", position: "absolute", right: 0,marginRight:"50px" }}>
+    <div className="DivFundoBranco">
         <center>
-        <h1 style={{ fontSize: "25px", marginTop: "30px", fontFamily: "Poller One cursive", fontWeight: "800" }}>Cadastro Doador</h1>
+        <h1 className='h1Cadastrar'>Cadastro Doador</h1>
         </center>
 
         <form onSubmit={handleSubmit}>
@@ -113,7 +116,7 @@ export default function CadastroDoador(){
         value={senha} onChange={(e) => setSenha(e.target.value)}/>
     </div>
 
-    {erroCadastro && (<erroCadastro />)}
+    {erroCadastro && <ErroCadastro erro={erroCadastro} />}
 
         <center>
         <button className="btn" type="submit" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color: "white",marginTop:"40px"}}>Cadastrar</button>

@@ -29,6 +29,7 @@ export default function Home() {
 
   const fetchUserDetails = async (token) => {
     try {
+
       const response = await fetch("http://localhost:3001/", {
         method: "GET",
         headers: {
@@ -50,8 +51,11 @@ export default function Home() {
         setUserType(tipoUsuario); // Defina o tipo de usuário
 
       } else if (tipoUsuario === 'intermediario') {
-        // Redireciona para a página específica do intermediário
-        router.push('/intermediario');
+        const { nome, email } = data;
+        setUserName(nome);
+        setUserEmail(email);
+        setAuthenticated(true);  
+        setUserType(tipoUsuario); // Defina o tipo de usuário
       } else if (tipoUsuario === 'beneficiario') {
         // Extrai o nome do usuário dos detalhes retornados pelo servidor
         const { nome, email } = data;

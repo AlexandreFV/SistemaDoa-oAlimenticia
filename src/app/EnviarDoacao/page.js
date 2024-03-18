@@ -30,7 +30,6 @@ export default function EnviarDoacao(){
         event.preventDefault();
     
         if(nome_alimento != "" && quantidade != "" && foto != "" && endereco != ""){
-        const usuariodoadorId = localStorage.getItem('userId'); // Recupera o ID do usuário logado armazenado no localStorage
 
         try {
           const response = await fetch("http://localhost:3001/EnviarDoacao", {
@@ -44,7 +43,6 @@ export default function EnviarDoacao(){
               quantidade,
               foto,
               endereco,
-              usuariodoadorId,
             }),
           });
     

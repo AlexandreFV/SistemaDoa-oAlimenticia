@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import Link from "next/link"
 import Navbar from "../components/layoutCadastroLogin";
 import { useState } from "react";
-import erroCadastro from '../components/erroCadastro';
+import ErroCadastro from '../components/ErroCadastro';
 import "./style.css";
 import CustomButton from '../components/customButton';
 
@@ -44,8 +44,8 @@ export default function CadastrarBeneficiario(){
           } else {
 
             const responseData = await response.json();
-            if (responseData.msg === 'Usuario já existe!') {
-              setErroCadastro("CPF Já Cadastrado!");
+            if (responseData.msg === 'E-mail já está em uso por outro usuário!') {
+              setErroCadastro("E-mail já está em uso!");
             }
             console.error("Erro ao cadastrar beneficiário:", response.statusText);
             // Exibir uma mensagem de erro aqui
@@ -74,14 +74,14 @@ export default function CadastrarBeneficiario(){
     <div className='DivBisNeto'>
 
     <div className='DivInfCadast'>
-      <h1 style={{ fontSize: "25px", marginBottom: "10px", marginTop: "10px", fontFamily: "Inter", fontWeight: "800" }}>Já possui conta?</h1>
+      <h1 className='h1EntreSeja' >Já possui conta?</h1>
       <p style={{ fontFamily: "Inter", fontWeight: "400", marginBottom: "20px" }}>Entre e seja beneficiado.</p>
       <CustomButton href="/EntrarBeneficiario" className="button btn" buttonText="Entrar"/>
     </div>
 
-    <div style={{color:"white", backgroundColor: "#578925", width: "430px", height: "500px", borderRadius: "10px", position: "absolute", right: 0,marginRight:"50px" }}>
+    <div className="DivFundoBranco">
         <center>
-        <h1 style={{ fontSize: "25px", marginTop: "30px", fontFamily: "Poller One cursive", fontWeight: "800" }}>Cadastro Beneficiário</h1>
+        <h1 className='h1Cadastrar'>Cadastro Beneficiário</h1>
         </center>
 
         <form onSubmit={handleSubmit}>
@@ -119,7 +119,7 @@ export default function CadastrarBeneficiario(){
     </div>
 
     
-    {erroCadastro && (<erroCadastro />)}
+    {erroCadastro && <ErroCadastro erro={erroCadastro} />}
 
         <center>
         <button className="btn" type="submit" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color: "white",marginTop:"0px"}}>Cadastrar</button>
