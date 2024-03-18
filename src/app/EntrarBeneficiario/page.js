@@ -88,7 +88,7 @@ export default function EntrarBeneficiario(){
         <form onSubmit={handleSubmit}>
 
     <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"20px"}}>
-        <label for="exampleInputEmail1">CPF</label>
+        <label for="exampleInputEmail1">Email</label>
         <input type="text" class="form-control" id="exampleInputEmail1" 
         aria-describedby="emailHelp" placeholder="XXX.XXX.XXX-XX" 
         style={{backgroundColor:"transparent"}} name="email"
