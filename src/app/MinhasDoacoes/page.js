@@ -82,7 +82,11 @@ export default function MinhasDoacoes() {
                   {doacoes.map((doacao, index) => (
                     <div>
                     <div key={index} className="DivDoacao" >
-                      <img className="imgFotoDoa" src={doacao.foto} alt={`Foto da doação ${index + 1}`} />
+                    <img
+                    className="imgFotoDoa"
+                    src={`data:image/png;base64, ${doacao.imagemBase64}`}
+                    alt={`Foto da doação ${index + 1}`}
+                      />
 
                       <div className="DivNomAlm">
                             <p className="NomeAlm" style={{textAlign:"center"}}>{doacao.nome_alimento}</p>

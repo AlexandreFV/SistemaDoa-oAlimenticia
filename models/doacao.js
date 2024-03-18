@@ -16,7 +16,7 @@ const doacao = sequelize.define('doacao', {
     allowNull: false
   },
   foto: {
-    type: DataTypes.STRING,
+    type: DataTypes.BLOB,
     allowNull: false
   },
   endereco: {

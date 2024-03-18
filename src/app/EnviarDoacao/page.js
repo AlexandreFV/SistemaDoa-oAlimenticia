@@ -29,21 +29,22 @@ export default function EnviarDoacao(){
     const handleSubmit = async (event) => {
         event.preventDefault();
     
-        if(nome_alimento != "" && quantidade != "" && foto != "" && endereco != ""){
+        if (nome_alimento !== "" && quantidade !== "" && foto !== null && endereco !== "") {
 
         try {
+
+          const formData = new FormData();
+          formData.append("nome_alimento", nome_alimento);
+          formData.append("quantidade", quantidade);
+          formData.append("foto", foto);
+          formData.append("endereco", endereco);
+
           const response = await fetch("http://localhost:3001/EnviarDoacao", {
             method: "POST",
             headers: {
-              "Content-Type": "application/json",
               Authorization: `Bearer ${localStorage.getItem('token')}`, // Inclui o token de autenticação no cabeçalho da requisição
             },
-            body: JSON.stringify({
-              nome_alimento,
-              quantidade,
-              foto,
-              endereco,
-            }),
+            body: formData,
           });
     
           if (response.ok) {
@@ -68,8 +69,7 @@ export default function EnviarDoacao(){
      // Função para lidar com a alteração do campo de arquivo
      const handleFileChange = (event) => {
       const file = event.target.files[0];
-      // Atualize o estado 'foto' com o nome do arquivo da imagem selecionada
-      setFoto(file.name);
+      setFoto(file);
   };
     
 
@@ -103,7 +103,7 @@ export default function EnviarDoacao(){
                     onChange={handleFileChange} // Use a função handleFileChange para lidar com a mudança no campo de arquivo
                 />
                 {/* Exiba o nome do arquivo da imagem selecionada */}
-                <p>Nome do Arquivo: {foto}</p>
+                <p>Nome do Arquivo: {foto ? foto.name : ""}</p>
 
             <label>Endereço</label>
             <input type='text' name='endereco'

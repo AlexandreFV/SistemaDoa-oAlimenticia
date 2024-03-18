@@ -6,6 +6,7 @@ const mysql = require("mysql");
 const cors = require('cors');
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
 
 // Use o middleware cors
 app.use(cors());
@@ -17,7 +18,6 @@ const usuariobeneficiario = require("./models/usuarioBeneficiario");
 const usuariodoador = require("./models/usuariodoador");
 const usuariointermediario = require("./models/usuarioIntermediario");
 const doacao = require("./models/doacao");
-const e = require('express');
 
 // Configurações de conexão com o banco de dados
 const connection = mysql.createConnection({
@@ -37,6 +37,11 @@ connection.connect((err) => {
   });
 
 
+  const upload = multer({
+    storage: multer.memoryStorage(), // Isso irá armazenar o arquivo em buffer na memória
+  });
+
+  
   const verificarUsuarioDoador = async (req, res, next) => {
     // Verifique se o usuário está autenticado
     const authHeader = req.headers['authorization'];
@@ -370,8 +375,9 @@ app.listen(3001, () => {
 })
 
 
-app.post("/EnviarDoacao", async function(req, res) {
-  const { nome_alimento, quantidade, foto, endereco } = req.body;
+app.post("/EnviarDoacao", upload.single('foto'), async function(req, res) {
+  const { nome_alimento, quantidade, endereco } = req.body;
+  const foto = req.file.buffer; // Obtenha os dados binários da imagem
 
   try {
     const authHeader = req.headers['authorization'];
@@ -401,7 +407,14 @@ app.get("/MinhasDoacoes/:usuariodoadorId", checkToken, verificarUsuarioDoador, a
 
   try {
     const doacoes = await doacao.findAll({ where: { usuariodoadorId: usuariodoadorId } });
-    res.status(200).json({ doacoes: doacoes });
+
+        // Mapear as doações para incluir as imagens convertidas em base64
+        const doacoesComImagens = await Promise.all(doacoes.map(async (doacao) => {
+          const imagemBase64 = Buffer.from(doacao.foto, 'binary').toString('base64');
+          return { ...doacao.toJSON(), imagemBase64 }; // Incluir a imagem convertida na representação JSON da doação
+        }));
+    
+    res.status(200).json({ doacoes: doacoesComImagens });
   } catch (error) {
     res.status(500).json({ error: "Erro ao buscar doações por usuário", message: error.message });
   }
