@@ -1,5 +1,6 @@
 
 import CustomButton from "./customButton"
+import './menuDoador.css';
 export default function menuDoador() {
 
 
@@ -28,7 +29,7 @@ export default function menuDoador() {
 
                 <div style={{ paddingTop: "40px" }}>
                     <div style={{ float: "left" }}>
-                        <CustomButton href={"/EnviarDoacao"} className={"btnn"} buttonText={"Fazer Doação"} textStyle={{ marginLeft: "1rem" }} />
+                        <CustomButton href={"/facaDoacao"} className={"btnn"} buttonText={"Fazer Doação"} textStyle={{ marginLeft: "1rem" }} />
                     </div>
                     <img src="/SetaDireita.png" style={{ marginTop: "4px" }}></img>
                 </div>

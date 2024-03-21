@@ -1,5 +1,8 @@
+"use client"
 import "./style.css";
 import React, { useState } from 'react';
+import Navbar from "../components/navbar";
+import Menu from"../components/menuDoador";
 
 const AddProductPage = () => {
   return (
@@ -10,7 +13,7 @@ const AddProductPage = () => {
   );
 };
 
-const ProductForm = () => {
+export default function facaDoacao () {
   const [product, setProduct] = useState({
     name: '',
     format: '',
@@ -38,7 +41,17 @@ const ProductForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div className="DivPai">
+      <Navbar />
+      <div className="DivFilho">
+        <Menu />
+        
+        <div className="DivImagem">
+          <div className="DivFundoPai">
+            <img src="/iconbtnvoltar.png" alt="Ícone de voltar" className="VoltarIco"></img>
+            <h1 className="titulo">Faça sua doação</h1>
+            <div className="DivFundoFilho">
+            <form onSubmit={handleSubmit}>
       <label>
         Nome do Produto:
         <input type="text" name="name" placeholder="Digite o nome do produto..." value={product.name} onChange={handleChange} />
@@ -46,8 +59,7 @@ const ProductForm = () => {
       </label>
       <label>
       Formato do Produto:
-        <select name="format" value={product.format} onChange={handleChange}>
-          <option value="">Ex: Caixa ou Avulso</option>
+        <select name="format" placeholder="Ex: Caixa ou Avulso." value={product.format} onChange={handleChange}>
           <option value="Caixa">Caixa</option>
           <option value="Avulso">Avulso</option>
         </select>
@@ -74,8 +86,18 @@ const ProductForm = () => {
       </label>
       <button type="submit">Cadastrar Produto</button>
     </form>
+            </div>
+
+    </div>
+    </div>
+    </div>
+    
+     
+    
+    
+    </div>
   );
 };
 
-export default ProductForm;
+
 
