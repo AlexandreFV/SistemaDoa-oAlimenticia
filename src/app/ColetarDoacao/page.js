@@ -23,13 +23,17 @@ export default function ColetarDoacao() {
                         <div className="DivFundoFilho">
                             <div style={{ display: "flex", alignItens: "center", textAlign: "center" }}>
                                 <h1 style={{ display: "flex", justifyContent: "center", alignItems: "center", left: "1.6rem" }} className="h1ProdutosEnv">Doações disponíveis</h1>
-                                <div style={{ marginRight: "1.2rem" }}>
+                                <div style={{ marginRight: "1.2rem", marginTop: "1rem" }}>
                                     <img src="./filtrar.png" className="imgFiltrar"></img>
                                     <p >Filtro</p>
                                 </div>
-
                             </div>
                             <div style={{ backgroundColor: "black", width: "100%", height: "2px" }}></div>
+
+                            <div className="CardProduct" style={{ width: "90%", height: "6.3rem", background: "#EBEBEB", borderRadius: "10px", marginTop: "2rem", marginLeft: "auto", marginRight: "auto" }}>
+                                <div><img style={{ borderTopLeftRadius: "10px", borderBottomLeftRadius: "10px" }} src="/imgMaca.jpg"></img></div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
