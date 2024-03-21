@@ -59,7 +59,7 @@ export default function MinhasDoacoes() {
         <MenuDireito />
         <div className="DivImagem">
           <div className="DivFundoPai">
-            <img src="/IconVoltar.png" alt="Ícone de voltar" className="VoltarIco"></img>
+            <img src="/iconbtnvoltar.png" alt="Ícone de voltar" className="VoltarIco"></img>
             <h1 className="h1MinDoa">Minhas doações</h1>
             <div className="DivFundoFilho">
               {doacoes.length === 0 ? (
@@ -73,45 +73,45 @@ export default function MinhasDoacoes() {
                 </div>
               ) : (
                 <div>
-                  <div style={{display: "flex", alignItens: "center",textAlign:"center"}}>
-                  <h1 className="h1ProdutosEnv">Produtos Doados</h1>
-                  <img src="./filtrar.png" className="imgFiltrar"></img>
+                  <div style={{ display: "flex", alignItens: "center", textAlign: "center" }}>
+                    <h1 className="h1ProdutosEnv">Produtos Doados</h1>
+                    <img src="./filtrar.png" className="imgFiltrar"></img>
                   </div>
 
                   <div class="modal-content custom-modal-line"> </div>
                   {doacoes.map((doacao, index) => (
                     <div>
-                    <div key={index} className="DivDoacao" >
-                    <img
-                    className="imgFotoDoa"
-                    src={`data:image/png;base64, ${doacao.imagemBase64}`}
-                    alt={`Foto da doação ${index + 1}`}
-                      />
+                      <div key={index} className="DivDoacao" >
+                        <img
+                          className="imgFotoDoa"
+                          src={`data:image/png;base64, ${doacao.imagemBase64}`}
+                          alt={`Foto da doação ${index + 1}`}
+                        />
 
-                      <div className="DivNomAlm">
-                            <p className="NomeAlm" style={{textAlign:"center"}}>{doacao.nome_alimento}</p>
-                      </div>
+                        <div className="DivNomAlm">
+                          <p className="NomeAlm" style={{ textAlign: "center" }}>{doacao.nome_alimento}</p>
+                        </div>
 
-                      <div className="DivCateg">
-                            <label>Categoria</label>
-                            <p style={{textAlign:"center"}}>fruta</p>
-                      </div>
+                        <div className="DivCateg">
+                          <label>Categoria</label>
+                          <p style={{ textAlign: "center" }}>fruta</p>
+                        </div>
 
-                      <div className="DivCateg">
-                            <label>Quantidade</label>
-                            <p className="quantidade" style={{textAlign:"center"}}>{doacao.quantidade}</p>
-                      </div>
-                      <div className="DivCateg">
-                            <label>Cidade</label>
-                            <p className="Endereco" style={{textAlign:"center"}}>{doacao.endereco}</p> 
-                      </div>
+                        <div className="DivCateg">
+                          <label>Quantidade</label>
+                          <p className="quantidade" style={{ textAlign: "center" }}>{doacao.quantidade}</p>
+                        </div>
+                        <div className="DivCateg">
+                          <label>Cidade</label>
+                          <p className="Endereco" style={{ textAlign: "center" }}>{doacao.endereco}</p>
+                        </div>
 
-                      <img src="./edit.png" style={{height: "20px",marginRight:"10px"}}></img>
-                      <img src="./lixeira.png" style={{height: "20px",marginRight:"20px"}}></img>
-                    </div>
-                    <p style={{marginTop:"-20px",padding:"0px",marginRight:"5%", width:"90%",marginLeft:"5%",textAlign:"right"}}>
-                    Data de doação: 00/00/0000 
-                    </p>
+                        <img src="./edit.png" style={{ height: "20px", marginRight: "10px" }}></img>
+                        <img src="./lixeira.png" style={{ height: "20px", marginRight: "20px" }}></img>
+                      </div>
+                      <p style={{ marginTop: "-20px", padding: "0px", marginRight: "5%", width: "90%", marginLeft: "5%", textAlign: "right" }}>
+                        Data de doação: 00/00/0000
+                      </p>
                     </div>
 
                   ))}
