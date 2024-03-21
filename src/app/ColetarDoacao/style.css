@@ -69,3 +69,22 @@
     max-height: 400px;
     overflow-y: auto;
 }
+
+.h1ProdutosEnv {
+
+    text-align: center;
+    justify-content: center;
+    padding-top: 20px;
+    display: inline-block;
+    position: relative;
+    margin: 0 auto;
+    font-family: 'Poller One', sans-serif;
+
+}
+
+.imgFiltrar {
+    width: 20px;
+    display: inline-block;
+    height: 25px;
+
+}

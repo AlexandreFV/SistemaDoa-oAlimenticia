@@ -16,8 +16,9 @@ body {
 .button:hover,
 .button:focus,
 .button:active {
-  background-color: rgba(63, 173, 180, 1);
+  background-color: rgb(62, 150, 156);
   /* Mantém a cor de fundo ao passar o mouse, focar ou clicar */
+  color: white;
 }
 
 .imgLogin {
@@ -39,7 +40,8 @@ body {
   height: 100vh;
   background-image: url("/Background_-_Cadastro.png");
   background-size: 100% 100%;
-  filter: brightness(85%);
+  filter: brightness(95%);
+
 }
 
 .DivNeto {
@@ -97,8 +99,23 @@ body {
   /* Inicialmente, os botões estão ocultos */
 }
 
-#fundoIntermediario:hover img {
-  visibility: visible;
+.userblackintermediario {
+  display: block;
+}
+
+.userwhiteintermediario {
+  display: none;
+}
+
+#fundoIntermediario:hover .userblackintermediario {
+  display: none;
+  /* Torna os botões visíveis durante o hover */
+  height: 250px;
+  width: 250px;
+}
+
+#fundoIntermediario:hover .userwhiteintermediario {
+  display: block;
   /* Torna os botões visíveis durante o hover */
   height: 250px;
   width: 250px;
@@ -152,8 +169,23 @@ body {
   /* Inicialmente, os botões estão ocultos */
 }
 
-#fundoReceptor:hover img {
-  visibility: visible;
+.userblackreceptor {
+  display: block;
+}
+
+.userwhitereceptor {
+  display: none;
+}
+
+#fundoReceptor:hover .userblackreceptor {
+  display: none;
+  /* Torna os botões visíveis durante o hover */
+  height: 250px;
+  width: 250px;
+}
+
+#fundoReceptor:hover .userwhitereceptor {
+  display: block;
   /* Torna os botões visíveis durante o hover */
   height: 250px;
   width: 250px;
@@ -207,12 +239,28 @@ body {
   /* Inicialmente, os botões estão ocultos */
 }
 
-#fundoDoador:hover img {
-  visibility: visible;
+.userblackdoador {
+  display: block;
+}
+
+.userwhitedoador {
+  display: none;
+}
+
+#fundoDoador:hover .userblackdoador {
+  display: none;
   /* Torna os botões visíveis durante o hover */
   height: 250px;
   width: 250px;
 }
+
+#fundoDoador:hover .userwhitedoador {
+  display: block;
+  /* Torna os botões visíveis durante o hover */
+  height: 250px;
+  width: 250px;
+}
+
 
 #fundoDoador:hover p {
   visibility: visible;

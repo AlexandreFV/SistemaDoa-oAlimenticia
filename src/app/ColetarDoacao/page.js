@@ -21,7 +21,15 @@ export default function ColetarDoacao() {
                         <img src="/iconbtnvoltar.png" alt="Ícone de voltar" className="VoltarIco"></img>
                         <h1 className="h1MinDoa">Coletar Doação</h1>
                         <div className="DivFundoFilho">
+                            <div style={{ display: "flex", alignItens: "center", textAlign: "center" }}>
+                                <h1 style={{ display: "flex", justifyContent: "center", alignItems: "center", left: "1.6rem" }} className="h1ProdutosEnv">Doações disponíveis</h1>
+                                <div style={{ marginRight: "1.2rem" }}>
+                                    <img src="./filtrar.png" className="imgFiltrar"></img>
+                                    <p >Filtro</p>
+                                </div>
 
+                            </div>
+                            <div style={{ backgroundColor: "black", width: "100%", height: "2px" }}></div>
                         </div>
                     </div>
                 </div>
