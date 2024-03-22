@@ -11,18 +11,45 @@ const doacao = sequelize.define('doacao', {
     type: DataTypes.STRING,
     allowNull: false
   },
+
   quantidade: {
     type: DataTypes.INTEGER,
     allowNull: false
   },
+
   foto: {
     type: DataTypes.BLOB,
     allowNull: false
   },
-  endereco: {
+
+  rua: {
     type: DataTypes.STRING,
     allowNull: false
-  }
+  },
+
+  numero: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+
+  cidade: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+
+  validade: {
+    type: DataTypes.DATE,
+    allowNull: false
+  },
+
+  descricao: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  categoria: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
 });
 
 

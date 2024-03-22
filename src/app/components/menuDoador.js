@@ -29,17 +29,17 @@ export default function menuDoador() {
 
                 <div style={{ paddingTop: "40px" }}>
                     <div style={{ float: "left" }}>
-                        <CustomButton href={"/facaDoacao"} className={"btnn"} buttonText={"Fazer Doação"} textStyle={{ marginLeft: "1rem" }} />
+                        <CustomButton rel="preload" href={"/FacaDoacao"} className={"btnn"} buttonText={"Fazer Doação"} textStyle={{ marginLeft: "1rem" }} />
                     </div>
                     <img src="/SetaDireita.png" style={{ marginTop: "4px" }}></img>
                 </div>
 
                 <div style={{ paddingTop: "15px" }}>
-                    <CustomButton href={"/MinhasDoacoes"} className={"btnn"} buttonText={"Minhas doações"} textStyle={{ marginLeft: "1rem" }} />
+                    <CustomButton rel="preload" href={"/MinhasDoacoes"} className={"btnn"} buttonText={"Minhas doações"} textStyle={{ marginLeft: "1rem" }} />
                 </div>
 
                 <div style={{ paddingTop: "15px" }}>
-                    <CustomButton href={{}} className={"btnn"} buttonText={"Nível de classificação"} textStyle={{ marginLeft: "1rem" }} />
+                    <CustomButton rel="preload" href={{}} className={"btnn"} buttonText={"Nível de classificação"} textStyle={{ marginLeft: "1rem" }} />
                 </div>
             </div>
         </div>

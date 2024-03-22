@@ -24,7 +24,7 @@ export default function Navbar({ isAuthenticated, userEmail, userType }) {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "rgba(120, 148, 74, 0.8)", height: "90px", borderBottomLeftRadius: "40px", borderBottomRightRadius: "40px" }}>
+    <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "rgba(120, 148, 74, 0.8)", height: "90px", borderBottomLeftRadius: "40px", borderBottomRightRadius: "40px",zIndex: "1000 !important" }}>
       <strong>
         <div style={{ color: "#FFFFFF", marginLeft: "30px", fontFamily: "Inter" }}>
           <h1 style={{ fontSize: "30px" }}>DoeSolidário</h1>

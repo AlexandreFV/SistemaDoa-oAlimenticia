@@ -35,21 +35,22 @@
     border-radius: 10px;
     justify-content: center;
     /* Centraliza horizontalmente */
+    font-family: "Inter";
 
 }
 .DivFundoFilho {
 
     background-color: white;
     width: 90%;
-    height: 70%;
+    height: 75%;
     align-items: center;
     justify-content: center;
     margin-left: 5%;
     margin-right: 5%;
     border-radius: 5px;
     position: relative;
-    margin-top: 40px;
-    max-height: 400px;
+    margin-top: 20px;
+    max-height: 450px;
     overflow-y: auto;
 }
 .titulo {
@@ -66,4 +67,119 @@
     border-bottom-left-radius: 10px;
 }
 
+.VoltarIco {
 
+    display: inline-block;
+    margin-top: 2rem;
+    margin-left: 4rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    opacity: 100%;
+
+}
+
+
+.coluna1{
+
+    width: 45%;
+    position: absolute;
+    left:0;
+    margin:0 auto;
+    padding-left: 40px;
+    padding-top: 20px;
+}
+
+
+.coluna2{
+
+    width: 45%;
+    position: absolute;
+    right: 0;
+    margin:0 auto;
+    padding-right: 40px;
+    padding-top: 20px;
+
+}
+
+.form-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.categoriaLabel{
+
+    padding-left: 80px;
+    padding-top: 20px;
+
+}
+
+.quantLabel{
+
+    padding-top: 20px;
+
+}
+
+.validadeLabel{
+
+    padding-top: 20px;
+}
+
+.quant{
+
+    width: 30%;
+    position: relative;
+    display: inline-block;
+    
+}
+
+.catego{
+
+    position: relative;
+    width: 60%;
+
+
+}
+
+.custom-modal-line {
+    border-bottom: 2px solid black;
+    /* Defina a cor da borda aqui */
+    padding-top: 10px;
+}
+
+.descricaoLabel{
+
+    padding-top: 20px;
+}
+
+.ruaLabel{
+
+    padding-top: 20px;
+}
+
+
+.btnEnvi {
+
+    position: absolute;
+    margin: 0 auto;
+    text-align: center;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: block;
+
+    background-color: rgba(63, 173, 180, 0.87);
+    color: white;
+    width: 100px;
+    height: 40px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.btnEnvi:hover,
+.btnEnvi:focus,
+.btnEnvi:active {
+    background-color: rgba(63, 173, 180, 1);
+    /* Mantém a cor de fundo ao passar o mouse, focar ou clicar */
+}

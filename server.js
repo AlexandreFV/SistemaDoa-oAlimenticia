@@ -79,9 +79,9 @@ app.get('/MinhasDoacoes', verificarUsuarioDoador, function(req, res) {
 
 
 app.post("/CadastrarBeneficiario", async function(req, res){
-    const { nome, email, cpf, senha } = req.body;
+    const { nome, email, cpf, senha, rua, cidade, numero  } = req.body;
 
-    if (!nome || !email || !cpf || !senha) {
+    if (!nome || !email || !cpf || !senha || !rua || !cidade || !numero) {
       return res.status(400).json({ msg: 'Por favor, preencha todos os campos obrigatórios.' });
     }
 
@@ -108,6 +108,9 @@ app.post("/CadastrarBeneficiario", async function(req, res){
       email,
       senha: passwordHash, // Use o hash da senha
       cpf,
+      rua,
+      cidade,
+      numero,
   });
 
   res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
@@ -126,9 +129,9 @@ app.post("/CadastrarBeneficiario", async function(req, res){
 
 
 app.post("/CadastrarDoador", async function(req, res){
-  const { nome, email, cpf, senha } = req.body;
+  const { nome, email, cpf, senha,rua,cidade,numero } = req.body;
 
-  if (!nome || !email || !cpf || !senha) {
+  if (!nome || !email || !cpf || !senha || !rua || !cidade || !numero) {
     return res.status(400).json({ msg: 'Por favor, preencha todos os campos obrigatórios.' });
   }
 
@@ -155,6 +158,9 @@ app.post("/CadastrarDoador", async function(req, res){
     email,
     senha: passwordHash, // Use o hash da senha
     cpf,
+    rua,
+    numero,
+    cidade,
 });
 
 res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
@@ -171,9 +177,9 @@ res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
 
 
 app.post("/CadastrarIntermediario", async function(req, res){
-  const { nome, email, cnpj, senha } = req.body;
+  const { nome, email, cnpj, senha, rua, cidade, numero } = req.body;
 
-  if (!nome || !email || !cnpj || !senha) {
+  if (!nome || !email || !cnpj || !senha || !rua || !cidade || !numero) {
     return res.status(400).json({ msg: 'Por favor, preencha todos os campos obrigatórios.' });
   }
 
@@ -200,6 +206,9 @@ app.post("/CadastrarIntermediario", async function(req, res){
     email,
     senha: passwordHash, // Use o hash da senha
     cnpj,
+    rua,
+    numero,
+    cidade,
 });
 
 res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
@@ -375,8 +384,8 @@ app.listen(3001, () => {
 })
 
 
-app.post("/EnviarDoacao", upload.single('foto'), async function(req, res) {
-  const { nome_alimento, quantidade, endereco } = req.body;
+app.post("/EnviarDoacao", upload.single('foto'),checkToken, verificarUsuarioDoador, async function(req, res) {
+  const { nome_alimento, quantidade, rua, numero, cidade, validade, descricao,categoria } = req.body;
   const foto = req.file.buffer; // Obtenha os dados binários da imagem
 
   try {
@@ -389,8 +398,13 @@ app.post("/EnviarDoacao", upload.single('foto'), async function(req, res) {
       nome_alimento: nome_alimento,
       quantidade: quantidade,
       foto: foto,
-      endereco: endereco,
-      usuariodoadorId: usuariodoadorId  // Incluindo o ID do usuário na criação da doação
+      usuariodoadorId: usuariodoadorId,  // Incluindo o ID do usuário na criação da doação
+      rua: rua,
+      numero: numero,
+      cidade: cidade,
+      validade: validade,
+      descricao: descricao,
+      categoria: categoria,
     });
 
     // Se a doação for criada com sucesso, envie uma resposta de sucesso
@@ -417,5 +431,25 @@ app.get("/MinhasDoacoes/:usuariodoadorId", checkToken, verificarUsuarioDoador, a
     res.status(200).json({ doacoes: doacoesComImagens });
   } catch (error) {
     res.status(500).json({ error: "Erro ao buscar doações por usuário", message: error.message });
+  }
+});
+
+app.get("/ObterDadosEndereco", checkToken, verificarUsuarioDoador, async function (req, res) {
+  const usuariodoadorId = req.userId;
+
+  try {
+    const enderecoUsuario = await usuariodoador.findByPk(usuariodoadorId);
+
+      if (enderecoUsuario) {
+          // Se os dados do endereço forem encontrados, retorne-os como resposta
+          return res.status(200).json(enderecoUsuario);
+      } else {
+          // Se os dados do endereço não forem encontrados, retorne um erro 404
+          return res.status(404).json({ message: "Endereço do usuário não encontrado" });
+      }
+  } catch (error) {
+      // Se ocorrer um erro ao buscar os dados do endereço, retorne um erro 500
+      console.error("Erro ao obter dados do endereço:", error);
+      return res.status(500).json({ message: "Erro interno do servidor" });
   }
 });

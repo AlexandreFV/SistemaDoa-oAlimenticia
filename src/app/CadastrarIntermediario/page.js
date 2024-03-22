@@ -14,13 +14,16 @@ export default function CadastroIntermediario(){
     const [cnpj, setCnpj] = useState("");
     const [senha, setSenha] = useState("");
     const [cadastroConcluido, setCadastroConcluido] = useState(false); // Estado para indicar se o cadastro foi concluído
+    const [rua, setRua] = useState("");
+    const [cidade, setCidade] = useState("");
+    const [numero, setNumero] = useState("");
     const router = useRouter();
     const [erroCadastro, setErroCadastro] = useState(""); // Estado para armazenar a mensagem de erro
 
     const handleSubmit = async (event) => {
         event.preventDefault();
     
-        if(nome != "" && email != "" && cnpj != "" && senha != ""){
+        if(nome != "" && email != "" && cnpj != "" && senha != "" && rua != "" && cidade != "" && numero != ""){
 
         try {
           const response = await fetch("http://localhost:3001/CadastrarIntermediario", {
@@ -33,6 +36,9 @@ export default function CadastroIntermediario(){
               email,
               cnpj,
               senha,
+              cidade,
+              rua,
+              numero
             }),
           });
     
@@ -76,6 +82,8 @@ export default function CadastroIntermediario(){
       <p style={{ fontFamily: "Inter", fontWeight: "400" }}>Entre e continue sua jornada de </p>
         <p style={{ fontFamily: "Inter", fontWeight: "400",marginBottom: "20px"}}>transmissão de esperança..</p>
         <CustomButton href="/EntrarIntermediario" className="button btn" buttonText="Entrar"/>
+        {erroCadastro && <ErroCadastro erro={erroCadastro} />}
+
     </div>
 
     <div className="DivFundoBranco">
@@ -93,7 +101,7 @@ export default function CadastroIntermediario(){
         value={nome} onChange={(e) => setNome(e.target.value)}/>
     </div>
 
-    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"20px"}}>
+    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"10px"}}>
         <label for="exampleInputEmail1">Email</label>
         <input type="Email" class="form-control" id="exampleInputEmail1" name="email"
         aria-describedby="emailHelp" placeholder="Digite seu e-mail..." 
@@ -101,7 +109,7 @@ export default function CadastroIntermediario(){
         value={email} onChange={(e) => setEmail(e.target.value)}/>
     </div>
 
-    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"20px"}}>
+    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"10px"}}>
         <label for="exampleInputEmail1">CNPJ</label>
         <input type="text" class="form-control" id="exampleInputEmail1" 
         aria-describedby="emailHelp" placeholder="XXX.XXX.XXX-XX" name="cnpj"
@@ -109,7 +117,37 @@ export default function CadastroIntermediario(){
         value={cnpj} onChange={(e) => setCnpj(e.target.value)}/>
     </div>
 
-    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"20px"}}>
+    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"10px"}}>
+        <label for="exampleInputEmail1">Cidade</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" 
+        aria-describedby="emailHelp" placeholder="Digite sua cidade..."
+        style={{backgroundColor:"transparent"}} name="cidade" 
+        value={cidade} onChange={(e) => setCidade(e.target.value)}/>
+    </div>
+
+
+    <div className="form-group" style={{width: "90%", marginLeft: "5%", marginRight: "5%", marginTop: "10px"}}>
+    <div className="row">
+        <div className="col-sm-6">
+            <label htmlFor="rua">Rua</label>
+            <input type="text" className="form-control rua" id="rua" 
+                   aria-describedby="emailHelp" placeholder="Digite sua rua..."
+                   style={{backgroundColor: "transparent"}} name="rua" 
+                   value={rua} onChange={(e) => setRua(e.target.value)}/>
+        </div>
+        
+        <div className="col-sm-6">
+            <label htmlFor="numero">Número</label>
+            <input type="number" className="form-control numero" id="numero" 
+                   aria-describedby="emailHelp" placeholder="Digite o numero..."
+                   style={{backgroundColor: "transparent"}} name="numero" 
+                   value={numero} onChange={(e) => setNumero(e.target.value)}/>
+        </div>
+    </div>
+</div>
+
+
+    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"10px"}}>
         <label for="exampleInputEmail1">Senha</label>
         <input type="password" class="form-control" id="exampleInputEmail1" 
         aria-describedby="emailHelp" placeholder="Digite sua senha..." name="senha"
@@ -117,9 +155,8 @@ export default function CadastroIntermediario(){
         value={senha} onChange={(e) => setSenha(e.target.value)} />
     </div>
     
-    {erroCadastro && <ErroCadastro erro={erroCadastro} />}
         <center>
-        <button className="btn" type="submit" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color: "white",marginTop:"0px"}}>Cadastrar</button>
+        <button className="btn" type="submit" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color: "white",marginTop:"10px"}}>Cadastrar</button>
         </center>
         </form>
 

@@ -21,13 +21,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 100px;
+    margin-top: 60px;
 }
 
 .DivBisNeto {
 
     background-color: #EDEDED;
-    height: 450px;
+    height: 500px;
     width: 60%;
     position: relative;
     display: flex;
@@ -76,7 +76,7 @@
     color: white;
     background-color: #578925;
     width: 430px;
-    height: 500px;
+    height: 550px;
     border-radius: 10px;
     position: absolute;
     right: 0;
@@ -86,7 +86,17 @@
 .h1Cadastrar {
 
     font-size: 25px;
-    margin-top: 30px;
+    margin-top: 15px;
     font-family: Poller One cursive;
     font-weight: 800;
+}
+
+.rua{
+
+    width: 100%;
+}
+
+.numero{
+
+    width: 100%;
 }

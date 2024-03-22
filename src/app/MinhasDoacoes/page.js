@@ -68,8 +68,7 @@ export default function MinhasDoacoes() {
                   <h1 className="h1NpossuiDoacao">Você ainda não efetuou nenhuma doação.</h1>
                   <p className="PSejaParte">Seja parte da solução.</p>
                   <p className="PSuaPrimeirD">Sua primeira doação é o primeiro passo para um mundo melhor.</p>
-                  <CustomButton href={{}} className={"btnPermNega"} buttonText={"Doe agora"} />
-                  <p className="PDoacaoFei">Doação Feita</p>
+                  <CustomButton href={"/FacaDoacao"} className={"btnPermNega"} buttonText={"Doe agora"} />
                 </div>
               ) : (
                 <div>
@@ -94,7 +93,7 @@ export default function MinhasDoacoes() {
 
                         <div className="DivCateg">
                           <label>Categoria</label>
-                          <p style={{ textAlign: "center" }}>fruta</p>
+                          <p style={{ textAlign: "center" }}>{doacao.categoria}</p>
                         </div>
 
                         <div className="DivCateg">
@@ -103,7 +102,7 @@ export default function MinhasDoacoes() {
                         </div>
                         <div className="DivCateg">
                           <label>Cidade</label>
-                          <p className="Endereco" style={{ textAlign: "center" }}>{doacao.endereco}</p>
+                          <p className="endereco" style={{ textAlign: "center" }}>{doacao.cidade}</p>
                         </div>
 
                         <img src="./edit.png" style={{ height: "20px", marginRight: "10px" }}></img>

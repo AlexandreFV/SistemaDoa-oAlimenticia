@@ -14,13 +14,16 @@ export default function CadastroDoador(){
     const [cpf, setCpf] = useState("");
     const [senha, setSenha] = useState("");
     const [cadastroConcluido, setCadastroConcluido] = useState(false); // Estado para indicar se o cadastro foi concluído
+    const [rua, setRua] = useState("");
+    const [cidade, setCidade] = useState("");
+    const [numero, setNumero] = useState("");
     const router = useRouter();
     const [erroCadastro, setErroCadastro] = useState(""); // Estado para armazenar a mensagem de erro
 
     const handleSubmit = async (event) => {
         event.preventDefault();
     
-        if(nome != "" && email != "" && cpf != "" && senha != ""){
+        if(nome != "" && email != "" && cpf != "" && senha != "" && rua != "" && cidade != "" && numero != ""){
 
         try {
           const response = await fetch("http://localhost:3001/CadastrarDoador", {
@@ -33,6 +36,9 @@ export default function CadastroDoador(){
               email,
               cpf,
               senha,
+              cidade,
+              rua,
+              numero
             }),
           });
     
@@ -75,6 +81,8 @@ export default function CadastroDoador(){
       <h1 style={{ fontSize: "25px", marginBottom: "10px", marginTop: "10px", fontFamily: "Inter", fontWeight: "800" }}>Já possui conta?</h1>
       <p style={{ fontFamily: "Inter", fontWeight: "400", marginBottom: "20px" }}>Entre e seja Solidário.</p>
       <CustomButton href="/EntrarDoador" className="button btn" buttonText="Entrar"/>
+      {erroCadastro && <ErroCadastro erro={erroCadastro} />}
+
     </div>
 
     <div className="DivFundoBranco">
@@ -92,7 +100,7 @@ export default function CadastroDoador(){
         value={nome} onChange={(e) => setNome(e.target.value)}/>
     </div>
 
-    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"20px"}}>
+    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"10px"}}>
         <label for="exampleInputEmail1">Email</label>
         <input type="Email" class="form-control" id="exampleInputEmail1" 
         aria-describedby="emailHelp" placeholder="Digite seu e-mail..." 
@@ -100,7 +108,7 @@ export default function CadastroDoador(){
         value={email} onChange={(e) => setEmail(e.target.value)}/>
     </div>
 
-    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"20px"}}>
+    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"10px"}}>
         <label for="exampleInputEmail1">CPF</label>
         <input type="text" class="form-control" id="exampleInputEmail1" 
         aria-describedby="emailHelp" placeholder="XXX.XXX.XXX-XX" 
@@ -108,7 +116,36 @@ export default function CadastroDoador(){
         value={cpf} onChange={(e) => setCpf(e.target.value)}/>
     </div>
 
-    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"20px"}}>
+    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"10px"}}>
+        <label for="exampleInputEmail1">Cidade</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" 
+        aria-describedby="emailHelp" placeholder="Digite sua cidade..."
+        style={{backgroundColor:"transparent"}} name="cidade" 
+        value={cidade} onChange={(e) => setCidade(e.target.value)}/>
+    </div>
+
+
+    <div className="form-group" style={{width: "90%", marginLeft: "5%", marginRight: "5%", marginTop: "10px"}}>
+    <div className="row">
+        <div className="col-sm-6">
+            <label htmlFor="rua">Rua</label>
+            <input type="text" className="form-control rua" id="rua" 
+                   aria-describedby="emailHelp" placeholder="Digite sua rua..."
+                   style={{backgroundColor: "transparent"}} name="rua" 
+                   value={rua} onChange={(e) => setRua(e.target.value)}/>
+        </div>
+        
+        <div className="col-sm-6">
+            <label htmlFor="numero">Número</label>
+            <input type="number" className="form-control numero" id="numero" 
+                   aria-describedby="emailHelp" placeholder="Digite o numero..."
+                   style={{backgroundColor: "transparent"}} name="numero" 
+                   value={numero} onChange={(e) => setNumero(e.target.value)}/>
+        </div>
+    </div>
+</div>
+
+    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"10px"}}>
         <label for="exampleInputEmail1">Senha</label>
         <input type="password" class="form-control" id="exampleInputEmail1" 
         aria-describedby="emailHelp" placeholder="Digite sua senha..."
@@ -116,10 +153,9 @@ export default function CadastroDoador(){
         value={senha} onChange={(e) => setSenha(e.target.value)}/>
     </div>
 
-    {erroCadastro && <ErroCadastro erro={erroCadastro} />}
 
         <center>
-        <button className="btn" type="submit" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color: "white",marginTop:"40px"}}>Cadastrar</button>
+        <button className="btn" type="submit" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color: "white",marginTop:"10px"}}>Cadastrar</button>
         </center>
         </form>
 
