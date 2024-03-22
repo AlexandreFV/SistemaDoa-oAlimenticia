@@ -79,6 +79,7 @@
     position: relative;
     margin: 0 auto;
     font-family: 'Poller One', sans-serif;
+    font-size: 1.2rem;
 
 }
 
@@ -87,4 +88,35 @@
     display: inline-block;
     height: 25px;
 
+}
+
+.custom-checkbox {
+    display: inline-block;
+
+}
+
+.checkbox-input {
+    display: none;
+}
+
+.checkbox-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    background-color: #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.checkbox-input:checked+.checkbox-label {
+    background-color: green;
+    /* Define a cor verde quando o checkbox está marcado */
+}
+
+.checkbox-icon {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
 }
