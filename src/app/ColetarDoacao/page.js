@@ -85,20 +85,3 @@ export default function ColetarDoacao() {
 
     );
 }
-/*
-
-*/
-/*
-
-
-<div style={{width: 94, height: 51.29, left: 280.83, top: 11.30, position: 'absolute'}}>
-
-</div>
-<div style={{width: 80, height: 51.29, left: 411.05, top: 11.45, position: 'absolute'}}>
-
-</div>
-<div style={{width: 112, height: 50.37, left: 527.28, top: 11.30, position: 'absolute'}}>
-<div style={{left: 44.40, top: 27.37, position: 'absolute', color: 'black', fontSize: 19, fontFamily: 'Inter', fontWeight: '400', wordWrap: 'break-word'}}>20</div>
-<div style={{left: 0, top: 0, position: 'absolute', color: 'black', fontSize: 20, fontFamily: 'Inter', fontWeight: '500', wordWrap: 'break-word'}}>Quantidade</div>
-</div>
-*/
