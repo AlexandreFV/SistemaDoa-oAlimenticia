@@ -1,15 +1,15 @@
 "use client"
 import "./style.css";
 import Navbar from "../components/layoutCadastroLogin";
-import Menu from"../components/menuDoador";
+import Menu from "../components/menuDoador";
 import "./style.css";
 import { useEffect, useState } from 'react';
 import { useRouter } from "next/navigation";
-import CustomButton from "../components/customButton";
+import { BackButton, CustomButton } from "../components/customButton";
 import Link from "next/link";
 import SucErroAddDoacao from "../components/SucErroAddDoacao";
 
-export default function FacaDoacao () {
+export default function FacaDoacao() {
   const [nome_alimento, setNome] = useState("");
   const [quantidade, setQuant] = useState("");
   const [categoria, setCategoria] = useState("");
@@ -35,7 +35,7 @@ export default function FacaDoacao () {
     } else {
       // Se houver token, envie uma solicitação para o servidor para obter os detalhes do usuário
       const UserType = localStorage.getItem('userType');
-      if(UserType !== 'doador'){
+      if (UserType !== 'doador') {
         router.push("/PermissaoNegada");
       } else {
         // Busca as informações do usuário quando a página é carregada
@@ -43,9 +43,9 @@ export default function FacaDoacao () {
       }
     }
   }, []);
-  
-   // Função para buscar as informações do usuário
-   const fetchUserData = async () => {
+
+  // Função para buscar as informações do usuário
+  const fetchUserData = async () => {
     try {
       const response = await fetch('http://localhost:3001/ObterDadosEndereco', {
         method: 'GET',
@@ -71,9 +71,9 @@ export default function FacaDoacao () {
   };
 
   const handleSubmit = async (event) => {
-      event.preventDefault();
-  
-      if (nome_alimento !== "" && quantidade !== "" && foto !== null && rua !== "" && numero !== "" && cidade !== "") {
+    event.preventDefault();
+
+    if (nome_alimento !== "" && quantidade !== "" && foto !== null && rua !== "" && numero !== "" && cidade !== "") {
 
       try {
 
@@ -96,16 +96,16 @@ export default function FacaDoacao () {
           },
           body: formData,
         });
-  
+
         if (response.ok) {
           console.log("Cadastro realizado com sucesso!");
- 
+
           setSuccesCadastro("Adicionado Com sucesso!");
-            // Limpa os estados de erro e sucesso após 3 segundos
-            setTimeout(() => {
+          // Limpa os estados de erro e sucesso após 3 segundos
+          setTimeout(() => {
             setErroCadastro("");
             setSuccesCadastro("");
-            }, 3000);
+          }, 3000);
         } else {
           const responseData = await response.json();
 
@@ -117,28 +117,28 @@ export default function FacaDoacao () {
         // Exibir uma mensagem de erro aqui
       }
     } else {
-      
+
       setErroCadastro("Preencha todos os campos!");
       // Limpa os estados de erro e sucesso após 3 segundos
       setTimeout(() => {
         setErroCadastro("");
         setSuccesCadastro("");
-        }, 3000);
-    }      
+      }, 3000);
+    }
   };
 
-   // Função para lidar com a alteração do campo de arquivo
-   const handleFileChange = (event) => {
+  // Função para lidar com a alteração do campo de arquivo
+  const handleFileChange = (event) => {
     const file = event.target.files[0];
     setFoto(file);
-};
+  };
 
   // Função para limpar o estado do erro quando o formulário é submetido novamente
   const handleFormSubmit = (event) => {
     handleSubmit(event);
     setErroCadastro(""); // Limpa o estado do erro
   };
-  
+
 
   useEffect(() => {
     // Verifica se o usuário é do tipo doador
@@ -155,116 +155,116 @@ export default function FacaDoacao () {
       <Navbar />
       <div className="DivFilho">
         <Menu />
-        
+
         <div className="DivImagem">
           <div className="DivFundoPai">
-            <Link href="/MinhasDoacoes">
-            <img  src="/iconbtnvoltar.png" alt="Ícone de voltar" className="VoltarIco"></img>
-            </Link>
+
+            <BackButton />
+
             <h1 className="titulo">Faça sua doação</h1>
             <div className="DivFundoFilho">
 
               <center>
-              <h1 style={{paddingTop:"20px"}}>Dados da Doação</h1>
+                <h1 style={{ paddingTop: "20px" }}>Dados da Doação</h1>
               </center>
               <div class="modal-content custom-modal-line"> </div>
 
-            <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit}>
 
-      <div className="coluna1">
-      <label>
-        Nome do Produto:
-      </label>
-      <input type="text" name="nome_alimento" class="form-control"
-      placeholder="Digite o nome do produto..." value={nome_alimento} 
-      onChange={(e) => setNome(e.target.value)} />
+                <div className="coluna1">
+                  <label>
+                    Nome do Produto:
+                  </label>
+                  <input type="text" name="nome_alimento" class="form-control"
+                    placeholder="Digite o nome do produto..." value={nome_alimento}
+                    onChange={(e) => setNome(e.target.value)} />
 
-      <label className="quantLabel">
-        Quantidade:
-      </label>
-      <label className="categoriaLabel">
-        Categoria:
-      </label>
+                  <label className="quantLabel">
+                    Quantidade:
+                  </label>
+                  <label className="categoriaLabel">
+                    Categoria:
+                  </label>
 
-      <div class="form-group">
-      <input type="text" name="quantidade" class="form-control quant"
-        placeholder="quant." value={quantidade}
-        onChange={(e) => setQuant(e.target.value)} />
-      <select name="categoria" className="form-control catego" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
-          <option value="">Selecione a categoria</option>
-          <option value="fruta">Fruta</option>
-          <option value="tuberculo">Tubérculo</option>
-          <option value="hortalicia">Hortaliça</option>
-          <option value="marmita">Marmita</option>
-          <option value="Carnes e Aves">Carnes e Aves</option>
-          <option value="Peixes e Frutos do Mar">Peixes e Frutos do Mar</option>
-          <option value="Produtos de Padaria">Produtos de Padaria</option>
+                  <div class="form-group">
+                    <input type="text" name="quantidade" class="form-control quant"
+                      placeholder="quant." value={quantidade}
+                      onChange={(e) => setQuant(e.target.value)} />
+                    <select name="categoria" className="form-control catego" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
+                      <option value="">Selecione a categoria</option>
+                      <option value="fruta">Fruta</option>
+                      <option value="tuberculo">Tubérculo</option>
+                      <option value="hortalicia">Hortaliça</option>
+                      <option value="marmita">Marmita</option>
+                      <option value="Carnes e Aves">Carnes e Aves</option>
+                      <option value="Peixes e Frutos do Mar">Peixes e Frutos do Mar</option>
+                      <option value="Produtos de Padaria">Produtos de Padaria</option>
 
-      </select>
-      </div>
+                    </select>
+                  </div>
 
-      <label className="validadeLabel">
-        Validade do produto:
-      </label>
-      <input type="date" name="validade" class="form-control"
-      placeholder="selecione a data..." value={validade} 
-      onChange={(e) => setValidade(e.target.value)} />
-
-      
-      <label className="cidadeLabel">
-        Cidade:
-      </label>
-      <input type="text" name="cidade" class="form-control" value={cidade} 
-       onChange={(e) => setCidade(e.target.value)}  />
-     
-      </div>
+                  <label className="validadeLabel">
+                    Validade do produto:
+                  </label>
+                  <input type="date" name="validade" class="form-control"
+                    placeholder="selecione a data..." value={validade}
+                    onChange={(e) => setValidade(e.target.value)} />
 
 
-      <div className="coluna2">
-      <label>
-        Foto do Produto:
-      </label>
-      <input type="file" name="foto" class="form-control"
-       onChange={handleFileChange} />
+                  <label className="cidadeLabel">
+                    Cidade:
+                  </label>
+                  <input type="text" name="cidade" class="form-control" value={cidade}
+                    onChange={(e) => setCidade(e.target.value)} />
 
-      <label className="descricaoLabel">
-        Descrição:
-      </label>
-      <input name="descricao" placeholder="Digite mais detalhes..." class="form-control descr" value={descricao}
-       onChange={(e) => setDescricao(e.target.value)} />
+                </div>
 
 
-      <label className="ruaLabel">
-        Rua:
-      </label>
-      <input type="text" name="rua" class="form-control" value={rua} 
-       onChange={(e) => setRua(e.target.value)}  />  
+                <div className="coluna2">
+                  <label>
+                    Foto do Produto:
+                  </label>
+                  <input type="file" name="foto" class="form-control"
+                    onChange={handleFileChange} />
 
-       
-      <label className="numeroLabel">
-      Numero:
-      </label>
-      <input type="text" name="numero" class="form-control" value={numero} 
-       onChange={(e) => setNumero(e.target.value)}  />  
+                  <label className="descricaoLabel">
+                    Descrição:
+                  </label>
+                  <input name="descricao" placeholder="Digite mais detalhes..." class="form-control descr" value={descricao}
+                    onChange={(e) => setDescricao(e.target.value)} />
 
-      </div>
 
-      <button className="btnEnvi" type='submit'>Enviar</button>
+                  <label className="ruaLabel">
+                    Rua:
+                  </label>
+                  <input type="text" name="rua" class="form-control" value={rua}
+                    onChange={(e) => setRua(e.target.value)} />
 
-      </form>
 
-      
-      </div>
+                  <label className="numeroLabel">
+                    Numero:
+                  </label>
+                  <input type="text" name="numero" class="form-control" value={numero}
+                    onChange={(e) => setNumero(e.target.value)} />
 
-      </div>
+                </div>
 
-    </div>
+                <button className="btnEnvi" type='submit'>Enviar</button>
+
+              </form>
+
+
+            </div>
+
+          </div>
+
+        </div>
 
       </div>
       {erroCadastro && <SucErroAddDoacao ErroAddDoa={erroCadastro} />}
 
       {succesCadastro && <SucErroAddDoacao SuccessAddDoa={succesCadastro} />}
-      </div>
+    </div>
   );
 };
 

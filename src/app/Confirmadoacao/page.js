@@ -61,9 +61,9 @@ export default function MinhasDoacoes() {
         <MenuDireito />
         <div className="DivImagem">
           <div className="DivFundoPai">
-            
+
             <img src="/iconbtnvoltar.png" alt="Ícone de voltar" className="VoltarIco"></img>
-            
+
             <h1 className="h1MinDoa">Coletar Doacao</h1>
             <div className="DivFundoFilho">
               {doacoes.length === 0 ? (
@@ -76,25 +76,25 @@ export default function MinhasDoacoes() {
                 </div>
               ) : (
                 <div>
-                  
+
                   <div style={{ display: "flex", alignItens: "center", textAlign: "center" }}>
                     <h1 className="h1ProdutosEnv">Confirmar coleta</h1>
-      
+
                   </div>
 
                   <div class="modal-content custom-modal-line"> </div>
-                  
+
                   {doacoes.map((doacao, index) => (
                     <div>
-                      <div style={{ marginTop: "2rem",  marginRight: "5%", width: "90%", marginLeft: "5%",   }}>
-                      
-                      <p >
-                        Produto  - Nome do doador
-                      </p>
+                      <div style={{ marginTop: "2rem", marginRight: "5%", width: "90%", marginLeft: "5%", }}>
+
+                        <p >
+                          Produto  - Nome do doador
+                        </p>
                       </div>
                       <div key={index} className="DivDoacao" >
-                        
-                        
+
+
                         <img
                           className="imgFotoDoa"
                           src={`data:image/png;base64, ${doacao.imagemBase64}`}
@@ -121,19 +121,19 @@ export default function MinhasDoacoes() {
                           <label>Validade</label>
                           <p className="endereco" style={{ textAlign: "center" }}>{doacao.Validade}</p>
                         </div>
-                          
+
                         <img src="./lixeira.png" style={{ height: "20px", marginRight: "10px" }}></img>
                         <img src="./btn-inf.png" style={{ height: "20px", marginRight: "20px" }}></img>
                       </div>
-                      
+
                     </div>
 
                   ))}
                   <center>
-                    
-                   <div className="DivButtonUser">
-                <CustomButton href="" className="button btn" buttonText="Confirmar" style={{display: "flex", textAlign : 'center', alignItens: 'center'}}/>
-              </div></center>
+
+                    <div className="DivButtonUser">
+                      <CustomButton href="" className="button btn" buttonText="Confirmar" style={{ display: "flex", textAlign: 'center', alignItens: 'center' }} />
+                    </div></center>
                 </div>
               )}
             </div>

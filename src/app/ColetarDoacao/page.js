@@ -3,7 +3,7 @@
 import Navbar from "../components/layoutCadastroLogin";
 import "./style.css";
 import MenuDireito from "../components/MenuIntermediario";
-import CustomButton from "../components/customButton";
+import { BackButton, CustomButton } from "../components/customButton";
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
@@ -26,7 +26,7 @@ export default function ColetarDoacao() {
                 <MenuDireito />
                 <div className="DivImagem">
                     <div className="DivFundoPai">
-                        <img src="/iconbtnvoltar.png" alt="Ícone de voltar" className="VoltarIco"></img>
+                        <BackButton />
                         <h1 className="h1MinDoa">Coletar Doação</h1>
                         <div className="DivFundoFilho">
                             <div style={{ display: "flex", alignItens: "center", textAlign: "center" }}>

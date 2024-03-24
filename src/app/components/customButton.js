@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import  './menuDoador.css';
+import './menuDoador.css';
 
 const CustomButton = ({ href, className, buttonText, textStyle }) => {
     return (
@@ -13,3 +13,13 @@ const CustomButton = ({ href, className, buttonText, textStyle }) => {
 }
 
 export default CustomButton;
+
+export const BackButton = () => {
+    const goBack = () => {
+        window.history.back(); // Função para voltar para a página anterior
+    };
+
+    return (
+        <button onClick={goBack}><img src="/iconbtnvoltar.png" alt="Ícone de voltar" className="VoltarIco" /></button>
+    );
+};
