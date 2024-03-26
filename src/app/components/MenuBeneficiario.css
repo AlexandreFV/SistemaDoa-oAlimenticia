@@ -1,0 +1,11 @@
+.btnn {
+
+    background-color: #42A8A1;
+    width: 200px;
+    height: 30px;
+    display: flex;
+    justify-content: flex-start;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    line-height: 30px;
+}
