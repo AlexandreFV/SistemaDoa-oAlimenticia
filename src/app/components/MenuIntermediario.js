@@ -1,7 +1,29 @@
+import React, { useState, useEffect } from 'react';
 import CustomButton from "./customButton";
 import "./MenuIntermediario.css";
 
 export default function MenuIntermediario() {
+
+    const [selectedButton, setSelectedButton] = useState(null);
+    const [imageVisible, setImageVisible] = useState(false); // Estado para controlar a visibilidade da imagem
+
+    const handleButtonClick = (button) => {
+        setSelectedButton(button);
+        setImageVisible(true); // Ao clicar em um botão, definimos a visibilidade da imagem como verdadeira
+    };
+
+    useEffect(() => {
+        const storedImageVisible = localStorage.getItem('imageVisible');
+        console.log('storedImageVisible:', storedImageVisible);
+        if (storedImageVisible) {
+            setImageVisible(JSON.parse(storedImageVisible));
+        }
+    }, []);
+
+    useEffect(() => {
+        console.log('imageVisible:', imageVisible);
+        localStorage.setItem('imageVisible', JSON.stringify(imageVisible));
+    }, [imageVisible]);
 
     return (
 
@@ -20,31 +42,37 @@ export default function MenuIntermediario() {
                 <p style={{ textAlign: "center" }}>para quem precisa! </p>
             </div>
 
-            <div style={{
-                color: "white", backgroundColor: "#FEFEFE", top: -15,
-                width: "250px", height: "250px", borderBottomRightRadius: "20px",
-                position: "relative", zIndex: 1
-            }}>
+            <div style={{ color: "white", backgroundColor: "#FEFEFE", top: -15, width: "250px", height: "250px", borderBottomRightRadius: "20px", position: "relative", zIndex: 1 }}>
 
                 <div style={{ paddingTop: "40px", }}>
                     <div style={{ float: "left" }}>
-                        <CustomButton href={"/EnviarDoacao"} className={"btnn"} buttonText={"Coletar doação"} textStyle={{ marginLeft: "1rem" }} />
+                        <CustomButton href={"/ColetarDoacao"} className={"btnn"} buttonText={"Coletar doação"} textStyle={{ marginLeft: "1rem" }} onClick={() => handleButtonClick("ColetarDoacao")} />
                     </div>
-                    <img src="/SetaDireita.png" style={{ marginTop: "4px" }}></img>
+                    <img id="arrow1" src="/SetaDireita.png" style={{ visibility: selectedButton === "ColetarDoacao" && imageVisible ? "visible" : "hidden", marginTop: "4px" }}></img>
                 </div>
 
                 <div style={{ paddingTop: "16px" }}>
-                    <CustomButton href={"/MinhasDoacoes"} className={"btnn"} buttonText={"Enviar produtos"} textStyle={{ marginLeft: "1rem" }} />
+                    <div style={{ float: "left" }}>
+                        <CustomButton href={""} className={"btnn"} buttonText={"Enviar produtos"} textStyle={{ marginLeft: "1rem" }} onClick={() => handleButtonClick("EnviarProdutos")} />
+                    </div>
+                    <img id="arrow2" src="/SetaDireita.png" style={{ visibility: selectedButton === "EnviarProdutos" && imageVisible ? "visible" : "hidden", marginTop: "4px" }}></img>
                 </div>
 
                 <div style={{ paddingTop: "15px" }}>
-                    <CustomButton href={{}} className={"btnn"} buttonText={"Doadores"} textStyle={{ marginLeft: "1rem" }} />
+                    <div style={{ float: "left" }}>
+                        <CustomButton href={"/ListProdutorIntermed"} className={"btnn"} buttonText={"Produtores"} textStyle={{ marginLeft: "1rem" }} onClick={() => handleButtonClick("Produtores")} />
+                    </div>
+                    <img id="arrow3" src="/SetaDireita.png" style={{ visibility: selectedButton === "Produtores" && imageVisible ? "visible" : "hidden", marginTop: "4px" }}></img>
                 </div>
 
                 <div style={{ paddingTop: "15px" }}>
-                    <CustomButton href={{}} className={"btnn"} buttonText={"Beneficiários"} textStyle={{ marginLeft: "1rem" }} />
+                    <div style={{ float: "left" }}>
+                        <CustomButton href={"/ListBenefIntermed"} className={"btnn"} buttonText={"Beneficiários"} textStyle={{ marginLeft: "1rem" }} onClick={() => handleButtonClick("Beneficiarios")} />
+                    </div>
+                    <img id="arrow4" src="/SetaDireita.png" style={{ visibility: selectedButton === "Beneficiarios" && imageVisible ? "visible" : "hidden", marginTop: "4px" }}></img>
                 </div>
             </div>
         </div>
+
     );
 }

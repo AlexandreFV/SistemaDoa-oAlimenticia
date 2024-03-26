@@ -2,10 +2,10 @@ import React from 'react';
 import Link from 'next/link';
 import './menuDoador.css';
 
-const CustomButton = ({ href, className, buttonText, textStyle }) => {
+const CustomButton = ({ href, className, buttonText, textStyle, onClick }) => {
     return (
         <Link href={href}>
-            <button className={className}>
+            <button className={className} onClick={onClick}>
                 <span style={textStyle}>{buttonText}</span>
             </button>
         </Link>
