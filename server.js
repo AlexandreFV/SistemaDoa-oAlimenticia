@@ -17,6 +17,8 @@ app.use(express.json());
 const usuariobeneficiario = require("./models/usuarioBeneficiario");
 const usuariodoador = require("./models/usuariodoador");
 const usuariointermediario = require("./models/usuarioIntermediario");
+const doacaoColetada = require("./models/DoacaoColetada");
+
 const doacao = require("./models/doacao");
 
 // Configurações de conexão com o banco de dados
@@ -70,6 +72,37 @@ connection.connect((err) => {
       return res.status(401).json({ mensagem: 'Token inválido.' });
     }
   };
+
+
+  const verificarUsuarioIntermediario = async (req, res, next) => {
+    // Verifique se o usuário está autenticado
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ mensagem: 'Acesso não autorizado. Faça login para acessar esta rota.' });
+    }
+  
+    // Verifique se o token é válido
+    try {
+      const secret = process.env.SECRET;
+      const decodedToken = jwt.verify(token, secret);
+  
+      // Verifique se o usuário é do tipo usuariodoador
+      const userId = decodedToken.id;
+      const userEmail = decodedToken.email;
+      const user = await usuariointermediario.findOne({ where: { id: userId, email: userEmail } });
+
+      if (!user) {
+        return res.status(403).json({ mensagem: 'Acesso proibido. Você não tem permissão para acessar esta rota.' });
+      }
+  
+      // Se o usuário estiver autenticado e for do tipo usuariodoador, prossiga para a próxima função de rota
+      next();
+    } catch (error) {
+      return res.status(401).json({ mensagem: 'Token inválido.' });
+    }
+  };
+
 
 // Aplique o Middleware às Rotas Protegidas
 app.get('/MinhasDoacoes', verificarUsuarioDoador, function(req, res) {
@@ -287,8 +320,6 @@ app.post("/EntrarBeneficiario", async function(req, res) {
 });
 
 
-
-
 app.post("/EntrarDoador", async function(req, res) {
   const { email, senha } = req.body;
 
@@ -451,5 +482,131 @@ app.get("/ObterDadosEndereco", checkToken, verificarUsuarioDoador, async functio
       // Se ocorrer um erro ao buscar os dados do endereço, retorne um erro 500
       console.error("Erro ao obter dados do endereço:", error);
       return res.status(500).json({ message: "Erro interno do servidor" });
+  }
+});
+
+
+app.get("/ColetarDoacao", checkToken,verificarUsuarioIntermediario, async function(req,res){
+
+  try{
+
+    const doacoes = await doacao.findAll({
+      include: {
+        model: usuariodoador, // Substitua 'Doador' pelo nome do seu modelo de doador
+        attributes: ['nome'] // Inclua apenas o nome do doador
+      }
+    });
+    
+      // Converter imagens em formato base64
+      const doacoesComImagens = await Promise.all(doacoes.map(async (doacao) => {
+        const imagemBase64 = Buffer.from(doacao.foto, 'binary').toString('base64');
+        return { ...doacao.toJSON(), imagemBase64 }; // Incluir a imagem convertida na representação JSON da doação
+      }));
+
+    res.status(200).json(doacoesComImagens); // Retorna as doações como resposta
+  }catch (error) {
+    console.error("Erro ao buscar doações:", error);
+    res.status(500).json({ error: "Erro ao buscar doações" }); // Retorna um erro em caso de falha
+  }
+
+})
+
+app.get("/InfoProduto/:id", async function (req, res) {
+  const id = req.params.id;
+
+  try {
+    // Busca a doação com base no ID fornecido
+    const doacaoEncontrada = await doacao.findByPk(id);
+
+    // Verifica se a doação foi encontrada
+    if (!doacaoEncontrada) {
+      return res.status(404).json({ error: "Doação não encontrada" });
+    }
+
+    const doacoes = await doacao.findByPk(id, {
+      include: {
+        model: usuariodoador, // Substitua 'Doador' pelo nome do seu modelo de doador
+        attributes: ['nome'] // Inclua apenas o nome do doador
+      }
+    });
+
+
+    res.status(200).json(doacoes);
+
+  } catch (error) {
+    console.error("Erro ao buscar doação:", error);
+    res.status(500).json({ error: "Erro ao buscar doação" });
+  }
+});
+
+
+app.post("/ComprarProduto/:id",checkToken,verificarUsuarioIntermediario, async function (req, res) {
+  const id = req.params.id;
+  const usuarioId = req.userId;
+
+  try {
+      // Encontrar a doação na tabela doacaos com base no ID fornecido
+      const doacao1 = await doacao.findByPk(id);
+
+      if (!doacao1) {
+          return res.status(404).json({ error: "Doação não encontrada" });
+      }
+      const dataAtual = new Date();
+
+      const doacaoColetadaValues = {
+        nome_alimento: doacao1.nome_alimento,
+        quantidade: doacao1.quantidade,
+        foto: doacao1.foto,
+        rua: doacao1.rua,
+        numero: doacao1.numero,
+        cidade: doacao1.cidade,
+        validade: doacao1.validade,
+        descricao: doacao1.descricao,
+        categoria: doacao1.categoria,
+        dataColeta: dataAtual,
+        usuariodoadorId: doacao1.usuariodoadorId,
+        usuariointermediarioId:usuarioId,
+    };
+
+      await doacaoColetada.create(doacaoColetadaValues);
+
+        // Remover a doação encontrada da tabela doacaos
+        await doacao1.destroy();
+
+      // Responder ao cliente com sucesso
+      res.status(200).json({ message: "Doação coletada com sucesso" });
+  } catch (error) {
+      console.error("Erro ao coletar produto:", error);
+      res.status(500).json({ error: "Erro ao coletar produto" });
+  }
+});
+
+app.get("/MeusIntermedios", verificarUsuarioIntermediario, async function (req,res){
+  res.status(200).json({ mensagem: 'Você está autorizado a acessar esta rota.' });
+
+})
+
+
+app.get("/ListProdutorIntermed", checkToken, verificarUsuarioIntermediario, async function (req, res){
+  const usuarioId = req.userId;
+  try {
+
+    const meusIntermedios = await doacaoColetada.findAll({ 
+      where: { usuariointermediarioId: usuarioId },
+      include: { // Incluir informações do doador
+        model: usuariodoador, // Nome do modelo do doador
+        attributes: ['nome', 'cpf'] // Atributos a serem incluídos
+      }
+    });    
+    if (!meusIntermedios || meusIntermedios.length === 0) {
+      return res.status(404).json({ error: "Nenhuma doação intermediária encontrada" });
+    }
+
+   
+
+    res.status(200).json({ meusIntermedios });
+  } catch (error) {
+    console.error("Erro ao buscar doações intermediárias:", error);
+    res.status(500).json({ message: "Erro ao processar a solicitação" });
   }
 });

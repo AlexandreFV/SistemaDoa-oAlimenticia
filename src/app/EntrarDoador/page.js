@@ -41,6 +41,8 @@ export default function EntrarDoador(){
 
                 // Armazene o token no cabeçalho
                 localStorage.setItem("token",token);
+                localStorage.setItem("userType", "doador");
+
                 router.push("/");
     
               } else {

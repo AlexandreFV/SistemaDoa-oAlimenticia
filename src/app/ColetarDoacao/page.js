@@ -1,5 +1,4 @@
 "use client"
-
 import Navbar from "../components/layoutCadastroLogin";
 import "./style.css";
 import MenuDireito from "../components/MenuIntermediario";
@@ -13,10 +12,55 @@ import { Cedarville_Cursive } from "next/font/google";
 export default function ColetarDoacao() {
 
     const [isChecked, setIsChecked] = useState(false);
+    const [doacoes, setDoacoes] = useState([]);
+    const router = useRouter();
+    
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+    
+        if (!token) {
+          router.push('/Cadastrar');
+        } else {
+          const UserType = localStorage.getItem('userType');
+          if (UserType !== 'intermediario') {
+            router.push("/PermissaoNegadaIntermediario");
+          }
+        }
+      }, []);
 
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked);
     };
+
+    const handleComprarClick = (id) => {
+        console.log("ID:", id);
+        router.push(`/InfoProduto?id=${id}`);
+    };
+
+    useEffect(() => {
+        const fetchDoacoes = async () => {
+          try {
+            const token = localStorage.getItem('token');
+    
+            const response = await fetch(`http://localhost:3001/ColetarDoacao`, {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            });
+            if (response.ok) {
+              const data = await response.json();
+              setDoacoes(data);
+            } else {
+              console.error('Erro ao buscar doações:', response.statusText);
+            }
+          } catch (error) {
+            console.error('Erro ao buscar doações:', error.message);
+          }
+        };
+    
+        fetchDoacoes();
+      }, []);
+
 
     return (
 
@@ -37,18 +81,22 @@ export default function ColetarDoacao() {
                                 </div>
                             </div>
                             <div style={{ backgroundColor: "black", width: "100%", height: "2px" }}></div>
-                            <div className="CardProduct" style={{ width: "90%", height: "6.4rem", background: "#EBEBEB", borderRadius: "10px", marginTop: "2rem", marginLeft: "auto", marginRight: "auto" }}>
+                            {doacoes.map((doacao, index) => (
+                            <div key={index} className="CardProduct" style={{ width: "90%", height: "6.4rem", background: "#EBEBEB", borderRadius: "10px", marginTop: "40px", marginLeft: "auto", marginRight: "auto" }}>
+
                                 <div style={{ float: "left" }}>
-                                    <img style={{ borderTopLeftRadius: "10px", borderBottomLeftRadius: "10px" }} src="/imgMaca.jpg"></img>
+                                    <img style={{ borderTopLeftRadius: "10px", borderBottomLeftRadius: "10px",height:"100px" }} 
+                                    src={`data:image/png;base64, ${doacao.imagemBase64}`}
+                                    alt={`Foto da doação ${index + 1}`}></img>
                                 </div>
                                 <div style={{ float: "left" }}>
-                                    <div style={{ marginLeft: "1rem", paddingTop: "0.7rem", fontSize: 19, fontFamily: "Inter", fontWeight: "bold" }}>Nome do doador</div>
-                                    <div style={{ marginLeft: "1rem", marginTop: "1rem", fontSize: 19, fontFamily: 'Inter', fontWeight: '500', wordWrap: 'break-word' }}><b>Produto:</b> Maçã</div>
+                                    <div style={{ marginLeft: "1rem", paddingTop: "0.7rem", fontSize: 19, fontFamily: "Inter", fontWeight: "bold" }}>{doacao.usuariodoador.nome}</div>
+                                    <div style={{ marginLeft: "1rem", marginTop: "1rem", fontSize: 19, fontFamily: 'Inter', fontWeight: '500', wordWrap: 'break-word' }}><b>Produto:</b> {doacao.nome_alimento}</div>
                                 </div>
                                 <div style={{ display: "flex", justifyContent: "center", textAlign: "center", flexWrap: "wrap" }}>
                                     <div style={{ paddingTop: "1.5rem", flex: "1", marginRight: "-5rem", marginLeft: "-10%" }}>
                                         <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: 'bold' }}>Categoria</div>
-                                        <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '400' }}>Nome</div>
+                                        <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '400' }}>{doacao.categoria}</div>
                                     </div>
                                     <div style={{ paddingTop: "1.5rem", flex: "1", marginRight: "-5rem" }}>
                                         <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: 'bold' }}>Formato</div>
@@ -56,31 +104,35 @@ export default function ColetarDoacao() {
                                     </div>
                                     <div style={{ paddingTop: "1.5rem", flex: "1" }}>
                                         <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: 'bold' }}>Quantidade</div>
-                                        <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '400' }}>20</div>
+                                        <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '400' }}>{doacao.quantidade}</div>
                                     </div>
                                     <div style={{ marginLeft: "auto", marginTop: "2.5rem", marginRight: "1.5rem" }}>
-                                        <div className={`custom-checkbox ${isChecked ? 'checked' : ''}`}>
-                                            <input
-                                                type="checkbox"
-                                                id="checkbox"
-                                                className="checkbox-input"
-                                                checked={isChecked}
-                                                onChange={handleCheckboxChange}
-                                            />
-                                            <label htmlFor="checkbox" className="checkbox-label">
-                                                {isChecked && <img src={"/iconcerto.png"} alt="Checked" className="checkbox-icon" />}
-                                            </label>
+                                        <div>
+                                            <button className="btn btn-primary" style={{ width: "40px" }} onClick={() => handleComprarClick(doacao.id)}>Comprar</button>
                                         </div>
                                     </div>
                                 </div>
 
+                                <div style={{ clear: "both" }}></div>
+
+                                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "0", marginLeft: "5%", marginRight: "5%" }}>
+                                  <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '500' }}><b>Contato:</b> </div>
+                                  <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '500' }}><b>Validade:</b> {new Date(doacao.validade).toLocaleDateString('pt-BR')}</div>
+                                </div>
+
                             </div>
-                            <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '500', marginLeft: "5%", float: "left" }}><b>Contato:</b> (00) 0 0000-0000</div>
-                            <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '500', textAlign: "right", marginRight: "5%" }}><b>Validade:</b> 00/00/0000</div>
+                            ))}
+
+
                         </div>
                     </div>
                 </div>
+
             </div>
+            
+
+                
+
         </div>
 
     );

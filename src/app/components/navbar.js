@@ -16,12 +16,6 @@ export default function Navbar({ isAuthenticated, userEmail, userType }) {
     router.push('/Cadastrar');
   };
 
-  const handleRedirectToMinhasDoacoes = () => {
-    // Definir o userType no localStorage
-    localStorage.setItem('userType', userType);
-    // Redirecionar o usuário para a página MinhasDoacoes
-    router.push('/MinhasDoacoes');
-  };
 
   return (
     <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "rgba(120, 148, 74, 0.8)", height: "90px", borderBottomLeftRadius: "40px", borderBottomRightRadius: "40px",zIndex: "1000 !important" }}>
@@ -61,10 +55,10 @@ export default function Navbar({ isAuthenticated, userEmail, userType }) {
 
             {/* Exibir itens do menu de forma condicional */}
             {userType === 'intermediario' && (
-              <button className="dropdown-item" type="button">Meus Intermediários</button>
+              <Link href={"/ColetarDoacao"} className="dropdown-item" type="button">Meus Intermediários</Link>
             )}
             {userType === 'doador' && (
-        <button className="dropdown-item" type="button" onClick={handleRedirectToMinhasDoacoes}>Minhas Doações</button>
+        <Link href={"/MinhasDoacoes"} className="dropdown-item" type="button">Minhas Doações</Link>
             )}
             {userType === 'beneficiario' && (
               <button className="dropdown-item" type="button">Doações Recebidas</button>

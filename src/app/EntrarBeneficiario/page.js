@@ -38,7 +38,7 @@ export default function EntrarBeneficiario(){
 
                 // Armazene o token no cabeçalho
                 localStorage.setItem("token",token);
-     
+                localStorage.setItem("userType", "beneficiario");
 
                 router.push("/");
     

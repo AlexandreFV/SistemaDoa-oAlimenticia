@@ -41,6 +41,8 @@ export default function EntrarIntermediario(){
     
                     // Armazene o token no cabeçalho
                     localStorage.setItem("token",token);
+                    localStorage.setItem("userType", "intermediario");
+
                     router.push("/");                    
                 } else {
                     const data = await response.json();
