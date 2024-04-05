@@ -85,7 +85,7 @@ export default function ColetarDoacao() {
                             <div key={index} className="CardProduct" style={{ width: "90%", height: "6.4rem", background: "#EBEBEB", borderRadius: "10px", marginTop: "40px", marginLeft: "auto", marginRight: "auto" }}>
 
                                 <div style={{ float: "left" }}>
-                                    <img style={{ borderTopLeftRadius: "10px", borderBottomLeftRadius: "10px",height:"100px" }} 
+                                    <img style={{ borderTopLeftRadius: "10px", borderBottomLeftRadius: "10px",height:"100px",width:"150px" }} 
                                     src={`data:image/png;base64, ${doacao.imagemBase64}`}
                                     alt={`Foto da doação ${index + 1}`}></img>
                                 </div>
@@ -108,7 +108,7 @@ export default function ColetarDoacao() {
                                     </div>
                                     <div style={{ marginLeft: "auto", marginTop: "2.5rem", marginRight: "1.5rem" }}>
                                         <div>
-                                            <button className="btn btn-primary" style={{ width: "40px" }} onClick={() => handleComprarClick(doacao.id)}>Comprar</button>
+                                            <button className="btn btn-primary" style={{ width: "40px",height:"40px", backgroundColor:"green" }} onClick={() => handleComprarClick(doacao.id)}></button>
                                         </div>
                                     </div>
                                 </div>
@@ -116,7 +116,7 @@ export default function ColetarDoacao() {
                                 <div style={{ clear: "both" }}></div>
 
                                 <div style={{ display: "flex", justifyContent: "space-between", marginTop: "0", marginLeft: "5%", marginRight: "5%" }}>
-                                  <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '500' }}><b>Contato:</b> </div>
+                                  <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '500' }}><b>Contato: {doacao.usuariodoador.telefone}</b> </div>
                                   <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '500' }}><b>Validade:</b> {new Date(doacao.validade).toLocaleDateString('pt-BR')}</div>
                                 </div>
 

@@ -12,6 +12,7 @@ import jwt from 'jsonwebtoken';
 export default function MinhasDoacoes() {
   const router = useRouter();
   const [doacoes, setDoacoes] = useState([]);
+ 
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -52,6 +53,8 @@ export default function MinhasDoacoes() {
     fetchDoacoes();
   }, []);
 
+ 
+
   return (
     <div className="DivPai">
       <Navbar></Navbar>
@@ -82,6 +85,7 @@ export default function MinhasDoacoes() {
                     <div>
                       <div key={index} className="DivDoacao" >
                         <img
+                        id="img"
                           className="imgFotoDoa"
                           src={`data:image/png;base64, ${doacao.imagemBase64}`}
                           alt={`Foto da doação ${index + 1}`}
@@ -109,7 +113,7 @@ export default function MinhasDoacoes() {
                         <img src="./lixeira.png" style={{ height: "20px", marginRight: "20px" }}></img>
                       </div>
                       <p style={{ marginTop: "-20px", padding: "0px", marginRight: "5%", width: "90%", marginLeft: "5%", textAlign: "right" }}>
-                        Data de doação: 00/00/0000
+                        Data de doação: {doacao.createdAt && new Date(doacao.createdAt).toLocaleDateString()}
                       </p>
                     </div>
 

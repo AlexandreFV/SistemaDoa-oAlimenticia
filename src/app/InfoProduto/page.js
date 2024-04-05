@@ -112,7 +112,7 @@ export default function InfoProduto() {
                                 <p style={{ float: "left", marginTop: "3.5rem", marginLeft: "2.2rem", fontSize: "1.2rem", alignItems: "center", fontWeight: "bold" }}>{doacao && doacao.usuariodoador.nome}</p>
                                 <div style={{ display: "grid", float: "right", marginTop: "1.8rem", marginRight: "2rem", border: "2px solid #7D9E65", borderRadius: "0.6rem", padding: "1rem" }}>
                                     <p style={{ display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1rem" }}><b>Contato</b> <img style={{ width: "1.3rem", height: "1.3rem" }} src="/icon_tel.png"></img></p>
-                                    <p className="telefone" style={{ fontSize: "1rem" }}>(00) 0 0000-0000</p>
+                                    <p className="telefone" style={{ fontSize: "1rem" }}>{doacao && doacao.usuariodoador.telefone}</p>
                                 </div>
                             </div>
                             <div className="Inf_product" style={{ display: "flex", clear: "both" }}>
@@ -149,7 +149,7 @@ export default function InfoProduto() {
                                         <p style={{ marginLeft: "1.5rem", overflowWrap: "break-word" }}>{doacao && doacao.descricao}</p>
                                     </div>
                                     <button 
-                                        className="btn btn-success" 
+                                        className="btn btn-success" style={{position:"absolute",marginLeft:"150px",marginTop:"100px"}}
                                         onClick={() => handleConfirmarCompra(doacao.id)}
                                     >
                                         Confirmar Compra

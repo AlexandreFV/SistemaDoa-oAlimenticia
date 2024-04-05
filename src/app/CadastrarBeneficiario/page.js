@@ -15,7 +15,7 @@ export default function CadastrarBeneficiario(){
     const [rua, setRua] = useState("");
     const [cidade, setCidade] = useState("");
     const [numero, setNumero] = useState("");
-
+    const [telefone, setTelefone] = useState("");
     const [cadastroConcluido, setCadastroConcluido] = useState(false); // Estado para indicar se o cadastro foi concluído
     const router = useRouter();
     const [erroCadastro, setErroCadastro] = useState(""); // Estado para armazenar a mensagem de erro
@@ -23,7 +23,7 @@ export default function CadastrarBeneficiario(){
     const handleSubmit = async (event) => {
         event.preventDefault();
     
-        if(nome != "" && email != "" && cpf != "" && senha != "" && rua != "" && cidade != "" && numero != ""){
+        if(nome != "" && email != "" && cpf != "" && senha != "" && rua != "" && cidade != "" && numero != "" && telefone != ""){
 
         try {
           const response = await fetch("http://localhost:3001/cadastrarBeneficiario", {
@@ -38,7 +38,8 @@ export default function CadastrarBeneficiario(){
               senha,
               cidade,
               rua,
-              numero
+              numero,
+              telefone
             }),
           });
           
@@ -120,11 +121,27 @@ export default function CadastrarBeneficiario(){
     </div>
     
     <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"10px"}}>
+    <div className="row">
+
+    <div className="col-sm-6">
+
+<label for="exampleInputEmail1">Telefone</label>
+<input type="text" class="form-control" id="exampleInputEmail1" 
+aria-describedby="emailHelp" placeholder="Digite seu Telefone..."
+style={{backgroundColor:"transparent"}} name="telefone" 
+value={telefone} onChange={(e) => setTelefone(e.target.value)}/>
+</div>
+
+    <div className="col-sm-6">
+
         <label for="exampleInputEmail1">Cidade</label>
         <input type="text" class="form-control" id="exampleInputEmail1" 
         aria-describedby="emailHelp" placeholder="Digite sua cidade..."
         style={{backgroundColor:"transparent"}} name="cidade" 
         value={cidade} onChange={(e) => setCidade(e.target.value)}/>
+        </div>
+
+        </div>
     </div>
 
 

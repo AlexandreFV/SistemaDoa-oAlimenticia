@@ -34,6 +34,10 @@ const usuariobeneficiario = sequelize.define('usuariobeneficiario', {
   cpf: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  telefone: {
+    type: DataTypes.STRING,
+    allowNull: false
   }
 });
 

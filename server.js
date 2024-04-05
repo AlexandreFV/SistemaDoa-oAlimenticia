@@ -7,6 +7,7 @@ const cors = require('cors');
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
+const sharp = require('sharp');
 
 // Use o middleware cors
 app.use(cors());
@@ -112,9 +113,9 @@ app.get('/MinhasDoacoes', verificarUsuarioDoador, function(req, res) {
 
 
 app.post("/CadastrarBeneficiario", async function(req, res){
-    const { nome, email, cpf, senha, rua, cidade, numero  } = req.body;
+    const { nome, email, cpf, senha, rua, cidade, numero,telefone  } = req.body;
 
-    if (!nome || !email || !cpf || !senha || !rua || !cidade || !numero) {
+    if (!nome || !email || !cpf || !senha || !rua || !cidade || !numero || !telefone) {
       return res.status(400).json({ msg: 'Por favor, preencha todos os campos obrigatórios.' });
     }
 
@@ -144,6 +145,7 @@ app.post("/CadastrarBeneficiario", async function(req, res){
       rua,
       cidade,
       numero,
+      telefone
   });
 
   res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
@@ -162,9 +164,9 @@ app.post("/CadastrarBeneficiario", async function(req, res){
 
 
 app.post("/CadastrarDoador", async function(req, res){
-  const { nome, email, cpf, senha,rua,cidade,numero } = req.body;
+  const { nome, email, cpf, senha,rua,cidade,numero,telefone } = req.body;
 
-  if (!nome || !email || !cpf || !senha || !rua || !cidade || !numero) {
+  if (!nome || !email || !cpf || !senha || !rua || !cidade || !numero || !telefone) {
     return res.status(400).json({ msg: 'Por favor, preencha todos os campos obrigatórios.' });
   }
 
@@ -194,6 +196,7 @@ app.post("/CadastrarDoador", async function(req, res){
     rua,
     numero,
     cidade,
+    telefone
 });
 
 res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
@@ -210,9 +213,9 @@ res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
 
 
 app.post("/CadastrarIntermediario", async function(req, res){
-  const { nome, email, cnpj, senha, rua, cidade, numero } = req.body;
+  const { nome, email, cnpj, senha, rua, cidade, numero, telefone } = req.body;
 
-  if (!nome || !email || !cnpj || !senha || !rua || !cidade || !numero) {
+  if (!nome || !email || !cnpj || !senha || !rua || !cidade || !numero || !telefone) {
     return res.status(400).json({ msg: 'Por favor, preencha todos os campos obrigatórios.' });
   }
 
@@ -242,6 +245,7 @@ app.post("/CadastrarIntermediario", async function(req, res){
     rua,
     numero,
     cidade,
+    telefone
 });
 
 res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
@@ -453,12 +457,15 @@ app.get("/MinhasDoacoes/:usuariodoadorId", checkToken, verificarUsuarioDoador, a
   try {
     const doacoes = await doacao.findAll({ where: { usuariodoadorId: usuariodoadorId } });
 
-        // Mapear as doações para incluir as imagens convertidas em base64
-        const doacoesComImagens = await Promise.all(doacoes.map(async (doacao) => {
-          const imagemBase64 = Buffer.from(doacao.foto, 'binary').toString('base64');
-          return { ...doacao.toJSON(), imagemBase64 }; // Incluir a imagem convertida na representação JSON da doação
-        }));
-    
+    // Mapear as doações para incluir as imagens redimensionadas e convertidas em base64
+    const doacoesComImagens = await Promise.all(doacoes.map(async (doacao) => {
+      // Redimensionar a imagem para 100x100 pixels mantendo a proporção
+      const imagemRedimensionada = await sharp(doacao.foto).resize({ width: 1000, height: 1000, fit: 'inside' }).toBuffer();
+      const imagemBase64 = imagemRedimensionada.toString('base64');
+      
+      return { ...doacao.toJSON(), imagemBase64 }; // Incluir a imagem convertida na representação JSON da doação
+    }));
+
     res.status(200).json({ doacoes: doacoesComImagens });
   } catch (error) {
     res.status(500).json({ error: "Erro ao buscar doações por usuário", message: error.message });
@@ -493,7 +500,7 @@ app.get("/ColetarDoacao", checkToken,verificarUsuarioIntermediario, async functi
     const doacoes = await doacao.findAll({
       include: {
         model: usuariodoador, // Substitua 'Doador' pelo nome do seu modelo de doador
-        attributes: ['nome'] // Inclua apenas o nome do doador
+        attributes: ['nome','telefone'] // Inclua apenas o nome do doador
       }
     });
     
@@ -526,7 +533,7 @@ app.get("/InfoProduto/:id", async function (req, res) {
     const doacoes = await doacao.findByPk(id, {
       include: {
         model: usuariodoador, // Substitua 'Doador' pelo nome do seu modelo de doador
-        attributes: ['nome'] // Inclua apenas o nome do doador
+        attributes: ['nome','telefone'] // Inclua apenas o nome do doador
       }
     });
 
@@ -595,7 +602,7 @@ app.get("/ListProdutorIntermed", checkToken, verificarUsuarioIntermediario, asyn
       where: { usuariointermediarioId: usuarioId },
       include: { // Incluir informações do doador
         model: usuariodoador, // Nome do modelo do doador
-        attributes: ['nome', 'cpf'] // Atributos a serem incluídos
+        attributes: ['nome', 'cpf','telefone'] // Atributos a serem incluídos
       }
     });    
     if (!meusIntermedios || meusIntermedios.length === 0) {

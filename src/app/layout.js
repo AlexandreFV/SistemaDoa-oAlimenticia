@@ -23,6 +23,7 @@ export default function RootLayout({ children }) {
       <link href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap" rel="stylesheet" />
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poller+One&display=swap" />
 
+
       </head>
          
       <body>

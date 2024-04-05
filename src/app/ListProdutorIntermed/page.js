@@ -39,6 +39,8 @@
                     if (response.ok) {
                         const data = await response.json();
                         setIntermedio(data.meusIntermedios);
+                        console.log("teste");
+
                     } else {
                         console.log("Tws");
                     }
@@ -77,7 +79,7 @@
                                             <img src="/icon_document.png" style={{ marginRight: "0.1rem", width: "1.3rem" }}></img>CNPJ/CPF: {meuIntermedio.usuariodoador.cpf}
                                         </div>
                                         <div style={{ marginLeft: "2rem", marginTop: "0.5rem", fontSize: "1rem", fontFamily: 'Inter', fontWeight: '500', wordWrap: 'break-word', display: "flex", alignItems: "center" }}>
-                                            <img src="/icon_tel.png" style={{ marginRight: "0.32rem", width: "1.1rem" }}></img>Contato: (00) 0 0000-0000
+                                            <img src="/icon_tel.png" style={{ marginRight: "0.32rem", width: "1.1rem" }}></img>Contato: {meuIntermedio.usuariodoador.telefone}
                                         </div>
                                     </div>
                                     <div className="linha_vertical" style={{ backgroundColor: "black", height: "100%", width: "2px", marginLeft: "auto", marginRight: "0" }}></div>
