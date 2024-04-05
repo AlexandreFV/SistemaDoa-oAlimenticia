@@ -8,6 +8,7 @@ const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const sharp = require('sharp');
+const sequelize = require('sequelize');
 
 // Use o middleware cors
 app.use(cors());
@@ -19,7 +20,7 @@ const usuariobeneficiario = require("./models/usuarioBeneficiario");
 const usuariodoador = require("./models/usuariodoador");
 const usuariointermediario = require("./models/usuarioIntermediario");
 const doacaoColetada = require("./models/DoacaoColetada");
-
+const DoacaoIntermParaBenef = require("./models/DoacaoIntermParaBenef");
 const doacao = require("./models/doacao");
 
 // Configurações de conexão com o banco de dados
@@ -615,5 +616,31 @@ app.get("/ListProdutorIntermed", checkToken, verificarUsuarioIntermediario, asyn
   } catch (error) {
     console.error("Erro ao buscar doações intermediárias:", error);
     res.status(500).json({ message: "Erro ao processar a solicitação" });
+  }
+});
+
+app.get("/ListarBeneficiario", checkToken, verificarUsuarioIntermediario, async function(req, res) {
+  const usuariointermediarioId = req.userId;
+  try {
+      const contagemDoacoesPorBeneficiario = await DoacaoIntermParaBenef.findAll({
+          attributes: [
+              'usuariobeneficiarioId', 
+              [sequelize.fn('COUNT', sequelize.col('*')), 'count']
+          ],
+          include: [{
+              model: usuariobeneficiario,
+          }],
+          where: { usuariointermediarioId: usuariointermediarioId},
+          group: ['usuariobeneficiarioId']
+      });
+
+      if (contagemDoacoesPorBeneficiario.length === 0) {
+          return res.status(404).json({ message: "Nenhuma doação encontrada!" });
+      }
+
+      res.status(200).json({ contagemDoacoesPorBeneficiario });
+  } catch (error) {
+      console.error("Erro:", error);
+      res.status(500).json({ message: "Erro interno do servidor." });
   }
 });
