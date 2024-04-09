@@ -8,8 +8,7 @@ const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const sharp = require('sharp');
-const sequelize = require('sequelize');
-
+const { Sequelize } = require('sequelize'); // Importe a classe Sequelize corretamente
 // Use o middleware cors
 app.use(cors());
 
@@ -22,29 +21,55 @@ const usuariointermediario = require("./models/usuarioIntermediario");
 const doacaoColetada = require("./models/DoacaoColetada");
 const DoacaoIntermParaBenef = require("./models/DoacaoIntermParaBenef");
 const doacao = require("./models/doacao");
+const usuarioEmpresa = require("./models/usuarioEmpresa");
 
-// Configurações de conexão com o banco de dados
-const connection = mysql.createConnection({
-    host: 'localhost', // Host do banco de dados
-    user: 'root', // Usuário do banco de dados
-    password: '', // Senha do banco de dados
-    database: 'teste' // Nome do banco de dados
-  });
+  // Configurações de conexão com o banco de dados
+const sequelize = new Sequelize('teste', 'root', '', {
+  host: 'localhost',
+  dialect: 'mysql'
+});
+  
 
-  // Estabelecer conexão com o banco de dados
-connection.connect((err) => {
-    if (err) {
-      console.error('Erro ao conectar ao banco de dados:', err);
-      return;
-    }
-    console.log('Conexão bem-sucedida com o banco de dados MySQL');
-  });
-
+async function conectarBanco() {
+  try {
+    await sequelize.authenticate();
+    console.log('Conexão bem-sucedida com o banco de dados.');
+    await verificarETabelasCriar();
+  } catch (error) {
+    console.error('Erro ao conectar ao banco de dados:', error);
+  }
+}
+conectarBanco();
 
   const upload = multer({
     storage: multer.memoryStorage(), // Isso irá armazenar o arquivo em buffer na memória
   });
 
+  async function verificarETabelasCriar() {
+    try {
+      // Verificar se as tabelas existem no banco de dados
+      await sequelize.sync();
+      //Puxa todas as tabelas que estão criadas
+      const existingTables = await sequelize.getQueryInterface().showAllTables();
+
+      //Define todas as tabelas do projeto
+      const definedModels = [usuariobeneficiario, usuariodoador, usuariointermediario, doacaoColetada, DoacaoIntermParaBenef, doacao, usuarioEmpresa];
+
+      //Realiza uma verificação unitaria de cada tabela, a fim de verificar a existencia de todas
+      await Promise.all(definedModels.map(async (model) => {
+        const tableName = model.getTableName();
+        if (!existingTables.includes(tableName)) {
+          // A tabela não existe, então cria ela
+          await model.sync();
+          console.log(`Tabela ${tableName} criada.`);
+        }
+      }));
+
+      console.log('Todas as tabelas estão criadas ou foram sincronizadas com o banco de dados.');
+    } catch (error) {
+      console.error('Erro ao verificar e criar tabelas:', error);
+    }
+  }
   
   const verificarUsuarioDoador = async (req, res, next) => {
     // Verifique se o usuário está autenticado
@@ -107,7 +132,7 @@ connection.connect((err) => {
 
 
 // Aplique o Middleware às Rotas Protegidas
-app.get('/MinhasDoacoes', verificarUsuarioDoador, function(req, res) {
+app.get('/MinhasDoacoes',checkToken, verificarUsuarioDoador, function(req, res) {
   // Se o middleware passou, significa que o usuário está autenticado e autorizado para acessar esta rota
   res.status(200).json({ mensagem: 'Você está autorizado a acessar esta rota.' });
 });
@@ -261,6 +286,50 @@ res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
 
 });
 
+app.post("/CadastrarEmpresa", async function(req, res){
+  const { nome, email, cnpj, senha, rua, cidade, numero, telefone } = req.body;
+
+  if (!nome || !email || !cnpj || !senha || !rua || !cidade || !numero || !telefone) {
+    return res.status(400).json({ msg: 'Por favor, preencha todos os campos obrigatórios.' });
+  }
+
+  try{
+
+   // Verifique se o e-mail já está em uso por qualquer tipo de usuário
+   const [doador, intermediario, beneficiario,empresa ] = await Promise.all([
+    usuariodoador.findOne({ where: { email: email } }),
+    usuariointermediario.findOne({ where: { email: email } }),
+    usuariobeneficiario.findOne({ where: { email: email } }),
+    usuarioEmpresa.findOne({ where: { email: email } })
+  ]);
+
+  if (doador || intermediario || beneficiario || empresa) {
+    return res.status(422).json({ msg: 'E-mail já está em uso por outro usuário!' });
+  }
+  
+      // Crie um hash da senha usando bcrypt
+  const salt = await bcrypt.genSalt(12);
+  const passwordHash = await bcrypt.hash(senha, salt);
+  
+   // Crie um novo usuário usando o modelo usuarioEmpresa
+   const newUser = await usuarioEmpresa.create({
+    nome,
+    email,
+    senha: passwordHash, // Use o hash da senha
+    cnpj,
+    rua,
+    numero,
+    cidade,
+    telefone
+});
+
+res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
+
+
+  } catch (error){
+    res.status(500).json({ msg: "Erro ao cadastrar Empresa", error: error.message });
+  }
+});
 
 
 app.get("/", checkToken, async function(req, res) {
@@ -388,6 +457,35 @@ app.post("/EntrarIntermediario", async function(req, res) {
   }
 });
 
+app.post("/EntrarEmpresa", async function(req, res) {
+  const { email, senha } = req.body;
+
+  if (!email || !senha) {
+    return res.status(400).json({ msg: 'Por favor, forneça email e senha.' });
+  }
+
+  try {
+    const user = await usuarioEmpresa.findOne({ where: { email: email } });
+
+    if (!user) {
+      return res.status(404).json({ msg: 'Usuário não encontrado!' });
+    }
+
+    const checkPassword = await bcrypt.compare(senha, user.senha);
+
+    if (!checkPassword) {
+      return res.status(422).json({ msg: 'Senha inválida!' });
+    }
+
+    const secret = process.env.SECRET;
+    const token = jwt.sign({ id: user.id, email: user.email }, secret);
+
+    return res.status(200).json({ msg: 'Autenticação bem-sucedida', token });
+  } catch (error) {
+    console.error('Erro:', error); // Log do erro específico
+    return res.status(500).json({ msg: 'Ocorreu um erro ao autenticar o usuário' });
+  }
+});
 
 
 function checkToken (req, res, next){
@@ -519,7 +617,7 @@ app.get("/ColetarDoacao", checkToken,verificarUsuarioIntermediario, async functi
 
 })
 
-app.get("/InfoProduto/:id", async function (req, res) {
+app.get("/InfoProduto/:id", checkToken, verificarUsuarioIntermediario, async function (req, res) {
   const id = req.params.id;
 
   try {
@@ -589,7 +687,7 @@ app.post("/ComprarProduto/:id",checkToken,verificarUsuarioIntermediario, async f
   }
 });
 
-app.get("/MeusIntermedios", verificarUsuarioIntermediario, async function (req,res){
+app.get("/MeusIntermedios", checkToken, verificarUsuarioIntermediario, async function (req,res){
   res.status(200).json({ mensagem: 'Você está autorizado a acessar esta rota.' });
 
 })
@@ -629,6 +727,7 @@ app.get("/ListarBeneficiario", checkToken, verificarUsuarioIntermediario, async 
           ],
           include: [{
               model: usuariobeneficiario,
+              attributes: ["nome", "id", "rua", "numero", "cidade", "cpf", "telefone", "createdAt","updatedAt"]
           }],
           where: { usuariointermediarioId: usuariointermediarioId},
           group: ['usuariobeneficiarioId']
@@ -644,3 +743,5 @@ app.get("/ListarBeneficiario", checkToken, verificarUsuarioIntermediario, async 
       res.status(500).json({ message: "Erro interno do servidor." });
   }
 });
+
+

@@ -12,6 +12,23 @@ import { Cedarville_Cursive } from "next/font/google";
 
 export default function ListProdutorIntermed() {
 
+    const router = useRouter();
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+         
+        if(!token){
+
+            router.push("/Cadastrar");
+        }else {
+
+        const userType = localStorage.getItem("userType");
+        if(userType != "intermediario"){
+            router.push("/PermissaoNegadaIntermediario");
+        }
+        } 
+    })
+
     return (
         <div className="DivPai">
             <Navbar></Navbar>

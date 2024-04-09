@@ -1,9 +1,26 @@
 "use client"
 import { useEffect, useState } from "react";
 import "./style.css";
+import { useRouter } from "next/navigation";
 
 export default function ListarBeneficiario(){
+    const router = useRouter();
     const [beneficiario, setBeneficiario] = useState([]);
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+         
+        if(!token){
+
+            router.push("/Cadastrar");
+        }else {
+
+        const userType = localStorage.getItem("userType");
+        if(userType != "intermediario"){
+            router.push("/PermissaoNegadaIntermediario");
+        }
+        } 
+    })
     useEffect(() => {
         const ListarBeneficiario = async () => {
         try{
