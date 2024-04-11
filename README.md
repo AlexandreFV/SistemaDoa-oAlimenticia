@@ -1,36 +1,24 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Sistema Doa Solidário
 
-## Getting Started
+O Sistema Doa Solidário é uma plataforma desenvolvida utilizando Next.js e Node.js, projetada para facilitar a doação e distribuição de produtos avariados a preços acessíveis. A plataforma envolve quatro tipos de usuários:
 
-First, run the development server:
+Empresa: Empresas que desejam apoiar causas sociais podem fazer doações financeiras para o Sistema Doa Solidário. Essas doações são utilizadas para financiar a compra de produtos avariados pelos intermediários.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Intermediário: Intermediários são usuários que têm a oportunidade de comprar produtos avariados a preço de custo dos produtores cadastrados na plataforma. Eles podem adquirir esses produtos para revenda ou distribuição.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Beneficiário: Os beneficiários são indivíduos ou organizações que recebem os produtos adquiridos pelos intermediários como doações. Esses produtos podem ser alimentos, roupas, produtos de higiene pessoal, entre outros, e são destinados a ajudar pessoas em situação de vulnerabilidade.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Produtor: Produtores cadastrados na plataforma podem publicar anúncios de venda de produtos avariados a preço de custo. Esses produtos podem ser excedentes de produção, produtos com danos na embalagem ou próximos da data de validade, por exemplo.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Funcionamento do Sistema:
 
-## Learn More
+Anúncios de Venda: Produtores publicam anúncios de venda de produtos avariados na plataforma, especificando detalhes como tipo de produto, quantidade disponível e preço.
 
-To learn more about Next.js, take a look at the following resources:
+Compra pelos Intermediários: Intermediários podem acessar os anúncios disponíveis na plataforma e comprar os produtos avariados diretamente dos produtores.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Doações das Empresas: As doações feitas pelas empresas são utilizadas para cobrir os custos das compras realizadas pelos intermediários, garantindo que os produtos possam ser adquiridos a preço de custo.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Atribuição aos Beneficiários: Os intermediários têm a responsabilidade de atribuir as compras realizadas a beneficiários específicos, garantindo que os produtos cheguem às mãos das pessoas que mais precisam.
 
-## Deploy on Vercel
+O Sistema Doa Solidário visa promover a solidariedade e o apoio mútuo, criando uma rede de colaboração entre empresas, intermediários, beneficiários e produtores, com o objetivo de ajudar comunidades em situação de vulnerabilidade e minimizar o desperdício de produtos avariados.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
