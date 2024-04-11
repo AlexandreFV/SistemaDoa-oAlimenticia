@@ -38,6 +38,63 @@ connection.connect((err)=> {
 
   console.log('Conexão bem-sucedida como ID ' + connection.threadId);
   // Agora você pode executar consultas SQL usando esta conexão
+
+  usuariobeneficiario.sync()
+  .then(() => {
+    console.log('Tabela usuarioBeneficiario criada (ou já existente).');
+  })
+  .catch((error) => {
+    console.error('Erro ao criar tabela usuarioBeneficiario:', error);
+  });
+
+  usuariodoador.sync()
+  .then(() => {
+    console.log('Tabela usuariodoador criada (ou já existente).');
+  })
+  .catch((error) => {
+    console.error('Erro ao criar tabela usuariodoador:', error);
+  });
+
+  usuarioEmpresa.sync()
+  .then(() => {
+    console.log('Tabela usuariodoador criada (ou já existente).');
+  })
+  .catch((error) => {
+    console.error('Erro ao criar tabela usuariodoador:', error);
+  });
+
+  usuariointermediario.sync()
+  .then(() => {
+    console.log('Tabela usuariodoador criada (ou já existente).');
+  })
+  .catch((error) => {
+    console.error('Erro ao criar tabela usuariodoador:', error);
+  });
+
+  doacao.sync()
+  .then(() => {
+    console.log('Tabela usuariodoador criada (ou já existente).');
+  })
+  .catch((error) => {
+    console.error('Erro ao criar tabela usuariodoador:', error);
+  });
+
+  doacaoColetada.sync()
+  .then(() => {
+    console.log('Tabela usuariodoador criada (ou já existente).');
+  })
+  .catch((error) => {
+    console.error('Erro ao criar tabela usuariodoador:', error);
+  });
+
+  DoacaoIntermParaBenef.sync()
+  .then(() => {
+    console.log('Tabela usuariodoador criada (ou já existente).');
+  })
+  .catch((error) => {
+    console.error('Erro ao criar tabela usuariodoador:', error);
+  });
+
 });
 
 
