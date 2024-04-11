@@ -8,6 +8,7 @@ const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const sharp = require('sharp');
+const { Sequelize } = require('sequelize');
 // Use o middleware cors
 app.use(cors());
 
@@ -32,6 +33,12 @@ const connection = mysql.createPool({
 
 });
 
+const sequelize = new Sequelize('teste', 'root', '', {
+  host: 'localhost',
+  dialect: 'mysql'
+});
+
+
 connection.getConnection((err, connection)=> {
   if (err) {
     console.error('Erro ao conectar: ' + err.stack);
@@ -40,65 +47,30 @@ connection.getConnection((err, connection)=> {
 
   console.log('Conexão bem-sucedida como ID ' + connection.threadId);
   // Agora você pode executar consultas SQL usando esta conexão
-
-  usuariobeneficiario.sync()
-  .then(() => {
-    console.log('Tabela usuarioBeneficiario criada (ou já existente).');
-  })
-  .catch((error) => {
-    console.error('Erro ao criar tabela usuarioBeneficiario:', error);
-  });
-
-  usuariodoador.sync()
-  .then(() => {
-    console.log('Tabela usuariodoador criada (ou já existente).');
-  })
-  .catch((error) => {
-    console.error('Erro ao criar tabela usuariodoador:', error);
-  });
-
-  usuarioEmpresa.sync()
-  .then(() => {
-    console.log('Tabela usuariodoador criada (ou já existente).');
-  })
-  .catch((error) => {
-    console.error('Erro ao criar tabela usuariodoador:', error);
-  });
-
-  usuariointermediario.sync()
-  .then(() => {
-    console.log('Tabela usuariodoador criada (ou já existente).');
-  })
-  .catch((error) => {
-    console.error('Erro ao criar tabela usuariodoador:', error);
-  });
-
-  doacao.sync()
-  .then(() => {
-    console.log('Tabela usuariodoador criada (ou já existente).');
-  })
-  .catch((error) => {
-    console.error('Erro ao criar tabela usuariodoador:', error);
-  });
-
-  doacaoColetada.sync()
-  .then(() => {
-    console.log('Tabela usuariodoador criada (ou já existente).');
-  })
-  .catch((error) => {
-    console.error('Erro ao criar tabela usuariodoador:', error);
-  });
-
-  DoacaoIntermParaBenef.sync()
-  .then(() => {
-    console.log('Tabela usuariodoador criada (ou já existente).');
-  })
-  .catch((error) => {
-    console.error('Erro ao criar tabela usuariodoador:', error);
-  });
-
+  sincronizarTabela();
   connection.release();
 });
+
+async function sincronizarTabela() {
+  try {
+    const tabelas = await sequelize.getQueryInterface().showAllTables();
+    for (const tabela of tabelas) {
+      await sequelize.getQueryInterface().dropTable(tabela);
+      console.log(`Tabela ${tabela} excluída com sucesso.`);
+    }
+
+    await usuariobeneficiario.sync({force : true});
+    await usuarioEmpresa.sync({force : true});
+    await usuariodoador.sync({force : true});
+    await usuariointermediario.sync({force : true});
+    await doacao.sync({force : true});
+    await doacaoColetada.sync({force : true});
+    await DoacaoIntermParaBenef.sync({force : true});
+    console.log('Tabela sincronizada com sucesso.');
+  } catch (error) {
+    console.error('Erro ao sincronizar tabela:', error);
+  }
+}
 
 
   const upload = multer({
