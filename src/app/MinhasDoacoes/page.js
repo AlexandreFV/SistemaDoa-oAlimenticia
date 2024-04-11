@@ -56,55 +56,55 @@ export default function MinhasDoacoes() {
  
 
   return (
-    <div className="DivPai">
+    <div className="DP">
       <Navbar></Navbar>
-      <div className="DivFilho">
+      <div className="DF">
         <MenuDireito />
-        <div className="DivImagem">
-          <div className="DivFundoPai">
-            <img src="/iconbtnvoltar.png" alt="Ícone de voltar" className="VoltarIco"></img>
-            <h1 className="h1MinDoa">Minhas doações</h1>
-            <div className="DivFundoFilho">
+        <div className="DI">
+          <div className="DFP">
+            <img src="/iconbtnvoltar.png" alt="Ícone de voltar" className="VI"></img>
+            <h1 className="HMD">Minhas doações</h1>
+            <div className="DFF">
               {doacoes.length === 0 ? (
                 <div>
-                  <img src="/triste.png" className="IcoTris"></img>
-                  <h1 className="h1NpossuiDoacao">Você ainda não efetuou nenhuma doação.</h1>
-                  <p className="PSejaParte">Seja parte da solução.</p>
-                  <p className="PSuaPrimeirD">Sua primeira doação é o primeiro passo para um mundo melhor.</p>
-                  <CustomButton href={"/FacaDoacao"} className={"btnPermNega"} buttonText={"Doe agora"} />
+                  <img src="/triste.png" className="IT"></img>
+                  <h1 className="HND">Você ainda não efetuou nenhuma doação.</h1>
+                  <p className="PSP">Seja parte da solução.</p>
+                  <p className="PSPD">Sua primeira doação é o primeiro passo para um mundo melhor.</p>
+                  <CustomButton href={"/FacaDoacao"} className={"BPN"} buttonText={"Doe agora"} />
                 </div>
               ) : (
                 <div>
                   <div style={{ display: "flex", alignItens: "center", textAlign: "center" }}>
-                    <h1 className="h1ProdutosEnv">Produtos Doados</h1>
-                    <img src="./filtrar.png" className="imgFiltrar"></img>
+                    <h1 className="HPE">Produtos Doados</h1>
+                    <img src="./filtrar.png" className="IF"></img>
                   </div>
 
                   <div class="modal-content custom-modal-line"> </div>
                   {doacoes.map((doacao, index) => (
                     <div>
-                      <div key={index} className="DivDoacao" >
+                      <div key={index} className="DD" >
                         <img
                         id="img"
-                          className="imgFotoDoa"
+                          className="IFD"
                           src={`data:image/png;base64, ${doacao.imagemBase64}`}
                           alt={`Foto da doação ${index + 1}`}
                         />
 
-                        <div className="DivNomAlm">
+                        <div className="DNA">
                           <p className="NomeAlm" style={{ textAlign: "center" }}>{doacao.nome_alimento}</p>
                         </div>
 
-                        <div className="DivCateg">
+                        <div className="DC">
                           <label>Categoria</label>
                           <p style={{ textAlign: "center" }}>{doacao.categoria}</p>
                         </div>
 
-                        <div className="DivCateg">
+                        <div className="DC">
                           <label>Quantidade</label>
                           <p className="quantidade" style={{ textAlign: "center" }}>{doacao.quantidade}</p>
                         </div>
-                        <div className="DivCateg">
+                        <div className="DC">
                           <label>Cidade</label>
                           <p className="endereco" style={{ textAlign: "center" }}>{doacao.cidade}</p>
                         </div>

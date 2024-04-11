@@ -47,7 +47,8 @@ connection.getConnection((err, connection)=> {
 
   console.log('Conexão bem-sucedida como ID ' + connection.threadId);
   // Agora você pode executar consultas SQL usando esta conexão
-  sincronizarTabela();
+  //Comentar apos a criação das tabelas
+  //sincronizarTabela();
   connection.release();
 });
 
