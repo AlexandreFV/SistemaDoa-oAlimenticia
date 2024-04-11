@@ -8,7 +8,6 @@ const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const sharp = require('sharp');
-const { Sequelize } = require('sequelize'); // Importe a classe Sequelize corretamente
 // Use o middleware cors
 app.use(cors());
 
@@ -24,52 +23,28 @@ const doacao = require("./models/doacao");
 const usuarioEmpresa = require("./models/usuarioEmpresa");
 
   // Configurações de conexão com o banco de dados
-const sequelize = new Sequelize('teste', 'root', '', {
+const connection = mysql.createConnection({ 
   host: 'localhost',
-  dialect: 'mysql'
+  user: 'root',
+  password: '',
+  database: 'teste',
 });
-  
 
-async function conectarBanco() {
-  try {
-    await sequelize.authenticate();
-    console.log('Conexão bem-sucedida com o banco de dados.');
-    await verificarETabelasCriar();
-  } catch (error) {
-    console.error('Erro ao conectar ao banco de dados:', error);
+connection.connect((err)=> {
+  if (err) {
+    console.error('Erro ao conectar: ' + err.stack);
+    return;
   }
-}
-conectarBanco();
+
+  console.log('Conexão bem-sucedida como ID ' + connection.threadId);
+  // Agora você pode executar consultas SQL usando esta conexão
+});
+
 
   const upload = multer({
     storage: multer.memoryStorage(), // Isso irá armazenar o arquivo em buffer na memória
   });
 
-  async function verificarETabelasCriar() {
-    try {
-      // Verificar se as tabelas existem no banco de dados
-      await sequelize.sync();
-      //Puxa todas as tabelas que estão criadas
-      const existingTables = await sequelize.getQueryInterface().showAllTables();
-
-      //Define todas as tabelas do projeto
-      const definedModels = [usuariobeneficiario, usuariodoador, usuariointermediario, doacao, usuarioEmpresa, doacaoColetada, DoacaoIntermParaBenef];
-
-      //Realiza uma verificação unitaria de cada tabela, a fim de verificar a existencia de todas
-      await Promise.all(definedModels.map(async (model) => {
-        const tableName = model.getTableName();
-        if (!existingTables.includes(tableName)) {
-          // A tabela não existe, então cria ela
-          await model.sync();
-          console.log(`Tabela ${tableName} criada.`);
-        }
-      }));
-
-      console.log('Todas as tabelas estão criadas ou foram sincronizadas com o banco de dados.');
-    } catch (error) {
-      console.error('Erro ao verificar e criar tabelas:', error);
-    }
-  }
   
   const verificarUsuarioDoador = async (req, res, next) => {
     // Verifique se o usuário está autenticado
@@ -199,13 +174,15 @@ app.post("/CadastrarDoador", async function(req, res){
   try{
 
     // Verifique se o e-mail já está em uso por qualquer tipo de usuário
-    const [doador, intermediario, beneficiario] = await Promise.all([
+    const [doador, intermediario, beneficiario, empresa] = await Promise.all([
       usuariodoador.findOne({ where: { email: email } }),
       usuariointermediario.findOne({ where: { email: email } }),
-      usuariobeneficiario.findOne({ where: { email: email } })
+      usuariobeneficiario.findOne({ where: { email: email } }),
+      usuarioEmpresa.findOne({ where: { email: email } })
+
     ]);
 
-  if (doador || intermediario || beneficiario) {
+  if (doador || intermediario || beneficiario || empresa) {
     return res.status(422).json({ msg: 'E-mail já está em uso por outro usuário!' });
   }
 
@@ -248,13 +225,15 @@ app.post("/CadastrarIntermediario", async function(req, res){
   try{
 
    // Verifique se o e-mail já está em uso por qualquer tipo de usuário
-   const [doador, intermediario, beneficiario] = await Promise.all([
+   const [doador, intermediario, beneficiario, empresa] = await Promise.all([
     usuariodoador.findOne({ where: { email: email } }),
     usuariointermediario.findOne({ where: { email: email } }),
-    usuariobeneficiario.findOne({ where: { email: email } })
+    usuariobeneficiario.findOne({ where: { email: email } }),
+    usuarioEmpresa.findOne({ where: { email: email } })
+
   ]);
 
-  if (doador || intermediario || beneficiario) {
+  if (doador || intermediario || beneficiario || empresa) {
     return res.status(422).json({ msg: 'E-mail já está em uso por outro usuário!' });
   }
   

@@ -62,6 +62,6 @@ doacao.belongsTo(Doador); // Uma doação pertence a apenas um doador
     console.log('Tabela criada com sucesso.');
   }).catch(error => {
     console.error('Erro ao criar tabela:', error);
-  });*/
+  });*/ 
   
 module.exports = doacao;

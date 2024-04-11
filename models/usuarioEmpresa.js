@@ -42,7 +42,7 @@ const usuarioEmpresa = sequelize.define('usuarioEmpresa', {
 });
 
 // Sincronizar o modelo com o banco de dados e criar a tabela, forçando a recriação se já existir
-/*usuariointermediario.sync({ force: true }).then(() => {
+/*usuarioEmpresa.sync({ force: true }).then(() => {
      console.log('Tabela criada com sucesso.');
    }).catch(error => {
      console.error('Erro ao criar tabela:', error);
