@@ -23,16 +23,16 @@ const doacao = require("./models/doacao");
 const usuarioEmpresa = require("./models/usuarioEmpresa");
 
   // Configurações de conexão com o banco de dados
-const connection = mysql.createConnection({ 
+const connection = mysql.createPool({ 
   host: 'localhost',
   user: 'root',
   password: '',
   database: 'teste',
-  port: 3001
+  port: 3306
 
 });
 
-connection.connect((err)=> {
+connection.getConnection((err, connection)=> {
   if (err) {
     console.error('Erro ao conectar: ' + err.stack);
     return;
@@ -97,6 +97,7 @@ connection.connect((err)=> {
     console.error('Erro ao criar tabela usuariodoador:', error);
   });
 
+  connection.release();
 });
 
 
