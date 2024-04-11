@@ -1,0 +1,92 @@
+.background-Cadastro {
+
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("/Background_-_Cadastro.png");
+    background-size: 100% 100%;
+    filter: brightness(95%);
+}
+
+.DivPai {
+
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.DivNeto {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+}
+
+.DivBisNeto {
+
+    background-color: #EDEDED;
+    height: 500px;
+    width: 60%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.DivInfCadast {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    left: 0;
+    margin-left: 100px;
+}
+
+.button {
+
+    background-color: rgba(63, 173, 180, 0.87);
+    color: white;
+    width: 100px;
+    height: 40px;
+}
+
+.button:hover,
+.button:focus,
+.button:active {
+    background-color: rgba(63, 173, 180, 1);
+    /* Mantém a cor de fundo ao passar o mouse, focar ou clicar */
+}
+
+
+.h1EntreSeja {
+
+    font-size: 25px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-family: Inter;
+    font-weight: 800;
+}
+
+.DivFundoBranco {
+
+    color: white;
+    background-color: #578925;
+    width: 430px;
+    height: 550px;
+    border-radius: 10px;
+    position: absolute;
+    right: 0;
+    margin-right: 50px;
+}
+
+.h1Cadastrar {
+
+    font-size: 25px;
+    margin-top: 15px;
+    font-family: Poller One cursive;
+    font-weight: 800;
+}
