@@ -28,6 +28,8 @@ const connection = mysql.createConnection({
   user: 'root',
   password: '',
   database: 'teste',
+  port: 3001
+
 });
 
 connection.connect((err)=> {
