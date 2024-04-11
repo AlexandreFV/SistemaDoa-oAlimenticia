@@ -53,7 +53,7 @@ conectarBanco();
       const existingTables = await sequelize.getQueryInterface().showAllTables();
 
       //Define todas as tabelas do projeto
-      const definedModels = [usuariobeneficiario, usuariodoador, usuariointermediario, doacaoColetada, DoacaoIntermParaBenef, doacao, usuarioEmpresa];
+      const definedModels = [usuariobeneficiario, usuariodoador, usuariointermediario, doacao, usuarioEmpresa, doacaoColetada, DoacaoIntermParaBenef];
 
       //Realiza uma verificação unitaria de cada tabela, a fim de verificar a existencia de todas
       await Promise.all(definedModels.map(async (model) => {
