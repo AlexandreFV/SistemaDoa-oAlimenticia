@@ -38,7 +38,7 @@ export default function EntrarBeneficiario(){
 
                 // Armazene o token no cabeçalho
                 localStorage.setItem("token",token);
-                localStorage.setItem("userType", "beneficiario");
+                localStorage.setItem("userType", "empresa");
 
                 router.push("/");
     
@@ -49,7 +49,7 @@ export default function EntrarBeneficiario(){
                 } else if (responseData.msg === 'Senha inválida!'){
                   setErroEntrar("Senha ou Email Incorreto!");
                 }
-                console.error("Erro ao entrar beneficiário:", response.statusText);
+                console.error("Erro ao entrar empresa:", response.statusText);
                 // Exibir uma mensagem de erro aqui
               }
             } catch (error) {
@@ -77,13 +77,13 @@ export default function EntrarBeneficiario(){
       <h1 style={{ fontSize: "25px", marginBottom: "10px", marginTop: "10px", fontFamily: "Inter", fontWeight: "800" }}>Não possui conta?</h1>
       <p style={{ fontFamily: "Inter", fontWeight: "400" }}>Cadastre-se e concretize seus</p>
       <p style={{ fontFamily: "Inter", fontWeight: "400", marginBottom: "20px" }}>objetivos e demandas.</p>
-      <CustomButton href="/CadastrarBeneficiario" className="button btn" buttonText="Cadastrar"/>
+      <CustomButton href="/CadastrarEmpresa" className="button btn" buttonText="Cadastrar"/>
     </div>
 
 
     <div className="DivFundoBranco">
         <center>
-        <h1 className='h1Entrar'>Entrar como Beneficiário</h1>
+        <h1 className='h1Entrar'>Entrar como Empresa</h1>
         </center>
         <form onSubmit={handleSubmit}>
 
