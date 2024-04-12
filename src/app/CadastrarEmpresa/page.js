@@ -7,7 +7,7 @@ import ErroCadastro from '../components/ErroCadastro';
 import CustomButton from '../components/customButton';
 import "./style.css";
 
-export default function CadastroEmpresa(){
+export default function CadastrarEmpresa(){
 
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");

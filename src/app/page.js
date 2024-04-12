@@ -65,6 +65,15 @@ export default function Home() {
         setUserType(tipoUsuario); // Defina o tipo de usuário
 
       }
+      else if (tipoUsuario === 'empresa') {
+        // Extrai o nome do usuário dos detalhes retornados pelo servidor
+        const { nome, email } = data;
+        setUserName(nome);
+        setUserEmail(email);
+        setAuthenticated(true);  
+        setUserType(tipoUsuario); // Defina o tipo de usuário
+
+      }
 
       } else {
         // Se a solicitação falhar, redirecione para a página de login

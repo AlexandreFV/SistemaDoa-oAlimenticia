@@ -353,7 +353,7 @@ app.get("/", checkToken, async function(req, res) {
     const doador = await usuariodoador.findOne({ where: { email: userEmail } });
     const intermediario = await usuariointermediario.findOne({ where: { email: userEmail } });
     const beneficiario = await usuariobeneficiario.findOne({ where: { email: userEmail } });
-
+    const empresa = await usuarioEmpresa.findOne({where: {email: userEmail}});
      // Verifique em qual tabela o usuário está presente
      if (doador) {
       // Se o usuário estiver na tabela usuariodoador
@@ -364,7 +364,11 @@ app.get("/", checkToken, async function(req, res) {
     } else if (beneficiario) {
       // Se o usuário estiver na tabela usuariobeneficiario
       res.status(200).json({ msg: 'Página inicial', tipoUsuario: 'beneficiario', nome: beneficiario.nome, email: beneficiario.email });
-    } else {
+    } else if (empresa) {
+      // Se o usuário estiver na tabela usuariobeneficiario
+      res.status(200).json({ msg: 'Página inicial', tipoUsuario: 'empresa', nome: empresa.nome, email: empresa.email });
+    }
+     else {
       // Se o usuário não for encontrado em nenhuma das tabelas
       return res.status(404).json({ msg: 'Usuário não encontrado' });
     }

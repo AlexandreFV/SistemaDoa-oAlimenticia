@@ -8,7 +8,7 @@ import ErroEntrar from '../components/ErroEntrar';
 import CustomButton from '../components/customButton';
 import "./style.css";
 
-export default function EntrarBeneficiario(){
+export default function EntrarEmpresa(){
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const router = useRouter();
@@ -20,7 +20,7 @@ export default function EntrarBeneficiario(){
         if(email != "" && senha != ""){
 
         try{
-            const response = await fetch("http://localhost:3001/EntrarBeneficiario", {
+            const response = await fetch("http://localhost:3001/EntrarEmpresa", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
