@@ -19,7 +19,7 @@ const doacaoColetada = sequelize.define('doacaoColetada', {
       },
     
       foto: {
-        type: DataTypes.BLOB,
+        type: DataTypes.BLOB('medium'),
         allowNull: false
       },
     

@@ -18,7 +18,7 @@ const doacao = sequelize.define('doacao', {
   },
 
   foto: {
-    type: DataTypes.BLOB,
+    type: DataTypes.BLOB('medium'),
     allowNull: false
   },
 

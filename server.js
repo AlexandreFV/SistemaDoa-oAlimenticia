@@ -354,22 +354,18 @@ app.get("/", checkToken, async function(req, res) {
     const intermediario = await usuariointermediario.findOne({ where: { email: userEmail } });
     const beneficiario = await usuariobeneficiario.findOne({ where: { email: userEmail } });
     const empresa = await usuarioEmpresa.findOne({where: {email: userEmail}});
+
      // Verifique em qual tabela o usuário está presente
      if (doador) {
-      // Se o usuário estiver na tabela usuariodoador
       res.status(200).json({ msg: 'Página inicial', tipoUsuario: 'doador', nome: doador.nome, email: doador.email });
     } else if (intermediario) {
-      // Se o usuário estiver na tabela usuariointermediario
       res.status(200).json({ msg: 'Página inicial', tipoUsuario: 'intermediario', nome: intermediario.nome, email: intermediario.email });
     } else if (beneficiario) {
-      // Se o usuário estiver na tabela usuariobeneficiario
       res.status(200).json({ msg: 'Página inicial', tipoUsuario: 'beneficiario', nome: beneficiario.nome, email: beneficiario.email });
     } else if (empresa) {
-      // Se o usuário estiver na tabela usuariobeneficiario
       res.status(200).json({ msg: 'Página inicial', tipoUsuario: 'empresa', nome: empresa.nome, email: empresa.email });
     }
      else {
-      // Se o usuário não for encontrado em nenhuma das tabelas
       return res.status(404).json({ msg: 'Usuário não encontrado' });
     }
   } catch (error) {
@@ -534,7 +530,7 @@ app.listen(3001, () => {
 })
 
 
-app.post("/EnviarDoacao", upload.single('foto'),checkToken, verificarUsuarioDoador, async function(req, res) {
+app.post("/EnviarDoacao", upload.single('foto'), checkToken, verificarUsuarioDoador, async function(req, res) {
   const { nome_alimento, quantidade, rua, numero, cidade, validade, descricao,categoria } = req.body;
   const foto = req.file.buffer; // Obtenha os dados binários da imagem
 
