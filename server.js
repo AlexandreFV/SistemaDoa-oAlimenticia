@@ -650,7 +650,6 @@ app.get("/InfoProduto/:id", checkToken, verificarUsuarioIntermediario, async fun
 
 
     res.status(200).json(doacoes);
-
   } catch (error) {
     console.error("Erro ao buscar doação:", error);
     res.status(500).json({ error: "Erro ao buscar doação" });

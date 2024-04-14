@@ -21,19 +21,15 @@ body {
   color: white;
 }
 
-.imgLogin {
 
-  width: 150px;
-}
-
-.DivPai {
+.DVC {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.background-Cadastro {
+.BCKCC {
 
   position: relative;
   width: 100vw;
@@ -44,7 +40,7 @@ body {
 
 }
 
-.DivNeto {
+.DNC {
 
   display: flex;
   justify-content: center;
@@ -52,7 +48,7 @@ body {
   margin-top: 50px;
 }
 
-.DivBisNeto {
+.DBNC {
 
   background-color: #EDEDED;
   height: 450px;
@@ -66,7 +62,7 @@ body {
 
 
 
-#fundoIntermediario {
+#FIC {
   background-color: #FFFFFF;
   height: 400px;
   width: 30%;
@@ -80,7 +76,7 @@ body {
   /* Adiciona uma transição suave */
 }
 
-#fundoIntermediario:hover {
+#FIC:hover {
   background-color: #578925;
   height: 500px;
   /* Altera a altura para 80% quando o mouse passa sobre a div */
@@ -88,123 +84,53 @@ body {
 }
 
 
-#fundoIntermediario:hover button {
+#FIC:hover button {
   visibility: visible;
   /* Torna os botões visíveis durante o hover */
   margin-top: 20px;
 }
 
-#fundoIntermediario button {
+#FIC button {
   visibility: hidden;
   /* Inicialmente, os botões estão ocultos */
 }
 
-.userblackintermediario {
+.UBIC {
   display: block;
 }
 
-.userwhiteintermediario {
+.UWIC {
   display: none;
 }
 
-#fundoIntermediario:hover .userblackintermediario {
-  display: none;
-  /* Torna os botões visíveis durante o hover */
-  height: 250px;
-  width: 250px;
-}
-
-#fundoIntermediario:hover .userwhiteintermediario {
-  display: block;
-  /* Torna os botões visíveis durante o hover */
-  height: 250px;
-  width: 250px;
-}
-
-#fundoIntermediario:hover p {
-  visibility: visible;
-  /* Torna os botões visíveis durante o hover */
-  color: white;
-}
-
-#fundoIntermediario:hover #info {
-  visibility: visible;
-  /* Torna os botões visíveis durante o hover */
-  color: white;
-}
-
-
-#fundoReceptor {
-  background-color: #FFFFFF;
-  height: 400px;
-  width: 30%;
-  margin-right: auto;
-  margin-left: 5%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  margin-right: 5%;
-  transition: background-color 0.8s, height 0.8s, width 0.8s;
-  /* Adiciona uma transição suave */
-}
-
-#fundoReceptor:hover {
-  background-color: #578925;
-  height: 500px;
-  /* Altera a altura para 80% quando o mouse passa sobre a div */
-  width: 35%;
-}
-
-
-#fundoReceptor:hover button {
-  visibility: visible;
-  /* Torna os botões visíveis durante o hover */
-  margin-top: 20px;
-}
-
-#fundoReceptor button {
-  visibility: hidden;
-  /* Inicialmente, os botões estão ocultos */
-}
-
-.userblackreceptor {
-  display: block;
-}
-
-.userwhitereceptor {
-  display: none;
-}
-
-#fundoReceptor:hover .userblackreceptor {
+#FIC:hover .UBIC {
   display: none;
   /* Torna os botões visíveis durante o hover */
   height: 250px;
   width: 250px;
 }
 
-#fundoReceptor:hover .userwhitereceptor {
+#FIC:hover .UWIC {
   display: block;
   /* Torna os botões visíveis durante o hover */
   height: 250px;
   width: 250px;
 }
 
-#fundoReceptor:hover p {
+#FIC:hover p {
   visibility: visible;
   /* Torna os botões visíveis durante o hover */
   color: white;
 }
 
-#fundoReceptor:hover #info {
+#FIC:hover #info {
   visibility: visible;
   /* Torna os botões visíveis durante o hover */
   color: white;
 }
 
 
-#fundoDoador {
+#FRC {
   background-color: #FFFFFF;
   height: 400px;
   width: 30%;
@@ -220,7 +146,7 @@ body {
   /* Adiciona uma transição suave */
 }
 
-#fundoDoador:hover {
+#FRC:hover {
   background-color: #578925;
   height: 500px;
   /* Altera a altura para 80% quando o mouse passa sobre a div */
@@ -228,47 +154,117 @@ body {
 }
 
 
-#fundoDoador:hover button {
+#FRC:hover button {
   visibility: visible;
   /* Torna os botões visíveis durante o hover */
   margin-top: 20px;
 }
 
-#fundoDoador button {
+#FRC button {
   visibility: hidden;
   /* Inicialmente, os botões estão ocultos */
 }
 
-.userblackdoador {
+.UBRC {
   display: block;
 }
 
-.userwhitedoador {
+.UWRC {
   display: none;
 }
 
-#fundoDoador:hover .userblackdoador {
+#FRC:hover .UBRC {
   display: none;
   /* Torna os botões visíveis durante o hover */
   height: 250px;
   width: 250px;
 }
 
-#fundoDoador:hover .userwhitedoador {
+#FRC:hover .UWRC {
   display: block;
   /* Torna os botões visíveis durante o hover */
   height: 250px;
   width: 250px;
 }
 
-
-#fundoDoador:hover p {
+#FRC:hover p {
   visibility: visible;
   /* Torna os botões visíveis durante o hover */
   color: white;
 }
 
-#fundoDoador:hover #info {
+#FRC:hover #info {
+  visibility: visible;
+  /* Torna os botões visíveis durante o hover */
+  color: white;
+}
+
+
+#FDC {
+  background-color: #FFFFFF;
+  height: 400px;
+  width: 30%;
+  margin-right: auto;
+  margin-left: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  margin-right: 5%;
+  transition: background-color 0.8s, height 0.8s, width 0.8s;
+  /* Adiciona uma transição suave */
+}
+
+#FDC:hover {
+  background-color: #578925;
+  height: 500px;
+  /* Altera a altura para 80% quando o mouse passa sobre a div */
+  width: 35%;
+}
+
+
+#FDC:hover button {
+  visibility: visible;
+  /* Torna os botões visíveis durante o hover */
+  margin-top: 20px;
+}
+
+#FDC button {
+  visibility: hidden;
+  /* Inicialmente, os botões estão ocultos */
+}
+
+.UBD {
+  display: block;
+}
+
+.UWD {
+  display: none;
+}
+
+#FDC:hover .UBD {
+  display: none;
+  /* Torna os botões visíveis durante o hover */
+  height: 250px;
+  width: 250px;
+}
+
+#FDC:hover .UWD {
+  display: block;
+  /* Torna os botões visíveis durante o hover */
+  height: 250px;
+  width: 250px;
+}
+
+
+#FDC:hover p {
+  visibility: visible;
+  /* Torna os botões visíveis durante o hover */
+  color: white;
+}
+
+#FDC:hover #info {
   visibility: visible;
   /* Torna os botões visíveis durante o hover */
   color: white;
@@ -285,7 +281,7 @@ body {
   display: flex;
 }
 
-.DivButtonUser {
+.DBUC {
 
   display: flex;
   justify-content: space-around;

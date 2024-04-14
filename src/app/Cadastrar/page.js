@@ -7,38 +7,38 @@ import "./style.css";
 
 export default function Cadastrar() {
   return (
-    <div className="DivPai">
-      <div className="background-Cadastro">
+    <div className="DVC">
+      <div className="BCKCC">
 
         <Navbar />
         <center>
           <p style={{ color: "white", fontSize: "2.375rem", fontStyle: "normal", lineHeight: "normal", marginTop: "3.45rem", marginBottom: "-2rem" }}>Escolha o tipo de cadastro</p>
         </center>
-        <div className="DivNeto">
-          <div className="DivBisNeto">
+        <div className="DNC">
+          <div className="DBNC">
 
-            <div id="fundoDoador">
+            <div id="FDC">
               <span className="spanUser" id="span" data-toggle="modal" data-target="#modalDoador">
                 <p>Doador</p>
                 <FaInfoCircle style={{ marginLeft: "0.2rem" }} id="info" />
               </span>
-              <img className="userblackdoador" src="/Loign.png" width={"150px"} />
-              <img className="userwhitedoador" src="/userwhite.png" width={"150px"} />
+              <img className="UBD" src="/Loign.png" width={"150px"} />
+              <img className="UWD" src="/userwhite.png" width={"150px"} />
 
-              <div className="DivButtonUser">
+              <div className="DBUC">
                 <CustomButton href="/EntrarDoador" className="button btn" buttonText="Entrar" />
                 <CustomButton href="/CadastrarDoador" className="button btn" buttonText="Cadastrar" />
               </div>
 
             </div>
 
-            <div id="fundoIntermediario">
+            <div id="FIC">
               <span className="spanUser" id="span" data-toggle="modal" data-target="#modalIntermediario">
                 <p>Intermediario</p>
                 <FaInfoCircle style={{ marginLeft: "0.2rem" }} id="info" />
               </span>
-              <img className="userblackintermediario" src="/Loign.png" width={"150px"} />
-              <img className="userwhiteintermediario" src="/userwhite.png" width={"150px"} />
+              <img className="UBIC" src="/Loign.png" width={"150px"} />
+              <img className="UWIC" src="/userwhite.png" width={"150px"} />
 
               <div style={{ display: "flex", justifyContent: "space-around", width: "100%" }}>
                 <CustomButton href="/EntrarIntermediario" className="button btn" buttonText="Entrar" />
@@ -47,13 +47,13 @@ export default function Cadastrar() {
 
             </div>
 
-            <div id="fundoReceptor">
+            <div id="FRC">
               <span className="spanUser" id="span" data-toggle="modal" data-target="#modalReceptor">
                 <p>Beneficiário</p>
                 <FaInfoCircle style={{ marginLeft: "0.2rem" }} id="info" />
               </span>
-              <img className="userblackreceptor" src="/Loign.png" width={"150px"} />
-              <img className="userwhitereceptor" src="/userwhite.png" width={"150px"} />
+              <img className="UBRC" src="/Loign.png" width={"150px"} />
+              <img className="UWRC" src="/userwhite.png" width={"150px"} />
 
               <div className="DivButtonUser">
                 <CustomButton href="/EntrarBeneficiario" className="button btn" buttonText="Entrar" />

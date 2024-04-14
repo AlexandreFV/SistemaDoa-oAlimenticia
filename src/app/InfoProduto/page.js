@@ -108,7 +108,7 @@ export default function InfoProduto() {
                         <h1 className="h1MinDoa">Informações do Produto</h1>
                         <div className="DivFundoFilho">
 
-                            <div className="nome_contact" style={{}}>
+                            <div className="nome_contact" >
                                 <p style={{ float: "left", marginTop: "3.5rem", marginLeft: "2.2rem", fontSize: "1.2rem", alignItems: "center", fontWeight: "bold" }}>{doacao && doacao.usuariodoador.nome}</p>
                                 <div style={{ display: "grid", float: "right", marginTop: "1.8rem", marginRight: "2rem", border: "2px solid #7D9E65", borderRadius: "0.6rem", padding: "1rem" }}>
                                     <p style={{ display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1rem" }}><b>Contato</b> <img style={{ width: "1.3rem", height: "1.3rem" }} src="/icon_tel.png"></img></p>
