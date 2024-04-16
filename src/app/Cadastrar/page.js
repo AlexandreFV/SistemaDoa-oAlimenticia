@@ -1,13 +1,29 @@
+"use client"
+
 import Link from "next/link";
 import { FaInfoCircle } from 'react-icons/fa';
 import Navbar from "../components/layoutCadastroLogin";
 import Input from "../components/input";
 import CustomButton from '../components/customButton';
 import "./style.css";
+import React, { useState } from 'react';
 
 export default function Cadastrar() {
 
+  // Estado para controlar qual botão está ativo
+  const [activeButton, setActiveButton] = useState(null);
 
+  // Função para lidar com o clique do botão
+  const handleButtonClick = (button) => {
+    // Se o botão clicado for diferente do botão ativo atualmente
+    if (button !== activeButton) {
+      // Define o botão clicado como ativo
+      setActiveButton(button);
+    } else {
+      // Se o botão clicado for igual ao botão ativo atualmente, limpa o estado
+      setActiveButton(null);
+    }
+  };
 
   return (
     <div className="DVP">
@@ -20,27 +36,109 @@ export default function Cadastrar() {
         <div className="DVN">
           <div className="DBN">
             <div className="colunaverde1">
-              <a href="" className="cardbtnprod">
+              <a href="#" className={activeButton === 1 ? 'active cardbtnprod' : 'cardbtnprod'} onClick={(e) => {
+                e.preventDefault(); // Evita que o link seja seguido
+                handleButtonClick(1);
+              }}
+              >
+
                 <div className="nomeimgprod">
                   Produtor
-                  <img src="/Loign.png" />
+
+                </div>
+              </a>
+              <a href="" className={activeButton === 2 ? 'active cardbtnbenef' : 'cardbtnbenef'}
+                onClick={(e) => {
+                  e.preventDefault(); // Evita que o link seja seguido
+                  handleButtonClick(2);
+                }}
+              >
+                <div className="nomeimgbenef" >
+                  Beneficiário
 
                 </div>
               </a>
             </div>
-            <div id="fundoDoador">
-              <span className="spanUser" id="span" data-toggle="modal" data-target="#modalDoador">
-                <p>Doador</p>
-                <FaInfoCircle style={{ marginLeft: "0.2rem" }} id="info" />
-              </span>
-              <img className="userwhitedoador" src="/userwhite.png" />
+            <div id="fundoDoador" style={{ display: activeButton === 1 ? 'block' : 'none' }}>
+              <div id="posfundoDoador">
+                <span className="spanUser" id="span" data-toggle="modal" data-target="#modalDoador">
+                  <p>Produtor</p>
+                  <FaInfoCircle style={{ marginLeft: "0.2rem" }} id="info" />
+                </span>
+                <img className="userwhitedoador" src="/userwhite.png" />
 
-              <div className="DivButtonUserCadastro">
-                <CustomButton href="/EntrarDoador" className="button btn" buttonText="Entrar" />
-                <CustomButton href="/CadastrarDoador" className="button btn" buttonText="Cadastrar" />
+                <div className="DivButtonUserCadastro">
+                  <CustomButton href="/EntrarDoador" className="button btn" buttonText="Entrar" />
+                  <CustomButton href="/CadastrarDoador" className="button btn" buttonText="Cadastrar" />
+                </div>
               </div>
             </div>
-            <div className="colunaverde2"></div>
+            <div id="fundoBenef" style={{ display: activeButton === 2 ? 'block' : 'none' }}>
+              <div id="posfundoBenef">
+                <span className="spanUser" id="span" data-toggle="modal" data-target="#modalBenef">
+                  <p>Beneficiário</p>
+                  <FaInfoCircle style={{ marginLeft: "0.2rem" }} id="info" />
+                </span>
+                <img className="userwhiteBenef" src="/userwhite.png" />
+
+                <div className="DivButtonUserCadastro">
+                  <CustomButton href="/EntrarBeneficiario" className="button btn" buttonText="Entrar" />
+                  <CustomButton href="/CadastrarBeneficiario" className="button btn" buttonText="Cadastrar" />
+                </div>
+              </div>
+            </div>
+            <div id="fundoIntermed" style={{ display: activeButton === 3 ? 'block' : 'none' }}>
+              <div id="posfundoIntermed">
+                <span className="spanUser" id="span" data-toggle="modal" data-target="#modalIntermed">
+                  <p>Intermediário</p>
+                  <FaInfoCircle style={{ marginLeft: "0.2rem" }} id="info" />
+                </span>
+                <img className="userwhiteintermed" src="/userwhite.png" />
+
+                <div className="DivButtonUserCadastro" style={{ display: "flex", justifyContent: "space-around", width: "100%" }}>
+                  <CustomButton href="/EntrarIntermediario" className="button btn" buttonText="Entrar" />
+                  <CustomButton href="/CadastrarIntermediario" className="button btn" buttonText="Cadastrar" />
+                </div>
+              </div>
+            </div>
+            <div id="fundoEmp" style={{ display: activeButton === 4 ? 'block' : 'none' }}>
+              <div id="posfundoEmp">
+                <span className="spanUser" id="span" data-toggle="modal" data-target="#modalEmp">
+                  <p>Empresa</p>
+                  <FaInfoCircle style={{ marginLeft: "0.2rem" }} id="info" />
+                </span>
+                <img className="userwhiteEmp" src="/userwhite.png" />
+
+                <div className="DivButtonUserCadastro" style={{ display: "flex", justifyContent: "space-around", width: "100%" }}>
+                  <CustomButton href="/EntrarIntermediario" className="button btn" buttonText="Entrar" />
+                  <CustomButton href="/CadastrarIntermediario" className="button btn" buttonText="Cadastrar" />
+                </div>
+              </div>
+            </div>
+            <div className="colunaverde2">
+              <a href="" className={activeButton === 3 ? 'active cardbtnIntermed' : 'cardbtnIntermed'}
+                onClick={(e) => {
+                  e.preventDefault(); // Evita que o link seja seguido
+                  handleButtonClick(3);
+                }}
+              >
+                <div className="nomeimgIntermed">
+                  Intermediário
+
+                </div>
+              </a>
+              <a href="" className={activeButton === 4 ? 'active cardbtnEmp' : 'cardbtnEmp'}
+                onClick={(e) => {
+                  e.preventDefault(); // Evita que o link seja seguido
+                  handleButtonClick(4);
+                }}
+              >
+                <div className="nomeimgEmp">
+                  Empresa
+
+                </div>
+              </a>
+            </div>
 
           </div>
 
@@ -56,7 +154,7 @@ export default function Cadastrar() {
           <div class="modal-content">
 
             <div class="modal-body" style={{ textAlign: 'center', height: "300px" }}>
-              <h1 style={{ fontSize: "25px", marginBottom: "30px", marginTop: "10px", fontFamily: "Inter", fontWeight: "800" }}>Seja Doador!</h1>
+              <h1 style={{ fontSize: "25px", marginBottom: "30px", marginTop: "10px", fontFamily: "Inter", fontWeight: "800" }}>Seja Produtor!</h1>
               <p style={{ fontFamily: "Inter", fontWeight: "400" }}>Faça parte da mudança! Com seus produtos do campo não comercializáveis, você pode alimentar aqueles que mais precisam.</p>
               <p style={{ marginTop: "20px", color: "#578925", fontFamily: "Inter", fontWeight: "bold" }}>Doe agora e faça a diferença!</p>
               <button data-dismiss="modal" class="btn" style={{ marginTop: "20px", backgroundColor: "#3FADB4", color: "white" }}>Entendi</button>
@@ -67,7 +165,7 @@ export default function Cadastrar() {
       </div>
 
 
-      <div class="modal fade" id="modalIntermediario" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal fade" id="modalIntermed" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
 
@@ -82,7 +180,7 @@ export default function Cadastrar() {
         </div>
       </div>
 
-      <div class="modal fade" id="modalReceptor" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal fade" id="modalBenef" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
 
@@ -106,33 +204,7 @@ export default function Cadastrar() {
 /*
 
 
-            <div id="fundoIntermediario">
-              <span className="spanUser" id="span" data-toggle="modal" data-target="#modalIntermediario">
-                <p>Intermediario</p>
-                <FaInfoCircle style={{ marginLeft: "0.2rem" }} id="info" />
-              </span>
-              <img className="userblackintermediario" src="/Loign.png" width={"150px"} />
-              <img className="userwhiteintermediario" src="/userwhite.png" width={"150px"} />
+            
 
-              <div style={{ display: "flex", justifyContent: "space-around", width: "100%" }}>
-                <CustomButton href="/EntrarIntermediario" className="button btn" buttonText="Entrar" />
-                <CustomButton href="/CadastrarIntermediario" className="button btn" buttonText="Cadastrar" />
-              </div>
-
-            </div>
-
-            <div id="fundoReceptor">
-              <span className="spanUser" id="span" data-toggle="modal" data-target="#modalReceptor">
-                <p>Beneficiário</p>
-                <FaInfoCircle style={{ marginLeft: "0.2rem" }} id="info" />
-              </span>
-              <img className="userblackreceptor" src="/Loign.png" width={"150px"} />
-              <img className="userwhitereceptor" src="/userwhite.png" width={"150px"} />
-
-              <div className="DivButtonUser">
-                <CustomButton href="/EntrarBeneficiario" className="button btn" buttonText="Entrar" />
-                <CustomButton href="/CadastrarBeneficiario" className="button btn" buttonText="Cadastrar" />
-              </div>
-
-            </div>
+            
 */

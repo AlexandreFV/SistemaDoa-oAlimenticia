@@ -68,13 +68,17 @@ body {
   height: 580px;
   width: 55%;
   margin-left: 5%;
+  border-radius: 10px;
+  margin-right: 5%;
+  box-shadow: 0px 0px 7.7px 4px rgba(0, 0, 0, 0.25);
+}
+
+#posfundoDoador {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-radius: 10px;
-  margin-right: 5%;
-  box-shadow: 0px 0px 7.7px 4px rgba(0, 0, 0, 0.25);
+  min-height: 100%;
 }
 
 #fundoDoador p {
@@ -99,7 +103,7 @@ body {
   position: relative;
   margin-left: -7rem;
   margin-top: 5.5rem;
-  height: 3.5rem;
+  height: 3.2rem;
   display: flex;
   justify-content: center;
   border-top-left-radius: 2rem;
@@ -112,85 +116,10 @@ body {
   font-size: 1.3rem;
 }
 
-.nomeimgprod img {
-  width: 1.2rem;
-  margin-left: 0.2rem;
-}
-
-
-#fundoIntermediario {
-  background-color: #FFFFFF;
-  height: 400px;
-  width: 30%;
-  margin-right: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  transition: background-color 0.8s, height 0.8s, width 0.8s;
-  /* Adiciona uma transição suave */
-}
-
-#fundoIntermediario:hover {
+#fundoBenef {
   background-color: #578925;
-  height: 500px;
-  /* Altera a altura para 80% quando o mouse passa sobre a div */
-  width: 35%;
-}
-
-
-#fundoIntermediario:hover button {
-  visibility: visible;
-  /* Torna os botões visíveis durante o hover */
-  margin-top: 20px;
-}
-
-#fundoIntermediario button {
-  visibility: hidden;
-  /* Inicialmente, os botões estão ocultos */
-}
-
-.userblackintermediario {
-  display: block;
-}
-
-.userwhiteintermediario {
-  display: none;
-}
-
-#fundoIntermediario:hover .userblackintermediario {
-  display: none;
-  /* Torna os botões visíveis durante o hover */
-  height: 250px;
-  width: 250px;
-}
-
-#fundoIntermediario:hover .userwhiteintermediario {
-  display: block;
-  /* Torna os botões visíveis durante o hover */
-  height: 250px;
-  width: 250px;
-}
-
-#fundoIntermediario:hover p {
-  visibility: visible;
-  /* Torna os botões visíveis durante o hover */
-  color: white;
-}
-
-#fundoIntermediario:hover #info {
-  visibility: visible;
-  /* Torna os botões visíveis durante o hover */
-  color: white;
-}
-
-
-#fundoReceptor {
-  background-color: #FFFFFF;
-  height: 400px;
-  width: 30%;
-  margin-right: auto;
+  height: 580px;
+  width: 55%;
   margin-left: 5%;
   display: flex;
   flex-direction: column;
@@ -198,63 +127,165 @@ body {
   align-items: center;
   border-radius: 10px;
   margin-right: 5%;
-  transition: background-color 0.8s, height 0.8s, width 0.8s;
-  /* Adiciona uma transição suave */
+  box-shadow: 0px 0px 7.7px 4px rgba(0, 0, 0, 0.25);
 }
 
-#fundoReceptor:hover {
+#posfundoBenef {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+}
+
+#fundoBenef p {
+  color: white;
+  font-size: 1.5rem;
+  margin-right: 0.2rem;
+}
+
+#fundoBenef #info {
+  color: white;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.userwhiteBenef {
+  width: 70%;
+}
+
+.cardbtnbenef {
+  color: black;
+  background-color: white;
+  position: relative;
+  margin-left: -7rem;
+  margin-top: 3rem;
+  height: 3.2rem;
+  display: flex;
+  justify-content: center;
+  border-top-left-radius: 2rem;
+  border-bottom-left-radius: 2rem;
+}
+
+.nomeimgbenef {
+  display: flex;
+  align-items: center;
+  font-size: 1.3rem;
+}
+
+#fundoIntermed {
   background-color: #578925;
-  height: 500px;
-  /* Altera a altura para 80% quando o mouse passa sobre a div */
-  width: 35%;
+  height: 580px;
+  width: 55%;
+  margin-left: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  margin-right: 5%;
+  box-shadow: 0px 0px 7.7px 4px rgba(0, 0, 0, 0.25);
 }
 
-
-#fundoReceptor:hover button {
-  visibility: visible;
-  /* Torna os botões visíveis durante o hover */
-  margin-top: 20px;
+#posfundoIntermed {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
 }
 
-#fundoReceptor button {
-  visibility: hidden;
-  /* Inicialmente, os botões estão ocultos */
-}
-
-.userblackreceptor {
-  display: block;
-}
-
-.userwhitereceptor {
-  display: none;
-}
-
-#fundoReceptor:hover .userblackreceptor {
-  display: none;
-  /* Torna os botões visíveis durante o hover */
-  height: 250px;
-  width: 250px;
-}
-
-#fundoReceptor:hover .userwhitereceptor {
-  display: block;
-  /* Torna os botões visíveis durante o hover */
-  height: 250px;
-  width: 250px;
-}
-
-#fundoReceptor:hover p {
-  visibility: visible;
-  /* Torna os botões visíveis durante o hover */
+#fundoIntermed p {
   color: white;
+  font-size: 1.5rem;
+  margin-right: 0.2rem;
 }
 
-#fundoReceptor:hover #info {
-  visibility: visible;
-  /* Torna os botões visíveis durante o hover */
+#fundoIntermed #info {
   color: white;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
+.cardbtnIntermed {
+  color: black;
+  background-color: white;
+  position: relative;
+  margin-right: -7rem;
+  margin-top: 5.5rem;
+  height: 3.2rem;
+  display: flex;
+  justify-content: center;
+  border-top-right-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+}
+
+.nomeimgIntermed {
+  display: flex;
+  align-items: center;
+  font-size: 1.3rem;
+}
+
+.userwhiteintermed {
+  width: 70%;
+}
+
+#fundoEmp {
+  background-color: #578925;
+  height: 580px;
+  width: 55%;
+  margin-left: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  margin-right: 5%;
+  box-shadow: 0px 0px 7.7px 4px rgba(0, 0, 0, 0.25);
+}
+
+#posfundoEmp {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+}
+
+#fundoEmp p {
+  color: white;
+  font-size: 1.5rem;
+  margin-right: 0.2rem;
+}
+
+#fundoEmp #info {
+  color: white;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.cardbtnEmp {
+  color: black;
+  background-color: white;
+  position: relative;
+  margin-right: -7rem;
+  margin-top: 3rem;
+  height: 3.2rem;
+  display: flex;
+  justify-content: center;
+  border-top-right-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+}
+
+.nomeimgEmp {
+  display: flex;
+  align-items: center;
+  font-size: 1.3rem;
+}
+
+.userwhiteEmp {
+  width: 70%;
+}
 
 #info {
 
@@ -294,4 +325,57 @@ body {
   border-bottom-right-radius: 10px;
   margin-left: auto;
   box-shadow: -3px 0px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.cardbtnprod:hover,
+.cardbtnbenef:hover {
+  /* Estilos quando o mouse está sobre o botão */
+  background-color: #42A8A1;
+  color: white;
+  height: 3.5rem;
+  margin-left: -7.5rem;
+  margin-bottom: -0.3rem;
+}
+
+.cardbtnIntermed:hover,
+.cardbtnEmp:hover {
+  background-color: #42A8A1;
+  color: white;
+  margin-right: -7.5rem;
+  height: 3.5rem;
+  margin-bottom: -0.3rem;
+}
+
+.cardbtnprod.active,
+.cardbtnbenef.active {
+  background-color: #42A8A1;
+  color: white;
+  height: 3.5rem;
+  margin-left: -7.5rem;
+  margin-bottom: -0.3rem;
+}
+
+.cardbtnIntermed.active,
+.cardbtnEmp.active {
+  /* Estilos quando o botão está ativo */
+  background-color: #42A8A1;
+  color: white;
+  margin-right: -7.5rem;
+  height: 3.5rem;
+  margin-bottom: -0.3rem;
+}
+
+#fundoDoador,
+#fundoBenef,
+#fundoIntermed,
+#fundoEmp {
+  display: none;
+}
+
+#fundoDoador.active,
+#fundoBenef.active,
+#fundoIntermed.active,
+#fundoEmp.active {
+  display: block;
+  /* Exibido quando o botão correspondente está ativo */
 }
