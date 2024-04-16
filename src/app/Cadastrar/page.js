@@ -10,15 +10,15 @@ export default function Cadastrar() {
 
 
   return (
-    <div className="DivPai">
-      <div className="background-Cadastro">
+    <div className="DVP">
+      <div className="BCKCC">
 
         <Navbar />
         <center>
           <p style={{ color: "white", fontSize: "2.375rem", fontStyle: "normal", lineHeight: "normal", marginTop: "3.45rem", marginBottom: "-2rem" }}>Escolha o tipo de cadastro</p>
         </center>
-        <div className="DivNeto">
-          <div className="DivBisNeto">
+        <div className="DVN">
+          <div className="DBN">
             <div className="colunaverde1">
               <a href="" className="cardbtnprod">
                 <div className="nomeimgprod">
@@ -33,9 +33,9 @@ export default function Cadastrar() {
                 <p>Doador</p>
                 <FaInfoCircle style={{ marginLeft: "0.2rem" }} id="info" />
               </span>
-              <img className="userwhitedoador" src="/userwhite.png" width={"150px"} />
+              <img className="userwhitedoador" src="/userwhite.png" />
 
-              <div className="DivButtonUser">
+              <div className="DivButtonUserCadastro">
                 <CustomButton href="/EntrarDoador" className="button btn" buttonText="Entrar" />
                 <CustomButton href="/CadastrarDoador" className="button btn" buttonText="Cadastrar" />
               </div>

@@ -26,14 +26,14 @@ body {
   width: 150px;
 }
 
-.DivPai {
+.DVP {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.background-Cadastro {
+.BCKCC {
 
   position: relative;
   width: 100vw;
@@ -44,7 +44,7 @@ body {
 
 }
 
-.DivNeto {
+.DVN {
 
   display: flex;
   justify-content: center;
@@ -52,7 +52,7 @@ body {
   margin-top: 8rem;
 }
 
-.DivBisNeto {
+.DBN {
 
   background-color: #EDEDED;
   height: 28rem;
@@ -268,7 +268,7 @@ body {
   align-items: center;
 }
 
-.DivButtonUser {
+.DivButtonUserCadastro {
 
   display: flex;
   justify-content: space-around;

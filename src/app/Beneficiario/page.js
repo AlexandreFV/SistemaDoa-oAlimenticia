@@ -28,24 +28,24 @@ export default function ListProdutorIntermed() {
         } 
     })
     return (
-        <div className="DivPai">
+        <div className="DVBF">
             <Navbar></Navbar>
-            <div className="DivFilho">
+            <div className="DFBF">
                 <MenuDireito />
-                <div className="DivImagem">
-                    <div className="DivFundoPai">
+                <div className="DIBF">
+                    <div className="DFPBF">
                         <BackButton />
-                        <h1 className="h1MinDoa">Instituição doadora</h1>
-                        <div className="DivFundoFilho">
+                        <h1 className="HMDBF">Instituição doadora</h1>
+                        <div className="DFFBF">
                             <div style={{ display: "flex", alignItens: "center", textAlign: "center" }}>
                                 <h1 style={{ display: "flex", justifyContent: "center", alignItems: "center", left: "1.6rem" }} className="h1ProdutosEnv">Intermediário(s) doadore(s)</h1>
                                 <div style={{ marginRight: "1.2rem", marginTop: "1rem" }}>
-                                    <img src="./filtrar.png" className="imgFiltrar"></img>
+                                    <img src="./filtrar.png" className="IFBF"></img>
                                     <p >Filtro</p>
                                 </div>
                             </div>
                             <div style={{ backgroundColor: "black", width: "100%", height: "2px" }}></div>
-                            <div className="CardProduct" style={{ width: "90%", height: "9rem", background: "#EBEBEB", borderRadius: "10px", marginTop: "2rem", marginLeft: "auto", marginRight: "auto", display: "flex", justifyContent: "center" }}>
+                            <div className="CDBF" >
 
                                 <div style={{ float: "left", flexWrap: "wrap", marginLeft: "0", marginRight: "0" }}>
                                     <div style={{ marginLeft: "2rem", marginTop: "1rem", fontSize: 18, fontFamily: "Inter", fontWeight: "bold" }}>Nome do Intermediário</div>

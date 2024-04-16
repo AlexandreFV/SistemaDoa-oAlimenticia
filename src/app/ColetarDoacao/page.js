@@ -32,9 +32,32 @@ export default function ColetarDoacao() {
         setIsChecked(!isChecked);
     };
 
-    const handleComprarClick = (id) => {
+    const handleComprarClick = async (id) => {
         console.log("ID:", id);
-        router.push(`/InfoProduto?id=${id}`);
+        const token = localStorage.getItem('token');
+
+        try{
+          const response = await fetch(`http://localhost:3001/InfoProduto/${id}`, {
+            method: "GET",
+            headers: {
+              'Authorization': `Bearer ${token}`
+            },
+          });
+          if (response.ok){
+            const data = await response.json();
+            if(data.error){
+            alert("Já Pego");
+            }else {
+              router.push(`/InfoProduto?id=${id}`);
+          }
+
+          }else {
+            console.error("Erro ao buscar informações do produto:", response.statusText);
+        }
+
+        } catch (error){
+          console.error("Erro ao buscar informações do produto:", error);
+        }
     };
 
     useEffect(() => {
@@ -45,7 +68,8 @@ export default function ColetarDoacao() {
             const response = await fetch(`http://localhost:3001/ColetarDoacao`, {
               headers: {
                 'Authorization': `Bearer ${token}`
-              }
+              },
+              
             });
             if (response.ok) {
               const data = await response.json();
