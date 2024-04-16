@@ -6,24 +6,28 @@ import Navbar from "../components/layoutCadastroLogin";
 import Input from "../components/input";
 import CustomButton from '../components/customButton';
 import "./style.css";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function Cadastrar() {
 
   // Estado para controlar qual botão está ativo
-  const [activeButton, setActiveButton] = useState(null);
+  const [activeButton, setActiveButton] = useState(1);
 
   // Função para lidar com o clique do botão
   const handleButtonClick = (button) => {
-    // Se o botão clicado for diferente do botão ativo atualmente
-    if (button !== activeButton) {
-      // Define o botão clicado como ativo
-      setActiveButton(button);
-    } else {
-      // Se o botão clicado for igual ao botão ativo atualmente, limpa o estado
-      setActiveButton(null);
+    // Se o botão clicado for o mesmo que já está ativo, retorna sem fazer nada
+    if (button === activeButton) {
+      return;
     }
+
+    // Define o botão clicado como ativo
+    setActiveButton(button);
   };
+
+  // Efeito para definir o botão "Produtor" como ativo ao carregar a página
+  useEffect(() => {
+    setActiveButton(1); // Define o botão "Produtor" como ativo
+  }, []);
 
   return (
     <div className="DVP">
@@ -36,7 +40,7 @@ export default function Cadastrar() {
         <div className="DVN">
           <div className="DBN">
             <div className="colunaverde1">
-              <a href="#" className={activeButton === 1 ? 'active cardbtnprod' : 'cardbtnprod'} onClick={(e) => {
+              <a href="" className={activeButton === 1 ? 'active cardbtnprod' : 'cardbtnprod'} onClick={(e) => {
                 e.preventDefault(); // Evita que o link seja seguido
                 handleButtonClick(1);
               }}
