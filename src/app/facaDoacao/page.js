@@ -25,7 +25,7 @@ export default function FacaDoacao() {
 
   const router = useRouter();
 
-  
+
   useEffect(() => {
     const token = localStorage.getItem('token'); // Verifica se há um token no armazenamento local
 
@@ -129,19 +129,19 @@ export default function FacaDoacao() {
 
   // Função para lidar com a alteração do campo de arquivo
   const handleFileChange = (event) => {
-    if(event.target.files.length){
+    if (event.target.files.length) {
       const fileSize = event.target.files[0].size;
       const fileMb = fileSize / ((1024 ** 2));
       alert(`${fileMb} MB`);
-        if(fileMb <= 16){
-          const file = event.target.files[0];
-          setFoto(file);
-        }else{
-          event.target.value = null;
-          alert("O arquivo selecionado é muito grande. Selecione um arquivo menor.");
-        }
+      if (fileMb <= 16) {
+        const file = event.target.files[0];
+        setFoto(file);
+      } else {
+        event.target.value = null;
+        alert("O arquivo selecionado é muito grande. Selecione um arquivo menor.");
+      }
     }
- 
+
   };
 
 
@@ -163,7 +163,7 @@ export default function FacaDoacao() {
   }, []);
 
   return (
-    
+
     <div className="DivPai">
       <Navbar />
       <div className="DivFilho">

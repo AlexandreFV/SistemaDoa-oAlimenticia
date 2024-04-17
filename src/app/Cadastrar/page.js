@@ -189,10 +189,25 @@ export default function Cadastrar() {
           <div class="modal-content">
 
             <div class="modal-body" style={{ textAlign: 'center', height: "300px" }}>
-              <h1 style={{ fontSize: "25px", marginBottom: "30px", marginTop: "10px", fontFamily: "Inter", fontWeight: "800" }}>Seja Beneficiário!!</h1>
+              <h1 style={{ fontSize: "25px", marginBottom: "30px", marginTop: "10px", fontFamily: "Inter", fontWeight: "800" }}>Seja Beneficiário!</h1>
               <p style={{ fontFamily: "Inter", fontWeight: "400" }}>Como beneficiário, você está prestes a receber a generosidade de muitos. Graças aos intermediários, os produtos doados pelos doadores chegarão até você, trazendo conforto e esperança.</p>
               <p style={{ marginTop: "20px", color: "#578925", fontFamily: "Inter", fontWeight: "bold" }}>Tenha uma vida melhor, sem preocupações!</p>
               <button data-dismiss="modal" class="btn" style={{ marginTop: "20px", backgroundColor: "#3FADB4", color: "white" }}>Entendi</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="modalEmp" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-content">
+
+            <div class="modal-body" style={{ textAlign: 'center', height: "300px" }}>
+              <h1 style={{ fontSize: "25px", marginBottom: "30px", marginTop: "-1rem", fontFamily: "Inter", fontWeight: "800" }}>Seja Contribuinte!</h1>
+              <p style={{ fontFamily: "Inter", fontWeight: "400" }}>Como empresa, sua participação implica no envio de um valor definido por você, que será direcionado ao intermediário. Esses fundos possibilitarão que o intermediário adquira os produtos oferecidos pelos produtores, contribuindo para uma rede solidária.</p>
+              <p style={{ marginTop: "20px", color: "#578925", fontFamily: "Inter", fontWeight: "bold" }}>Invista agora no futuro de pessoas <br /> que mais precisam</p>
+              <button data-dismiss="modal" class="btn" style={{ marginTop: "10px", backgroundColor: "#3FADB4", color: "white" }}>Entendi</button>
             </div>
 
           </div>

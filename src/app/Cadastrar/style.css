@@ -108,6 +108,8 @@ body {
   justify-content: center;
   border-top-left-radius: 2rem;
   border-bottom-left-radius: 2rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  /* Adicione uma transição suave */
 }
 
 .nomeimgprod {
@@ -165,6 +167,8 @@ body {
   justify-content: center;
   border-top-left-radius: 2rem;
   border-bottom-left-radius: 2rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  /* Adicione uma transição suave */
 }
 
 .nomeimgbenef {
@@ -218,6 +222,8 @@ body {
   justify-content: center;
   border-top-right-radius: 2rem;
   border-bottom-right-radius: 2rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  /* Adicione uma transição suave */
 }
 
 .nomeimgIntermed {
@@ -275,6 +281,8 @@ body {
   justify-content: center;
   border-top-right-radius: 2rem;
   border-bottom-right-radius: 2rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  /* Adicione uma transição suave */
 }
 
 .nomeimgEmp {
@@ -378,4 +386,12 @@ body {
 #fundoEmp.active {
   display: block;
   /* Exibido quando o botão correspondente está ativo */
+}
+
+.modal-content {
+  height: 22.5rem;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
