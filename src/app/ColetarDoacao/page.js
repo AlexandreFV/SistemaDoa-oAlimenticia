@@ -33,33 +33,35 @@ export default function ColetarDoacao() {
     };
 
     const handleComprarClick = async (id) => {
-        console.log("ID:", id);
-        const token = localStorage.getItem('token');
-
-        try{
-          const response = await fetch(`http://localhost:3001/InfoProduto/${id}`, {
-            method: "GET",
-            headers: {
-              'Authorization': `Bearer ${token}`
-            },
-          });
-          if (response.ok){
-            const data = await response.json();
-            if(data.error){
-            alert("Já Pego");
-            }else {
-              router.push(`/InfoProduto?id=${id}`);
+      console.log("ID:", id);
+      const token = localStorage.getItem('token');
+    
+      try {
+        const response = await fetch(`http://localhost:3001/InfoProduto/${id}`, {
+          method: "GET",
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+        });
+    
+        if (response.ok) {
+          const data = await response.json();
+          if (response.status === 200){
+            router.push(`/InfoProduto?id=${id}`);
           }
-
-          }else {
-            console.error("Erro ao buscar informações do produto:", response.statusText);
+        } else {
+          console.error("Erro ao buscar informações do produto:", response.statusText);
+          if (response.status === 404) {
+            alert("Produto não encontrado");
+            window.location.reload();
+          }
         }
-
-        } catch (error){
-          console.error("Erro ao buscar informações do produto:", error);
-        }
+    
+      } catch (error) {
+        console.error("Erro ao buscar informações do produto:", error);
+      }
     };
-
+    
     useEffect(() => {
         const fetchDoacoes = async () => {
           try {
@@ -88,15 +90,15 @@ export default function ColetarDoacao() {
 
     return (
 
-        <div className="DivPai">
+        <div className="DPCOLETARDOACAO">
             <Navbar></Navbar>
-            <div className="DivFilho">
+            <div className="DFCOLETARDOACAO">
                 <MenuDireito />
-                <div className="DivImagem">
-                    <div className="DivFundoPai">
+                <div className="DICOLETARDOACAO">
+                    <div className="DFPCOLETARDOACAO">
                         <BackButton />
-                        <h1 className="h1MinDoa">Coletar Doação</h1>
-                        <div className="DivFundoFilho">
+                        <h1 className="h1MinDoaCOLETARDOACAO">Coletar Doação</h1>
+                        <div className="DFFCOLETARDOACAO">
                             <div style={{ display: "flex", alignItens: "center", textAlign: "center" }}>
                                 <h1 style={{ display: "flex", justifyContent: "center", alignItems: "center", left: "1.6rem" }} className="h1ProdutosEnv">Doações disponíveis</h1>
                                 <div style={{ marginRight: "1.2rem", marginTop: "1rem" }}>

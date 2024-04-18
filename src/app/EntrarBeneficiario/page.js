@@ -64,16 +64,16 @@ export default function EntrarBeneficiario(){
     
     return(
 
-      <div className='DivPai' >
-        <div className="background-Cadastro">
+      <div className='DPENTRARBENE' >
+        <div className="BCENTRARBENE">
 
         <Navbar />
 
 
-    <div className="DivNeto">
-    <div className="DivBisNeto">
+    <div className="DNENTRARBENE">
+    <div className="DBNENTRABENE">
 
-    <div className="DivInfEntrar">
+    <div className="DIEENTRARBENE">
       <h1 style={{ fontSize: "25px", marginBottom: "10px", marginTop: "10px", fontFamily: "Inter", fontWeight: "800" }}>Não possui conta?</h1>
       <p style={{ fontFamily: "Inter", fontWeight: "400" }}>Cadastre-se e concretize seus</p>
       <p style={{ fontFamily: "Inter", fontWeight: "400", marginBottom: "20px" }}>objetivos e demandas.</p>
@@ -81,9 +81,9 @@ export default function EntrarBeneficiario(){
     </div>
 
 
-    <div className="DivFundoBranco">
+    <div className="DFBENTRABENE">
         <center>
-        <h1 className='h1Entrar'>Entrar como Beneficiário</h1>
+        <h1 className='h1EntrarENTRABENE'>Entrar como Beneficiário</h1>
         </center>
         <form onSubmit={handleSubmit}>
 

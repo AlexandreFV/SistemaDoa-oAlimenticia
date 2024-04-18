@@ -55,30 +55,30 @@ export default function MinhasDoacoes() {
   }, []);
 
   return (
-    <div className="DivPai">
+    <div className="DPCONFIRMARDOACAO">
       <Navbar />
-      <div className="DivFilho">
+      <div className="DFCONFIRMARDOACAO">
         <MenuDireito />
-        <div className="DivImagem">
-          <div className="DivFundoPai">
+        <div className="DICONFIRMARDOACAO">
+          <div className="DFPCONFIRMARDOACAO">
 
-            <img src="/iconbtnvoltar.png" alt="Ícone de voltar" className="VoltarIco"></img>
+            <img src="/iconbtnvoltar.png" alt="Ícone de voltar" className="VoltarIcoCONFIRMARDOACAO"></img>
 
-            <h1 className="h1MinDoa">Coletar Doacao</h1>
-            <div className="DivFundoFilho">
+            <h1 className="h1MinDoaCONFIRMARDOACAO">Coletar Doacao</h1>
+            <div className="DFFCONFIRMARDOACAO">
               {doacoes.length === 0 ? (
                 <div>
                   <img src="/triste.png" className="IcoTris"></img>
-                  <h1 className="h1NpossuiDoacao">Você ainda não efetuou nenhuma doação.</h1>
-                  <p className="PSejaParte">Seja parte da solução.</p>
-                  <p className="PSuaPrimeirD">Sua primeira doação é o primeiro passo para um mundo melhor.</p>
+                  <h1 className="h1NpossuiDoacaoCONFIRMARDOACAO">Você ainda não efetuou nenhuma doação.</h1>
+                  <p className="PSejaParteCONFIRMARDOACAO">Seja parte da solução.</p>
+                  <p className="PSuaPrimeirDCONFIRMARDOACAO">Sua primeira doação é o primeiro passo para um mundo melhor.</p>
                   <CustomButton href={"/FacaDoacao"} className={"btnPermNega"} buttonText={"Doe agora"} />
                 </div>
               ) : (
                 <div>
 
                   <div style={{ display: "flex", alignItens: "center", textAlign: "center" }}>
-                    <h1 className="h1ProdutosEnv">Confirmar coleta</h1>
+                    <h1 className="h1ProdutosEnvCONFIRMARDOACAO">Confirmar coleta</h1>
 
                   </div>
 
@@ -92,32 +92,32 @@ export default function MinhasDoacoes() {
                           Produto  - Nome do doador
                         </p>
                       </div>
-                      <div key={index} className="DivDoacao" >
+                      <div key={index} className="DDCONFIRMARDOACAO" >
 
 
                         <img
-                          className="imgFotoDoa"
+                          className="imgFotoDoaCONFIRMARDOACAO"
                           src={`data:image/png;base64, ${doacao.imagemBase64}`}
                           alt={`Foto da doação ${index + 1}`}
                         />
 
-                        <div className="DivNomAlm">
+                        <div className="DivNomAlmCONFIRMARDOACAO">
                           <p className="NomeAlm" style={{ textAlign: "center" }}>{doacao.nome_alimento}</p>
                         </div>
 
-                        <div className="DivCateg">
+                        <div className="DivCategCONFIRMARDOACAO">
                           <label>Categoria</label>
                           <p style={{ textAlign: "center" }}>{doacao.categoria}</p>
                         </div>
-                        <div className="DivCateg">
+                        <div className="DivCategCONFIRMARDOACAO">
                           <label>Formato</label>
                           <p className="endereco" style={{ textAlign: "center" }}>{doacao.Formato}</p>
                         </div>
-                        <div className="DivCateg">
+                        <div className="DivCategCONFIRMARDOACAO">
                           <label>Quantidade</label>
                           <p className="quantidade" style={{ textAlign: "center" }}>{doacao.quantidade}</p>
                         </div>
-                        <div className="DivCateg">
+                        <div className="DivCategCONFIRMARDOACAO">
                           <label>Validade</label>
                           <p className="endereco" style={{ textAlign: "center" }}>{doacao.Validade}</p>
                         </div>

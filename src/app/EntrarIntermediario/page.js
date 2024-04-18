@@ -64,25 +64,25 @@ export default function EntrarIntermediario(){
 
     return(
 
-        <div className='DivPai' >
-        <div className="background-Cadastro">
+        <div className='DPENTRARINTERMED' >
+        <div className="BCENTRARINTERMED">
 
         <Navbar />
 
 
-    <div className="DivNeto">
-    <div className="DivBisNeto">
+    <div className="DNENTRARINTERMED">
+    <div className="DBNENTRARINTERMED">
 
-    <div className="DivInfEntrar">
+    <div className="DIEENTRARINTERMED">
       <h1 style={{ fontSize: "25px", marginBottom: "10px", marginTop: "10px", fontFamily: "Inter", fontWeight: "800" }}>Não possui conta?</h1>
       <p style={{ fontFamily: "Inter", fontWeight: "400" }}>Cadastre-se e comece o caminho para emitir </p>
       <p style={{ fontFamily: "Inter", fontWeight: "400", marginBottom: "20px" }}>otimismo e prosperidade.</p>
       <CustomButton href="/CadastrarIntermediario" className="button btn" buttonText="Cadastrar"/>
     </div>
 
-    <div className="DivFundoBranco">
+    <div className="DFBENTRARINTERMED">
         <center>
-        <h1 className='h1Entrar'>Entrar como Intermediario</h1>
+        <h1 className='h1EntrarENTRARINTERMED'>Entrar como Intermediario</h1>
         </center>
         <form onSubmit={handleSubmit}>
 

@@ -1,5 +1,4 @@
 "use client"
-import "./style.css";
 import Navbar from "../components/layoutCadastroLogin";
 import Menu from "../components/MenuEmpresa";
 import "./style.css";

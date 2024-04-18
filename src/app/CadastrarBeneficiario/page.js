@@ -71,27 +71,27 @@ export default function CadastrarBeneficiario(){
     return(
 
         
-        <div className='DivPai' >
-        <div className="background-Cadastro">
+        <div className='DVCB' >
+        <div className="BCCB">
 
      
         <Navbar />
 
 
-    <div className='DivNeto' >
-    <div className='DivBisNeto'>
+    <div className='DNCB' >
+    <div className='DBNCB'>
 
     <div className='DivInfCadast'>
-      <h1 className='h1EntreSeja' >Já possui conta?</h1>
+      <h1 className='h1EntreSejaCB' >Já possui conta?</h1>
       <p style={{ fontFamily: "Inter", fontWeight: "400", marginBottom: "20px" }}>Entre e seja beneficiado.</p>
       <CustomButton href="/EntrarBeneficiario" className="button btn" buttonText="Entrar"/>
       {erroCadastro && <ErroCadastro erro={erroCadastro} />}
 
     </div>
 
-    <div className="DivFundoBranco">
+    <div className="DFBCB">
         <center>
-        <h1 className='h1Cadastrar'>Cadastro Beneficiário</h1>
+        <h1 className='h1CadastrarCB'>Cadastro Beneficiário</h1>
         </center>
 
         <form onSubmit={handleSubmit}>

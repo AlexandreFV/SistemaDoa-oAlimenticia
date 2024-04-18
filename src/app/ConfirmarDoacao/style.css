@@ -1,10 +1,16 @@
-.DivFilho {
+.DFCONFIRMARDOACAO {
     display: flex;
     flex-direction: row;
 }
 
+.DPCONFIRMARDOACAO{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-.DivImagem {
+.DICONFIRMARDOACAO {
 
     position: relative;
     background-size: cover;
@@ -19,7 +25,7 @@
     width: 100%;
 }
 
-.DivFundoPai {
+.DFPCONFIRMARDOACAO {
 
     position: absolute;
     /* Define a posição absoluta */
@@ -39,7 +45,7 @@
 
 }
 
-.VoltarIco {
+.VoltarIcoCONFIRMARDOACAO {
 
     display: inline-block;
     margin-top: 2rem;
@@ -49,14 +55,14 @@
 
 }   
 
-.h1MinDoa {
+.h1MinDoaCONFIRMARDOACAO {
     text-align: center;
     margin-top: -20px;
     font-size: 30px;
     font-family: 'Poller One', sans-serif;
 }
 
-.DivFundoFilho {
+.DFFCONFIRMARDOACAO {
 
     background-color: white;
     width: 90%;
@@ -79,7 +85,7 @@
     width: 30px;
 }
 
-.h1NpossuiDoacao {
+.h1NpossuiDoacaoCONFIRMARDOACAO {
 
     font-family: 'Inter', sans-serif;
     font-weight: 600;
@@ -89,7 +95,7 @@
     text-align: center;
 }
 
-.PSejaParte {
+.PSejaParteCONFIRMARDOACAO {
 
     display: block;
     font-family: 'Inter', sans-serif;
@@ -99,7 +105,7 @@
 
 }
 
-.PSuaPrimeirD {
+.PSuaPrimeirDCONFIRMARDOACAO {
 
     display: block;
     font-family: 'Inter', sans-serif;
@@ -131,7 +137,7 @@
 }
 
 
-.h1ProdutosEnv {
+.h1ProdutosEnvCONFIRMARDOACAO {
 
     text-align: center;
     justify-content: center;
@@ -159,7 +165,7 @@
     margin-right: 20px;
 }
 
-.DivDoacao {
+.DDCONFIRMARDOACAO {
 
     margin-bottom: 20px;
     margin-top: 0px;
@@ -175,7 +181,7 @@
 
 }
 
-.imgFotoDoa {
+.imgFotoDoaCONFIRMARDOACAO {
 
     height: 100px;
     width: 150px;
@@ -183,13 +189,13 @@
     border-bottom-left-radius: 10px;
 }
 
-.DivNomAlm {
+.DivNomAlmCONFIRMARDOACAO {
     margin-right: auto;
     position: relative;
     left: 20px;
 }
 
-.DivCateg {
+.DivCategCONFIRMARDOACAO {
 
     margin-right: auto;
     position: relative;

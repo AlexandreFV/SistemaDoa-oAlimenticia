@@ -70,16 +70,16 @@ export default function CadastroIntermediario(){
 
     return(
 
-      <div className='DivPai' >
-      <div className="background-Cadastro">
+      <div className='DPCI' >
+      <div className="BCCI">
 
         <Navbar />
 
 
-        <div className='DivNeto' >
-        <div className='DivBisNeto'>
+        <div className='DNCI' >
+        <div className='DBNCI'>
 
-        <div className='DivInfCadast'>
+        <div className='DICCI'>
       <h1 style={{ fontSize: "25px", marginBottom: "10px", marginTop: "10px", fontFamily: "Inter", fontWeight: "800" }}>Já possui conta?</h1>
       <p style={{ fontFamily: "Inter", fontWeight: "400" }}>Entre e continue sua jornada de </p>
         <p style={{ fontFamily: "Inter", fontWeight: "400",marginBottom: "20px"}}>transmissão de esperança..</p>
@@ -88,9 +88,9 @@ export default function CadastroIntermediario(){
 
     </div>
 
-    <div className="DivFundoBranco">
+    <div className="DFBCI">
         <center>
-        <h1 className='h1Cadastrar'>Cadastro Intermediario</h1>
+        <h1 className='h1CadastrarCI'>Cadastro Intermediario</h1>
         </center>
 
         <form onSubmit={handleSubmit}>

@@ -1,10 +1,13 @@
-.DivFilho {
+.DFFACADOA {
     display: flex;
     flex-direction: row;
 }
 
-
-.DivImagem {
+.DPFACADOA{
+    height: 100%;
+    width: 100%;
+}
+.DIFACADOA {
 
     position: relative;
     background-size: cover;
@@ -19,7 +22,7 @@
     width: 100%;
 }
 
-.DivFundoPai {
+.DFPFACADOA {
 
     position: absolute;
     /* Define a posição absoluta */
@@ -39,7 +42,7 @@
 
 }
 
-.DivFundoFilho {
+.DFFFACADOA {
 
     background-color: white;
     width: 90%;
@@ -55,7 +58,7 @@
     overflow-y: auto;
 }
 
-.titulo {
+.tituloFACADOA {
     text-align: center;
     margin-top: -20px;
     font-size: 30px;
@@ -82,7 +85,7 @@
 }
 
 
-.coluna1 {
+.coluna1FACADOA {
 
     width: 45%;
     position: absolute;
@@ -93,7 +96,7 @@
 }
 
 
-.coluna2 {
+.coluna2FACADOA {
 
     width: 45%;
     position: absolute;
@@ -104,32 +107,32 @@
 
 }
 
-.form-group {
+.form-groupFACADOA {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 
-.categoriaLabel {
+.categoriaLabelFACADOA {
 
     padding-left: 80px;
     padding-top: 20px;
 
 }
 
-.quantLabel {
+.quantLabelFACADOA {
 
     padding-top: 20px;
 
 }
 
-.validadeLabel {
+.validadeLabelFACADOA {
 
     padding-top: 20px;
 }
 
-.quant {
+.quantFACADOA {
 
     width: 30%;
     position: relative;
@@ -137,7 +140,7 @@
 
 }
 
-.catego {
+.categoFACADOA {
 
     position: relative;
     width: 60%;
@@ -151,18 +154,18 @@
     padding-top: 10px;
 }
 
-.descricaoLabel {
+.descricaoLabelFACADOA {
 
     padding-top: 20px;
 }
 
-.ruaLabel {
+.ruaLabelFACADOA {
 
     padding-top: 20px;
 }
 
 
-.btnEnvi {
+.btnEnviFACADOA {
 
     position: absolute;
     margin: 0 auto;
@@ -180,9 +183,9 @@
     margin-bottom: 10px;
 }
 
-.btnEnvi:hover,
-.btnEnvi:focus,
-.btnEnvi:active {
+.btnEnviFACADOA:hover,
+.btnEnviFACADOA:focus,
+.btnEnviFACADOA:active {
     background-color: rgba(63, 173, 180, 1);
     /* Mantém a cor de fundo ao passar o mouse, focar ou clicar */
 }

@@ -164,18 +164,18 @@ export default function FacaDoacao() {
 
   return (
 
-    <div className="DivPai">
+    <div className="DPFACADOA">
       <Navbar />
-      <div className="DivFilho">
+      <div className="DFFACADOA">
         <Menu />
 
-        <div className="DivImagem">
-          <div className="DivFundoPai">
+        <div className="DIFACADOA">
+          <div className="DFPFACADOA">
 
             <BackButton />
 
-            <h1 className="titulo">Faça sua doação</h1>
-            <div className="DivFundoFilho">
+            <h1 className="tituloFACADOA">Faça sua doação</h1>
+            <div className="DFFFACADOA">
 
               <center>
                 <h1 style={{ paddingTop: "20px" }}>Dados da Doação</h1>
@@ -184,7 +184,7 @@ export default function FacaDoacao() {
 
               <form onSubmit={handleSubmit}>
 
-                <div className="coluna1">
+                <div className="coluna1FACADOA">
                   <label>
                     Nome do Produto:
                   </label>
@@ -192,18 +192,18 @@ export default function FacaDoacao() {
                     placeholder="Digite o nome do produto..." value={nome_alimento}
                     onChange={(e) => setNome(e.target.value)} />
 
-                  <label className="quantLabel">
+                  <label className="quantLabelFACADOA">
                     Quantidade:
                   </label>
-                  <label className="categoriaLabel">
+                  <label className="categoriaLabelFACADOA">
                     Categoria:
                   </label>
 
-                  <div class="form-group">
-                    <input type="text" name="quantidade" class="form-control quant"
+                  <div class="form-groupFACADOA">
+                    <input type="text" name="quantidade" class="form-control quantFACADOA"
                       placeholder="quant." value={quantidade}
                       onChange={(e) => setQuant(e.target.value)} />
-                    <select name="categoria" className="form-control catego" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
+                    <select name="categoria" className="form-control categoFACADOA" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
                       <option value="">Selecione a categoria</option>
                       <option value="fruta">Fruta</option>
                       <option value="tuberculo">Tubérculo</option>
@@ -216,7 +216,7 @@ export default function FacaDoacao() {
                     </select>
                   </div>
 
-                  <label className="validadeLabel">
+                  <label className="validadeLabelFACADOA">
                     Validade do produto:
                   </label>
                   <input type="date" name="validade" class="form-control"
@@ -224,7 +224,7 @@ export default function FacaDoacao() {
                     onChange={(e) => setValidade(e.target.value)} />
 
 
-                  <label className="cidadeLabel">
+                  <label className="cidadeLabelFACADOA">
                     Cidade:
                   </label>
                   <input type="text" name="cidade" class="form-control" value={cidade}
@@ -233,21 +233,21 @@ export default function FacaDoacao() {
                 </div>
 
 
-                <div className="coluna2">
+                <div className="coluna2FACADOA">
                   <label>
                     Foto do Produto:
                   </label>
                   <input type="file" name="foto" class="form-control"
                     onChange={handleFileChange} accept="image" />
 
-                  <label className="descricaoLabel">
+                  <label className="descricaoLabelFACADOA">
                     Descrição:
                   </label>
                   <input name="descricao" placeholder="Digite mais detalhes..." class="form-control descr" value={descricao}
                     onChange={(e) => setDescricao(e.target.value)} />
 
 
-                  <label className="ruaLabel">
+                  <label className="ruaLabelFACADOA">
                     Rua:
                   </label>
                   <input type="text" name="rua" class="form-control" value={rua}
@@ -262,7 +262,7 @@ export default function FacaDoacao() {
 
                 </div>
 
-                <button className="btnEnvi" type='submit'>Enviar</button>
+                <button className="btnEnviFACADOA" type='submit'>Enviar</button>
 
               </form>
 

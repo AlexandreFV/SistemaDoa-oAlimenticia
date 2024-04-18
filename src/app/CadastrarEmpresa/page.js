@@ -70,16 +70,16 @@ export default function CadastrarEmpresa(){
 
     return(
 
-      <div className='DivPai' >
-      <div className="background-Cadastro">
+      <div className='DPCE' >
+      <div className="BCCE">
 
         <Navbar />
 
 
-        <div className='DivNeto' >
-        <div className='DivBisNeto'>
+        <div className='DNCE' >
+        <div className='DBNCE'>
 
-        <div className='DivInfCadast'>
+        <div className='DICCE'>
       <h1 style={{ fontSize: "25px", marginBottom: "10px", marginTop: "10px", fontFamily: "Inter", fontWeight: "800" }}>Já possui conta?</h1>
       <p style={{ fontFamily: "Inter", fontWeight: "400" }}>Entre e contribua para um </p>
         <p style={{ fontFamily: "Inter", fontWeight: "400",marginBottom: "20px"}}>Futuro melhor.</p>
@@ -88,9 +88,9 @@ export default function CadastrarEmpresa(){
 
     </div>
 
-    <div className="DivFundoBranco">
+    <div className="DFBCE">
         <center>
-        <h1 className='h1Cadastrar'>Cadastro Empresa</h1>
+        <h1 className='h1CadastrarCE'>Cadastro Empresa</h1>
         </center>
 
         <form onSubmit={handleSubmit}>

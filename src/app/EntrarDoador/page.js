@@ -64,25 +64,25 @@ export default function EntrarDoador(){
 
     return(
 
-      <div className='DivPai' >
-        <div className="background-Cadastro">
+      <div className='DPENTRARDOADOR' >
+        <div className="BCENTRARDOADOR">
 
         <Navbar />
 
 
-    <div className="DivNeto">
-    <div className="DivBisNeto">
+    <div className="DNENTRARDOADOR">
+    <div className="DBNENTRARDOADOR">
 
-    <div className="DivInfEntrar">
+    <div className="DIEENTRARDOADOR">
       <h1 style={{ fontSize: "25px", marginBottom: "10px", marginTop: "10px", fontFamily: "Inter", fontWeight: "800" }}>Não possui conta?</h1>
       <p style={{ fontFamily: "Inter", fontWeight: "400" }}>Cadastre-se e ajude pessoas </p>
       <p style={{ fontFamily: "Inter", fontWeight: "400", marginBottom: "20px" }}>com necessidades..</p>
       <CustomButton href="/CadastrarDoador" className="button btn" buttonText="Cadastrar"/>
     </div>
 
-    <div className="DivFundoBranco">
+    <div className="DFBENTRARDOADOR">
         <center>
-        <h1 className='h1Entrar'>Entrar como Doador</h1>
+        <h1 className='h1EntrarENTRARDOADOR'>Entrar como Doador</h1>
         </center>
         <form onSubmit={handleSubmit}>
 

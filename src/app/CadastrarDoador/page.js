@@ -70,16 +70,16 @@ export default function CadastroDoador(){
     
     return(
 
-      <div className='DivPai' >
-      <div className="background-Cadastro">
+      <div className='DPCD' >
+      <div className="BCCD">
 
         <Navbar />
 
 
-        <div className='DivNeto' >
-        <div className='DivBisNeto'>
+        <div className='DNCD' >
+        <div className='DBNCD'>
 
-        <div className='DivInfCadast'>
+        <div className='DICCD'>
       <h1 style={{ fontSize: "25px", marginBottom: "10px", marginTop: "10px", fontFamily: "Inter", fontWeight: "800" }}>Já possui conta?</h1>
       <p style={{ fontFamily: "Inter", fontWeight: "400", marginBottom: "20px" }}>Entre e seja Solidário.</p>
       <CustomButton href="/EntrarDoador" className="button btn" buttonText="Entrar"/>
@@ -87,9 +87,9 @@ export default function CadastroDoador(){
 
     </div>
 
-    <div className="DivFundoBranco">
+    <div className="DFBCD">
         <center>
-        <h1 className='h1Cadastrar'>Cadastro Doador</h1>
+        <h1 className='h1CadastrarCD'>Cadastro Doador</h1>
         </center>
 
         <form onSubmit={handleSubmit}>

@@ -1,4 +1,4 @@
-.background-Cadastro {
+.BCCI {
 
     position: relative;
     width: 100vw;
@@ -8,7 +8,7 @@
     filter: brightness(95%);
 }
 
-.DivPai {
+.DPCI {
 
     height: 100vh;
     display: flex;
@@ -16,7 +16,7 @@
     align-items: center;
 }
 
-.DivNeto {
+.DNCI {
 
     display: flex;
     justify-content: center;
@@ -24,7 +24,7 @@
     margin-top: 60px;
 }
 
-.DivBisNeto {
+.DBNCI {
 
     background-color: #EDEDED;
     height: 500px;
@@ -36,7 +36,7 @@
     border-radius: 10px;
 }
 
-.DivInfCadast {
+.DICCI {
 
     display: flex;
     flex-direction: column;
@@ -71,7 +71,7 @@
     font-weight: 800;
 }
 
-.DivFundoBranco {
+.DFBCI {
 
     color: white;
     background-color: #578925;
@@ -83,7 +83,7 @@
     margin-right: 50px;
 }
 
-.h1Cadastrar {
+.h1CadastrarCI {
 
     font-size: 25px;
     margin-top: 15px;
