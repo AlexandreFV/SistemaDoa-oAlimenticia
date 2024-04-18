@@ -82,7 +82,7 @@ export default function MinhasDoacoes() {
 
                   </div>
 
-                  <div class="modal-content custom-modal-line"> </div>
+                  <div class="modal-content custom-modal-line" style={{height:"3px"}}> </div>
 
                   {doacoes.map((doacao, index) => (
                     <div>
