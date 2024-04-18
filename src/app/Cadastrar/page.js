@@ -72,8 +72,8 @@ export default function Cadastrar() {
                 <img className="userwhitedoador" src="/userwhite.png" />
 
                 <div className="DivButtonUserCadastro">
-                  <CustomButton href="/EntrarDoador" className="button btn" buttonText="Entrar" />
-                  <CustomButton href="/CadastrarDoador" className="button btn" buttonText="Cadastrar" />
+                  <CustomButton href="/EntrarProdutor" className="button btn" buttonText="Entrar" />
+                  <CustomButton href="/CadastrarProdutor" className="button btn" buttonText="Cadastrar" />
                 </div>
               </div>
             </div>

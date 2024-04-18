@@ -82,7 +82,7 @@ export default function CadastroDoador(){
         <div className='DICCD'>
       <h1 style={{ fontSize: "25px", marginBottom: "10px", marginTop: "10px", fontFamily: "Inter", fontWeight: "800" }}>Já possui conta?</h1>
       <p style={{ fontFamily: "Inter", fontWeight: "400", marginBottom: "20px" }}>Entre e seja Solidário.</p>
-      <CustomButton href="/EntrarDoador" className="button btn" buttonText="Entrar"/>
+      <CustomButton href="/EntrarProdutor" className="button btn" buttonText="Entrar"/>
       {erroCadastro && <ErroCadastro erro={erroCadastro} />}
 
     </div>

@@ -77,12 +77,12 @@ export default function EntrarDoador(){
       <h1 style={{ fontSize: "25px", marginBottom: "10px", marginTop: "10px", fontFamily: "Inter", fontWeight: "800" }}>Não possui conta?</h1>
       <p style={{ fontFamily: "Inter", fontWeight: "400" }}>Cadastre-se e ajude pessoas </p>
       <p style={{ fontFamily: "Inter", fontWeight: "400", marginBottom: "20px" }}>com necessidades..</p>
-      <CustomButton href="/CadastrarDoador" className="button btn" buttonText="Cadastrar"/>
+      <CustomButton href="/CadastrarProdutor" className="button btn" buttonText="Cadastrar"/>
     </div>
 
     <div className="DFBENTRARDOADOR">
         <center>
-        <h1 className='h1EntrarENTRARDOADOR'>Entrar como Doador</h1>
+        <h1 className='h1EntrarENTRARDOADOR'>Entrar como Produtor</h1>
         </center>
         <form onSubmit={handleSubmit}>
 
