@@ -53,7 +53,7 @@ export default function MenuEmpresa() {
 
                 <div style={{ paddingTop: "16px" }}>
                     <div style={{ float: "left" }}>
-                        <CustomButton href={"/HistorContrib"} className={"btnn"} buttonText={"Histórico de Contribuição"} textStyle={{ marginLeft: "1rem" }} onClick={() => handleButtonClick("HistoricoContribuicao")} />
+                        <CustomButton href={"/HistoricoContribuicao"} className={"btnn"} buttonText={"Histórico de Contribuição"} textStyle={{ marginLeft: "1rem" }} onClick={() => handleButtonClick("HistoricoContribuicao")} />
                     </div>
                     <img id="arrow2" src="/SetaDireita.png" style={{ marginTop: "4px", visibility: shouldShowImage("HistoricoContribuicao") ? "visible" : "hidden" }}></img>
                 </div>

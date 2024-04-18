@@ -2,7 +2,7 @@
 
 import Navbar from "../components/layoutCadastroLogin";
 import "./style.css";
-import MenuDireito from "../components/MenuBeneficiario";
+import MenuDireito from "../components/MenuEmpresa";
 import { BackButton, CustomButton } from "../components/customButton";
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import jwt from 'jsonwebtoken';
 import { Cedarville_Cursive } from "next/font/google";
 
-export default function Beneficiario() {
+export default function HistoricoContribuicao() {
     const router = useRouter();
     
     useEffect(() => {
@@ -22,7 +22,7 @@ export default function Beneficiario() {
         }else {
 
         const userType = localStorage.getItem("userType");
-        if(userType != "beneficiario"){
+        if(userType != "empresa"){
             router.push("/PermissaoNegadaIntermediario");
         }
         } 
@@ -35,10 +35,10 @@ export default function Beneficiario() {
                 <div className="DIBF">
                     <div className="DFPBF">
                         <BackButton />
-                        <h1 className="HMDBF">Instituição doadora</h1>
+                        <h1 className="HMDBF">Histórico de Contribuição</h1>
                         <div className="DFFBF">
                             <div style={{ display: "flex", alignItens: "center", textAlign: "center" }}>
-                                <h1 style={{ display: "flex", justifyContent: "center", alignItems: "center", left: "1.6rem" }} className="h1ProdutosEnv">Intermediário(s) doadore(s)</h1>
+                                <h1 style={{ display: "flex", justifyContent: "center", alignItems: "center", left: "1.6rem" }} className="h1ProdutosEnv">Lista Intermediários - Envio de Contribuição</h1>
                                 <div style={{ marginRight: "1.2rem", marginTop: "1rem" }}>
                                     <img src="./filtrar.png" className="IFBF"></img>
                                     <p >Filtro</p>
@@ -58,13 +58,10 @@ export default function Beneficiario() {
                                 </div>
                                 <div className="linha_vertical" style={{ backgroundColor: "black", height: "100%", width: "2px", marginLeft: "auto", marginRight: "0" }}></div>
                                 <div style={{ flexWrap: "wrap", marginLeft: "2rem", marginRight: "auto", marginTop: "1rem" }}>
-                                    <p style={{ fontFamily: "Inter" }}>Produto doado: Maçã</p>
-                                    <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Categoria: Fruta</p>
-                                    <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Quantidade: 10</p>
-                                    <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Data de doação: 10/10/2024</p>
+                                    <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Data da Contribuição: 00/00/0000</p>
+                                    <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Valor enviado: R$0.000,00</p>
                                 </div>
                             </div>
-                            <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '500', textAlign: "right", marginRight: "5%" }}><b>Prazo máximo de entrega: 7 dias</b></div>
                         </div>
                     </div>
                 </div>

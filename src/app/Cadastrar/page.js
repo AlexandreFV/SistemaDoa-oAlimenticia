@@ -114,8 +114,8 @@ export default function Cadastrar() {
                 <img className="userwhiteEmp" src="/userwhite.png" />
 
                 <div className="DivButtonUserCadastro" style={{ display: "flex", justifyContent: "space-around", width: "100%" }}>
-                  <CustomButton href="/EntrarIntermediario" className="button btn" buttonText="Entrar" />
-                  <CustomButton href="/CadastrarIntermediario" className="button btn" buttonText="Cadastrar" />
+                  <CustomButton href="/EntrarEmpresa" className="button btn" buttonText="Entrar" />
+                  <CustomButton href="/CadastrarEmpresa" className="button btn" buttonText="Cadastrar" />
                 </div>
               </div>
             </div>
