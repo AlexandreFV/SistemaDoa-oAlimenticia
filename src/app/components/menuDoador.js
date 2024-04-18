@@ -29,7 +29,7 @@ export default function menuDoador() {
 
                 <div style={{ paddingTop: "40px" }}>
                     <div style={{ float: "left" }}>
-                        <CustomButton rel="preload" href={"/FacaDoacao"} className={"btnn"} buttonText={"Fazer Doação"} textStyle={{ marginLeft: "1rem" }} />
+                        <CustomButton rel="preload" href={"/facaDoacao"} className={"btnn"} buttonText={"Fazer Doação"} textStyle={{ marginLeft: "1rem" }} />
                     </div>
                     <img src="/SetaDireita.png" style={{ marginTop: "4px" }}></img>
                 </div>

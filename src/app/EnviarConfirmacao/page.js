@@ -11,10 +11,11 @@ import Link from 'next/link';
 import { useRouter } from "next/navigation";
 import jwt from 'jsonwebtoken';
 
-export default function MinhasDoacoes() {
-  const router = useRouter();
-  const [doacoes, setDoacoes] = useState([]);
-  const [doacaoIdToDelete, setDoacaoIdToDelete] = useState(null);
+export default function EnviarConfirmacao() {
+
+  const [isChecked, setIsChecked] = useState(false);
+    const [doacoes, setDoacoes] = useState([]);
+    const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -23,8 +24,8 @@ export default function MinhasDoacoes() {
       router.push('/Cadastrar');
     } else {
       const UserType = localStorage.getItem('userType');
-      if (UserType !== 'doador') {
-        router.push("/PermissaoNegada");
+      if (UserType !== 'intermediario') {
+        router.push("/PermissaoNegadaIntermediario");
       }
     }
   }, []);
@@ -33,17 +34,16 @@ export default function MinhasDoacoes() {
     const fetchDoacoes = async () => {
       try {
         const token = localStorage.getItem('token');
-        const decodedToken = jwt.decode(token);
-        const usuariodoadorId = decodedToken.id;
 
-        const response = await fetch(`http://localhost:3001/MinhasDoacoes/${usuariodoadorId}`, {
+        const response = await fetch(`http://localhost:3001/ColetarDoacao`, {
           headers: {
             'Authorization': `Bearer ${token}`
-          }
+          },
+          
         });
         if (response.ok) {
           const data = await response.json();
-          setDoacoes(data.doacoes);
+          setDoacoes(data);
         } else {
           console.error('Erro ao buscar doações:', response.statusText);
         }
@@ -66,32 +66,26 @@ export default function MinhasDoacoes() {
       <Navbar></Navbar>
       <div className="DF">
         <MenuDireito />
-        {doacaoIdToDelete && (
-  <ModalExclusao id={doacaoIdToDelete} />
-)}
+       
+
         <div className="DI">
           <div className="DFP">
             <img src="/iconbtnvoltar.png" alt="Ícone de voltar" className="VI"></img>
-            <h1 className="HMD">Minhas doações</h1>
+            <h1 className="HMD">Enviar produtos doados</h1>
             <div className="DFF">
-              {doacoes.length === 0 ? (
-                <div>
-                  <img src="/triste.png" className="IT"></img>
-                  <h1 className="HND">Você ainda não efetuou nenhuma doação.</h1>
-                  <p className="PSP">Seja parte da solução.</p>
-                  <p className="PSPD">Sua primeira doação é o primeiro passo para um mundo melhor.</p>
-                  <CustomButton href={"/facaDoacao"} className={"BPN"} buttonText={"Doe agora"} />
-                </div>
-              ) : (
+              
+               
                 <div>
                   <div style={{ display: "flex", alignItens: "center", textAlign: "center" }}>
-                    <h1 className="HPE">Produtos Doados</h1>
+                    <h1 className="HPE">Confirmar envio</h1>
                     <img src="./filtrar.png" className="IF"></img>
                   </div>
-
+                    
                   <div class="modal-content custom-modal-line" style={{height:"3px"}}> </div>
+                  <h1 className="NameB">Nome do Beneficiario</h1>
                   {doacoes.map((doacao, index) => (
                     <div>
+                      
                       <div key={index} className="DD" >
                         <img
                         id="img"
@@ -132,7 +126,7 @@ export default function MinhasDoacoes() {
                   ))}
                 </div>
                 
-              )}
+              
             </div>
           </div>
         </div>
