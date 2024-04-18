@@ -50,14 +50,52 @@
     margin-right: 5%;
     border-radius: 5px;
     position: relative;
-    margin-top: 20px;
+    margin-top: 50px;
     max-height: 450px;
     overflow-y: auto;
 }
 
+.faixaEsquerda {
+    background-color: #7D9E65;
+    width: 5rem;
+    height: 100%;
+    float: left;
+    display: block;
+}
+
+.faixaDireita {
+    background-color: #7D9E65;
+    width: 5rem;
+    height: 100%;
+    float: right;
+    display: block;
+}
+
+@media (max-width: 1430px) {
+
+    .faixaEsquerda,
+    .faixaDireita {
+        display: none;
+    }
+}
+
+.posfundoFilho {
+    background-color: white;
+    width: 35rem;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 1185px) {
+    .posfundoFilho {
+        width: 100%;
+    }
+}
+
 .titulo {
     text-align: center;
-    margin-top: -20px;
+    margin-top: -30px;
     font-size: 30px;
     font-family: 'Poller One', sans-serif;
 }
@@ -78,29 +116,6 @@
     width: 3.5rem;
     height: 3.5rem;
     opacity: 100%;
-
-}
-
-
-.coluna1 {
-
-    width: 45%;
-    position: absolute;
-    left: 0;
-    margin: 0 auto;
-    padding-left: 40px;
-    padding-top: 20px;
-}
-
-
-.coluna2 {
-
-    width: 45%;
-    position: absolute;
-    right: 0;
-    margin: 0 auto;
-    padding-right: 40px;
-    padding-top: 20px;
 
 }
 
@@ -148,13 +163,10 @@
 
 
 .btnEnvi {
-
-    position: absolute;
     margin: 0 auto;
-    text-align: center;
-    left: 50%;
-    transform: translateX(-50%);
-    display: block;
+    align-items: center;
+    display: flex;
+    justify-content: center;
     background-color: rgba(63, 173, 180, 0.87);
     color: white;
     width: 100px;
@@ -171,6 +183,22 @@
     /* Mantém a cor de fundo ao passar o mouse, focar ou clicar */
 }
 
-.form-control {
-    width: 18rem;
+.campoValor {
+    margin-left: auto;
+}
+
+.poscampoValor .form-control {
+    width: 91% !important;
+}
+
+.valorEnvio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width: 1185px) {
+    .valorEnvio {
+        gap: 7%;
+    }
 }
