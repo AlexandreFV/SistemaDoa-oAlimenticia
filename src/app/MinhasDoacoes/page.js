@@ -4,6 +4,8 @@ import Navbar from "../components/layoutCadastroLogin";
 import "./style.css";
 import MenuDireito from "../components/menuDoador";
 import CustomButton from "../components/customButton";
+import ModalExclusao from "../components/modalExclusao";
+
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
@@ -12,7 +14,7 @@ import jwt from 'jsonwebtoken';
 export default function MinhasDoacoes() {
   const router = useRouter();
   const [doacoes, setDoacoes] = useState([]);
- 
+  const [doacaoIdToDelete, setDoacaoIdToDelete] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -53,13 +55,20 @@ export default function MinhasDoacoes() {
     fetchDoacoes();
   }, []);
 
- 
+  const handleApagarDoacao = (id) => {
+    setDoacaoIdToDelete(id);
+    console.log(doacaoIdToDelete);
+  };
+
 
   return (
     <div className="DP">
       <Navbar></Navbar>
       <div className="DF">
         <MenuDireito />
+        {doacaoIdToDelete && (
+  <ModalExclusao id={doacaoIdToDelete} />
+)}
         <div className="DI">
           <div className="DFP">
             <img src="/iconbtnvoltar.png" alt="Ícone de voltar" className="VI"></img>
@@ -80,7 +89,7 @@ export default function MinhasDoacoes() {
                     <img src="./filtrar.png" className="IF"></img>
                   </div>
 
-                  <div class="modal-content custom-modal-line"> </div>
+                  <div class="modal-content custom-modal-line" style={{height:"3px"}}> </div>
                   {doacoes.map((doacao, index) => (
                     <div>
                       <div key={index} className="DD" >
@@ -109,14 +118,17 @@ export default function MinhasDoacoes() {
                           <p className="endereco" style={{ textAlign: "center" }}>{doacao.cidade}</p>
                         </div>
 
-                        <img src="./edit.png" style={{ height: "20px", marginRight: "10px" }}></img>
-                        <img src="./lixeira.png" style={{ height: "20px", marginRight: "20px" }}></img>
+                        <button style={{ height: "30px", marginRight: "20px" }} type="button" data-toggle="modal" data-target="#exampleModalCenter"  onClick={() => handleApagarDoacao(doacao.id)}>
+                        <img src="./lixeira.png" style={{ height: "20px"}}></img>
+                        </button>
+
                       </div>
                       <p style={{ marginTop: "-20px", padding: "0px", marginRight: "5%", width: "90%", marginLeft: "5%", textAlign: "right" }}>
                         Data de doação: {doacao.createdAt && new Date(doacao.createdAt).toLocaleDateString()}
                       </p>
                     </div>
 
+                  
                   ))}
                 </div>
                 

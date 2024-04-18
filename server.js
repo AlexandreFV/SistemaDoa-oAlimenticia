@@ -756,3 +756,41 @@ app.get("/ListarBeneficiario", checkToken, verificarUsuarioIntermediario, async 
 });
 
 
+
+app.get("/InfoMinhaDoacao/:id",checkToken, verificarUsuarioDoador, async function (req, res) {
+  const id = req.params.id;
+
+  try {
+    // Busca a doação com base no ID fornecido
+    const doacaoEncontrada = await doacao.findByPk(id, {
+      attributes: { exclude: ['foto'] }
+    });
+    // Verifica se a doação foi encontrada
+    if (!doacaoEncontrada) {
+      return res.status(404).json({ error: "Doação não encontrada" });
+    }
+
+    res.status(200).json(doacaoEncontrada);
+  } catch (error) {
+    console.error("Erro ao buscar doação:", error);
+    res.status(500).json({ error: "Erro ao buscar doação" });
+  }
+});
+
+app.delete("/ApagarDoacao/:id",checkToken, verificarUsuarioDoador, async function (req,res){
+    const id = req.params.id;
+
+    try{
+
+      const doacaoApagar = await doacao.findByPk(id);
+      if(!doacaoApagar){
+        res.status(404).json({error:"Doacao Não encontrada!"});
+      }
+      doacaoApagar.destroy();
+
+      res.status(200).json ({message:"Doação Apagada!"});
+    
+    } catch (error){
+      res.status(500).json ({error:"Erro ao Buscar Doação"});
+    }
+})

@@ -22,6 +22,7 @@ export default function FacaDoacao() {
   const [userData, setUserData] = useState(null); // Armazena as informações do usuário
   const [erroCadastro, setErroCadastro] = useState(""); // Estado para armazenar a mensagem de erro
   const [succesCadastro, setSuccesCadastro] = useState(""); // Estado para armazenar a mensagem de erro
+  const [fileError, setFileError] = useState(""); // Estado para armazenar a mensagem de erro do campo de arquivo
 
   const router = useRouter();
 
@@ -130,19 +131,30 @@ export default function FacaDoacao() {
   // Função para lidar com a alteração do campo de arquivo
   const handleFileChange = (event) => {
     if (event.target.files.length) {
-      const fileSize = event.target.files[0].size;
-      const fileMb = fileSize / ((1024 ** 2));
-      alert(`${fileMb} MB`);
-      if (fileMb <= 16) {
-        const file = event.target.files[0];
-        setFoto(file);
+      const file = event.target.files[0];
+      const fileType = file.type;
+  
+      // Verifica se o tipo de arquivo é uma imagem
+      if (fileType.startsWith("image/")) {
+        const fileSize = file.size;
+        const fileMb = fileSize / (1024 ** 2);
+  
+        if (fileMb <= 16) {
+          setFoto(file);
+        } else {
+          event.target.value = null;
+          alert("O arquivo selecionado é muito grande. Selecione um arquivo menor.");
+          setFileError("O arquivo selecionado é muito grande. Selecione um arquivo menor.");
+        }
       } else {
         event.target.value = null;
-        alert("O arquivo selecionado é muito grande. Selecione um arquivo menor.");
+        alert("O arquivo selecionado não é uma imagem. Por favor, selecione um arquivo de imagem.");
+        setFileError("O arquivo selecionado não é uma imagem. Por favor, selecione um arquivo de imagem.");
+
       }
     }
-
   };
+  
 
 
   // Função para limpar o estado do erro quando o formulário é submetido novamente
@@ -180,7 +192,7 @@ export default function FacaDoacao() {
               <center>
                 <h1 style={{ paddingTop: "20px" }}>Dados da Doação</h1>
               </center>
-              <div class="modal-content custom-modal-line"> </div>
+              <div class="modal-content custom-modal-line" style={{height:"3px"}}> </div>
 
               <form onSubmit={handleSubmit}>
 
@@ -237,8 +249,10 @@ export default function FacaDoacao() {
                   <label>
                     Foto do Produto:
                   </label>
+                  
                   <input type="file" name="foto" class="form-control"
-                    onChange={handleFileChange} accept="image" />
+                    onChange={handleFileChange}   accept="image/*" 
+                    />
 
                   <label className="descricaoLabelFACADOA">
                     Descrição:
