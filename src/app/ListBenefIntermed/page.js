@@ -30,19 +30,19 @@ export default function ListProdutorIntermed() {
     })
 
     return (
-        <div className="DivPai">
+        <div className="DPLISTBENE">
             <Navbar></Navbar>
-            <div className="DivFilho">
+            <div className="DFINFOPROD">
                 <MenuDireito />
-                <div className="DivImagem">
-                    <div className="DivFundoPai">
+                <div className="DIINFOPROD">
+                    <div className="DFPINFOPROD">
                         <BackButton />
-                        <h1 className="h1MinDoa">Beneficiários</h1>
-                        <div className="DivFundoFilho">
+                        <h1 className="h1MinDoaINFOPROD">Beneficiários</h1>
+                        <div className="DFFINFOPROD">
                             <div style={{ display: "flex", alignItens: "center", textAlign: "center" }}>
-                                <h1 style={{ display: "flex", justifyContent: "center", alignItems: "center", left: "1.6rem" }} className="h1ProdutosEnv">Lista de Beneficiários - Produtos enviados</h1>
+                                <h1 style={{ display: "flex", justifyContent: "center", alignItems: "center", left: "1.6rem" }} className="h1ProdutosEnvINFOPROD">Lista de Beneficiários - Produtos enviados</h1>
                                 <div style={{ marginRight: "1.2rem", marginTop: "1rem" }}>
-                                    <img src="./filtrar.png" className="imgFiltrar"></img>
+                                    <img src="./filtrar.png" className="imgFiltrarINFOPROD"></img>
                                     <p >Filtro</p>
                                 </div>
                             </div>

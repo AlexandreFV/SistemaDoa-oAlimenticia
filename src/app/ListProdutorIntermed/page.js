@@ -52,19 +52,19 @@
         }, []);
         
         return (
-            <div className="DivPai">
+            <div className="DPLISTPRODINTER">
                 <Navbar></Navbar>
-                <div className="DivFilho">
+                <div className="DFLISTPRODINTER">
                     <MenuDireito />
-                    <div className="DivImagem">
-                        <div className="DivFundoPai">
+                    <div className="DILISTPRODINTER">
+                        <div className="DFPLISTPRODINTER">
                             <BackButton />
-                            <h1 className="h1MinDoa">Produtores</h1>
-                            <div className="DivFundoFilho">
+                            <h1 className="h1MinDoaLISTPRODINTER">Produtores</h1>
+                            <div className="DFFLISTPRODINTER">
                                 <div style={{ display: "flex", alignItens: "center", textAlign: "center" }}>
-                                    <h1 style={{ display: "flex", justifyContent: "center", alignItems: "center", left: "1.6rem" }} className="h1ProdutosEnv">Lista de Produtores - Produtos coletados</h1>
+                                    <h1 style={{ display: "flex", justifyContent: "center", alignItems: "center", left: "1.6rem" }} className="h1ProdutosEnvLISTPRODINTER">Lista de Produtores - Produtos coletados</h1>
                                     <div style={{ marginRight: "1.2rem", marginTop: "1rem" }}>
-                                        <img src="./filtrar.png" className="imgFiltrar"></img>
+                                        <img src="./filtrar.png" className="imgFiltrarLISTPRODINTER"></img>
                                         <p >Filtro</p>
                                     </div>
                                 </div>

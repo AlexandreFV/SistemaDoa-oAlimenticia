@@ -1,10 +1,14 @@
-.DivFilho {
+.DFLISTPRODINTER {
     display: flex;
     flex-direction: row;
 }
 
+.DPLISTPRODINTER{
+    height: 100%;
+    width: 100%;
+}
 
-.DivImagem {
+.DILISTPRODINTER {
 
     position: relative;
     background-size: cover;
@@ -19,7 +23,7 @@
     width: 100%;
 }
 
-.DivFundoPai {
+.DFPLISTPRODINTER {
 
     position: absolute;
     /* Define a posição absoluta */
@@ -47,14 +51,14 @@
     height: 3.5rem;
 }
 
-.h1MinDoa {
+.h1MinDoaLISTPRODINTER {
     text-align: center;
     margin-top: -20px;
     font-size: 30px;
     font-family: 'Poller One', sans-serif;
 }
 
-.DivFundoFilho {
+.DFFLISTPRODINTER {
 
     background-color: white;
     width: 90%;
@@ -70,7 +74,7 @@
     overflow-y: auto;
 }
 
-.h1ProdutosEnv {
+.h1ProdutosEnvLISTPRODINTER {
 
     text-align: center;
     justify-content: center;
@@ -83,7 +87,7 @@
 
 }
 
-.imgFiltrar {
+.imgFiltrarLISTPRODINTER {
     width: 20px;
     display: inline-block;
     height: 25px;

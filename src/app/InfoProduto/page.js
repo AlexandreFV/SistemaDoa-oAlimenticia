@@ -97,16 +97,16 @@ export default function InfoProduto() {
 
 
     return (
-        <div className="DivPai">
+        <div className="DPINFOPROD">
             <Navbar></Navbar>
-            <div className="DivFilho">
+            <div className="DFINFOPROD">
                 <MenuDireito />
 
-                <div className="DivImagem">
-                    <div className="DivFundoPai">
+                <div className="DIINFOPROD">
+                    <div className="DFPINFOPROD">
                         <BackButton />
-                        <h1 className="h1MinDoa">Informações do Produto</h1>
-                        <div className="DivFundoFilho">
+                        <h1 className="h1MinDoaINFOPROD">Informações do Produto</h1>
+                        <div className="DFFINFOPROD">
 
                             <div className="nome_contact" >
                                 <p style={{ float: "left", marginTop: "3.5rem", marginLeft: "2.2rem", fontSize: "1.2rem", alignItems: "center", fontWeight: "bold" }}>{doacao && doacao.usuariodoador.nome}</p>
