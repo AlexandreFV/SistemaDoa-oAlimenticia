@@ -1,5 +1,6 @@
 import CustomButton from "./customButton";
 import "./MenuEmpresa.css";
+import { useState, useEffect } from "react";
 
 export default function MenuEmpresa() {
 
@@ -30,7 +31,7 @@ export default function MenuEmpresa() {
 
             <div style={{
                 paddingTop: "15px", color: "white", paddingLeft: "10px", backgroundColor: "#7D9E65",
-                width: "250px", height: "130px", borderBottomRightRadius: "20px", borderTopRightRadius: "20px",
+                width: "280px", height: "130px", borderBottomRightRadius: "20px", borderTopRightRadius: "20px",
                 marginTop: "40px", boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)", zIndex: 2, position: "relative", display: "inline-block"
             }}>
 
@@ -41,7 +42,7 @@ export default function MenuEmpresa() {
                 <p style={{ textAlign: "center" }}>fortalece com sua empresa!</p>
             </div>
 
-            <div style={{ color: "white", backgroundColor: "#FEFEFE", top: -15, width: "250px", height: "250px", borderBottomRightRadius: "20px", position: "relative", zIndex: 1 }}>
+            <div style={{ color: "white", backgroundColor: "#FEFEFE", top: -15, width: "280px", height: "250px", borderBottomRightRadius: "20px", position: "relative", zIndex: 1 }}>
 
                 <div style={{ paddingTop: "40px", }}>
                     <div style={{ float: "left" }}>
@@ -52,7 +53,7 @@ export default function MenuEmpresa() {
 
                 <div style={{ paddingTop: "16px" }}>
                     <div style={{ float: "left" }}>
-                        <CustomButton href={"HistorContrib"} className={"btnn"} buttonText={"Histórico de Contribuição"} textStyle={{ marginLeft: "1rem" }} onClick={() => handleButtonClick("HistoricoContribuicao")} />
+                        <CustomButton href={"/HistorContrib"} className={"btnn"} buttonText={"Histórico de Contribuição"} textStyle={{ marginLeft: "1rem" }} onClick={() => handleButtonClick("HistoricoContribuicao")} />
                     </div>
                     <img id="arrow2" src="/SetaDireita.png" style={{ marginTop: "4px", visibility: shouldShowImage("HistoricoContribuicao") ? "visible" : "hidden" }}></img>
                 </div>

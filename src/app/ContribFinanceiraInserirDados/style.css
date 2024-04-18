@@ -111,13 +111,6 @@
 }
 
 
-.categoriaLabel {
-
-    padding-left: 80px;
-    padding-top: 20px;
-
-}
-
 .quantLabel {
 
     padding-top: 20px;
@@ -134,14 +127,6 @@
     width: 30%;
     position: relative;
     display: inline-block;
-
-}
-
-.catego {
-
-    position: relative;
-    width: 60%;
-
 
 }
 
@@ -167,17 +152,16 @@
     position: absolute;
     margin: 0 auto;
     text-align: center;
-    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
     display: block;
-
     background-color: rgba(63, 173, 180, 0.87);
     color: white;
     width: 100px;
     height: 40px;
     border-radius: 10px;
     margin-bottom: 10px;
+    margin-top: 4rem;
 }
 
 .btnEnvi:hover,
@@ -185,4 +169,8 @@
 .btnEnvi:active {
     background-color: rgba(63, 173, 180, 1);
     /* Mantém a cor de fundo ao passar o mouse, focar ou clicar */
+}
+
+.form-control {
+    width: 18rem;
 }

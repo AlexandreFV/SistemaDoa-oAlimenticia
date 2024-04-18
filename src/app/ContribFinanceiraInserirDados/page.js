@@ -1,15 +1,17 @@
 "use client"
 import "./style.css";
 import Navbar from "../components/layoutCadastroLogin";
-import Menu from "../components/menuDoador";
+import Menu from "../components/MenuEmpresa";
 import "./style.css";
 import { useEffect, useState } from 'react';
 import { useRouter } from "next/navigation";
 import { BackButton, CustomButton } from "../components/customButton";
 import Link from "next/link";
 import SucErroAddDoacao from "../components/SucErroAddDoacao";
-/*
+
 export default function ContribFinanceiraInserirDados() {
+
+    const [categoria, setCategoria] = useState("");
 
     return (
 
@@ -26,44 +28,54 @@ export default function ContribFinanceiraInserirDados() {
                         <h1 className="titulo">Faça sua doação</h1>
                         <div className="DivFundoFilho">
 
-                            <center>
-                                <h1 style={{ paddingTop: "20px" }}>Dados da Doação</h1>
-                            </center>
-                            <div class="modal-content custom-modal-line"> </div>
 
                             <form>
-
-                                <div className="coluna1">
-                                    <label>
-                                        Nome do Produto:
-                                    </label>
-                                    <input type="text" name="nome_alimento" class="form-control"
-                                        placeholder="Digite o nome do produto..." /*value={nome_alimento}
-                                        onChange={(e) => setNome(e.target.value)} />
-
-                                    <label className="categoriaLabel">
-                                        Categoria:
-                                    </label>
-
-                                    <div class="form-group">
-                                        <select name="categoria" className="form-control catego" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
-                                            <option value="">Selecione a categoria</option>
-                                            <option value="fruta">Fruta</option>
-                                            <option value="tuberculo">Tubérculo</option>
-                                            <option value="hortalicia">Hortaliça</option>
-                                            <option value="marmita">Marmita</option>
-                                            <option value="Carnes e Aves">Carnes e Aves</option>
-                                            <option value="Peixes e Frutos do Mar">Peixes e Frutos do Mar</option>
-                                            <option value="Produtos de Padaria">Produtos de Padaria</option>
-
-                                        </select>
-                                    </div>
-
+                                <div className="DadosFinanc" style={{ display: "flex", justifyContent: "center" }}>
+                                    <p style={{ marginTop: "1.8rem", fontSize: "1.2rem", marginBottom: "1.8rem" }}>Dados Fianceiros</p>
                                 </div>
+                                <div style={{ display: "flex", justifyContent: "center", gap: "8%" }}>
+                                    <div style={{ marginLeft: "10px" }}>
+                                        <label>
+                                            Nome do Produto:
+                                        </label>
+                                        <input type="text" name="nome_alimento" className="form-control"
+                                            placeholder="Digite o nome do produto..." /*value={nome_alimento}
+                                        onChange={(e) => setNome(e.target.value)}*/ />
+                                    </div>
+                                    <div>
+                                        <label className="categoriaLabel">
+                                            Categoria:
+                                        </label>
 
-
-                                <div className="coluna2">
-                                    
+                                        <div class="form-group">
+                                            <select name="categoria" className="form-control catego" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
+                                                <option value="">Selecione a categoria</option>
+                                                <option value="fruta">Pix</option>
+                                                <option value="tuberculo">Transferência Bancária</option>
+                                                <option value="hortalicia">Cartão de Crédito</option>
+                                                <option value="marmita">Cartão de Débito</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="DadosFinanc" style={{ display: "flex", justifyContent: "center" }}>
+                                    <p style={{ marginTop: "1.8rem", fontSize: "1.2rem", marginBottom: "1.8rem" }}>Valor de Envio</p>
+                                </div>
+                                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "8%" }}>
+                                    <div style={{ marginLeft: "10px" }}>
+                                        <p>Nome do Intermediário</p>
+                                        <p>-Nome do Intermediário-</p>
+                                    </div>
+                                    <div>
+                                        <div style={{ marginLeft: "10px" }}>
+                                            <label>
+                                                Digite o valor de envio:
+                                            </label>
+                                            <input type="text" name="nome_alimento" className="form-control"
+                                                placeholder="Digite o valor..." /*value={nome_alimento}
+                                        onChange={(e) => setNome(e.target.value)}*/ />
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <button className="btnEnvi" type='submit'>Enviar</button>
@@ -78,10 +90,12 @@ export default function ContribFinanceiraInserirDados() {
                 </div>
 
             </div>
-            {erroCadastro && <SucErroAddDoacao ErroAddDoa={erroCadastro} />}
 
-            {succesCadastro && <SucErroAddDoacao SuccessAddDoa={succesCadastro} />}
+
         </div>
     );
 };
-*/
+
+/*{erroCadastro && <SucErroAddDoacao ErroAddDoa={erroCadastro} />}
+
+            {succesCadastro && <SucErroAddDoacao SuccessAddDoa={succesCadastro} />}*/
