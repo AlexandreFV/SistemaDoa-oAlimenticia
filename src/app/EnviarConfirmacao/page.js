@@ -78,14 +78,14 @@ export default function EnviarConfirmacao() {
                 <div>
                   <div style={{ display: "flex", alignItens: "center", textAlign: "center" }}>
                     <h1 className="HPE">Confirmar envio</h1>
-                    <img src="./filtrar.png" className="IF"></img>
+                   
                   </div>
                     
                   <div class="modal-content custom-modal-line" style={{height:"3px"}}> </div>
                   <h1 className="NameB">Nome do Beneficiario</h1>
                   {doacoes.map((doacao, index) => (
                     <div>
-                      
+                      <p>Produto 1</p>
                       <div key={index} className="DD" >
                         <img
                         id="img"
@@ -102,14 +102,20 @@ export default function EnviarConfirmacao() {
                           <label>Categoria</label>
                           <p style={{ textAlign: "center" }}>{doacao.categoria}</p>
                         </div>
+                        <div className="DC">
+                          <label>Formato</label>
+                          <p className="endereco" style={{ textAlign: "center" }}>{doacao.cidade}</p>
+                        </div>
 
                         <div className="DC">
                           <label>Quantidade</label>
                           <p className="quantidade" style={{ textAlign: "center" }}>{doacao.quantidade}</p>
                         </div>
                         <div className="DC">
-                          <label>Cidade</label>
-                          <p className="endereco" style={{ textAlign: "center" }}>{doacao.cidade}</p>
+                          <label>Validade</label>
+                          <p style={{ marginTop: "20px", padding: "0px", marginRight: "5%", width: "90%", marginLeft: "5%", textAlign: "right" }}>
+                        {doacao.createdAt && new Date(doacao.createdAt).toLocaleDateString()}
+                      </p>
                         </div>
 
                         <button style={{ height: "30px", marginRight: "20px" }} type="button" data-toggle="modal" data-target="#exampleModalCenter"  onClick={() => handleApagarDoacao(doacao.id)}>
@@ -117,13 +123,17 @@ export default function EnviarConfirmacao() {
                         </button>
 
                       </div>
-                      <p style={{ marginTop: "-20px", padding: "0px", marginRight: "5%", width: "90%", marginLeft: "5%", textAlign: "right" }}>
-                        Data de doação: {doacao.createdAt && new Date(doacao.createdAt).toLocaleDateString()}
-                      </p>
+                     
                     </div>
+                    
 
                   
                   ))}
+                  <center>
+
+                    <div className="ConfirmeEnvio">
+                      <CustomButton href="" className="button btn" buttonText="Enviar produto(s)" />
+                    </div></center>
                 </div>
                 
               

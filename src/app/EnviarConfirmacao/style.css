@@ -204,3 +204,8 @@
     position: relative;
     left: 20px;
 }
+.button{
+    background-color: rgba(63, 173, 180, 0.87);
+    color: white;
+    height: 40px;
+}
