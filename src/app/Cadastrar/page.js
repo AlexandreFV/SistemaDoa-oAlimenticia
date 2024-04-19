@@ -35,7 +35,7 @@ export default function Cadastrar() {
 
         <Navbar />
         <center>
-          <p style={{ color: "white", fontSize: "2.375rem", fontStyle: "normal", lineHeight: "normal", marginTop: "3.45rem", marginBottom: "-2rem" }}>Escolha o tipo de cadastro</p>
+          <p className="TituloEscolha">Escolha o tipo de cadastro</p>
         </center>
         <div className="DVN">
           <div className="DBN">

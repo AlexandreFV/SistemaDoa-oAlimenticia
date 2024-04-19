@@ -26,6 +26,15 @@ body {
   width: 150px;
 }
 
+.TituloEscolha {
+  color: white;
+  font-size: 2.375rem;
+  font-size: normal;
+  line-height: normal;
+  margin-top: 3.45rem;
+  margin-Bottom: -2rem;
+}
+
 .DVP {
   height: 100vh;
   display: flex;
@@ -395,3 +404,278 @@ body {
   flex-direction: row;
   align-items: center;
 }
+
+@media (max-height: 860px) {
+  .DVN {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 8rem;
+  }
+
+  .DBN {
+
+    background-color: #EDEDED;
+    height: 20rem;
+    width: 40rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+  }
+
+  #fundoDoador {
+    background-color: #578925;
+    height: 480px;
+    width: 55%;
+    margin-left: 5%;
+    border-radius: 10px;
+    margin-right: 5%;
+    box-shadow: 0px 0px 7.7px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  #posfundoDoador {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+  }
+
+  .userwhitedoador {
+    width: 60%;
+  }
+
+  .TituloEscolha {
+    margin-top: 2.8rem;
+  }
+
+  .cardbtnprod {
+    color: black;
+    background-color: white;
+    position: relative;
+    margin-left: -6rem;
+    margin-top: 4rem;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    border-top-left-radius: 2rem;
+    border-bottom-left-radius: 2rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    /* Adicione uma transição suave */
+
+  }
+
+  .nomeimgprod {
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+  }
+
+  #fundoDoador p {
+    color: white;
+    font-size: 1.2rem;
+    margin-right: 0.2rem;
+  }
+
+  #fundoBenef {
+    background-color: #578925;
+    height: 480px;
+    width: 55%;
+    margin-left: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    margin-right: 5%;
+    box-shadow: 0px 0px 7.7px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  #posfundoBenef {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+  }
+
+  #fundoBenef p {
+    color: white;
+    font-size: 1.2rem;
+    margin-right: 0.2rem;
+  }
+
+  .userwhiteBenef {
+    width: 60%;
+  }
+
+  .cardbtnbenef {
+    color: black;
+    background-color: white;
+    position: relative;
+    margin-left: -6rem;
+    margin-top: 2.5rem;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    border-top-left-radius: 2rem;
+    border-bottom-left-radius: 2rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    /* Adicione uma transição suave */
+  }
+
+  .nomeimgbenef {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+  }
+
+  #fundoIntermed {
+    background-color: #578925;
+    height: 480px;
+    width: 55%;
+    margin-left: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    margin-right: 5%;
+    box-shadow: 0px 0px 7.7px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  #posfundoIntermed {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+  }
+
+  #fundoIntermed p {
+    color: white;
+    font-size: 1.2rem;
+    margin-right: 0.2rem;
+  }
+
+  .cardbtnIntermed {
+    color: black;
+    background-color: white;
+    position: relative;
+    margin-right: -6rem;
+    margin-top: 4rem;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    border-top-right-radius: 2rem;
+    border-bottom-right-radius: 2rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    /* Adicione uma transição suave */
+  }
+
+  .nomeimgIntermed {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+  }
+
+  .userwhiteintermed {
+    width: 60%;
+  }
+
+  #fundoEmp {
+    background-color: #578925;
+    height: 480px;
+    width: 55%;
+    margin-left: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    margin-right: 5%;
+    box-shadow: 0px 0px 7.7px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  #posfundoEmp {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+  }
+
+  #fundoEmp p {
+    color: white;
+    font-size: 1.2rem;
+    margin-right: 0.2rem;
+  }
+
+  .cardbtnEmp {
+    color: black;
+    background-color: white;
+    position: relative;
+    margin-right: -6rem;
+    margin-top: 2.5rem;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    border-top-right-radius: 2rem;
+    border-bottom-right-radius: 2rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    /* Adicione uma transição suave */
+  }
+
+  .nomeimgEmp {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+  }
+
+  .userwhiteEmp {
+    width: 60%;
+  }
+
+  .cardbtnprod:hover,
+  .cardbtnbenef:hover {
+    /* Estilos quando o mouse está sobre o botão */
+    background-color: #42A8A1;
+    color: white;
+    height: 3.2rem;
+    margin-left: -6.5rem;
+    margin-bottom: -0.3rem;
+  }
+
+  .cardbtnIntermed:hover,
+  .cardbtnEmp:hover {
+    background-color: #42A8A1;
+    color: white;
+    margin-right: -6.5rem;
+    height: 3.2rem;
+    margin-bottom: -0.3rem;
+  }
+
+  .cardbtnprod.active,
+  .cardbtnbenef.active {
+    background-color: #42A8A1;
+    color: white;
+    height: 3.2rem;
+    margin-left: -6.5rem;
+    margin-bottom: -0.3rem;
+  }
+
+  .cardbtnIntermed.active,
+  .cardbtnEmp.active {
+    /* Estilos quando o botão está ativo */
+    background-color: #42A8A1;
+    color: white;
+    margin-right: -6.5rem;
+    height: 3.2rem;
+    margin-bottom: -0.3rem;
+  }
+
+}
+
+;
