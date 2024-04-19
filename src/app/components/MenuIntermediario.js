@@ -53,21 +53,21 @@ export default function MenuIntermediario() {
 
                 <div style={{ paddingTop: "16px" }}>
                     <div style={{ float: "left" }}>
-                        <CustomButton href={""} className={"btnn"} buttonText={"Enviar produtos"} textStyle={{ marginLeft: "1rem" }} onClick={() => handleButtonClick("EnviarProdutos")} />
+                        <CustomButton href={"/BeneficiariosAtivos"} className={"btnn"} buttonText={"Enviar produtos"} textStyle={{ marginLeft: "1rem" }} onClick={() => handleButtonClick("EnviarProdutos")} />
                     </div>
                     <img id="arrow2" src="/SetaDireita.png" style={{ marginTop: "4px", visibility: shouldShowImage("EnviarProdutos") ? "visible" : "hidden" }}></img>
                 </div>
 
                 <div style={{ paddingTop: "15px" }}>
                     <div style={{ float: "left" }}>
-                        <CustomButton href={"/ListProdutorIntermed"} className={"btnn"} buttonText={"Produtores"} textStyle={{ marginLeft: "1rem" }} onClick={() => handleButtonClick("Produtores")} />
+                        <CustomButton href={"/ListProdutorIntermed"} className={"btnn"} buttonText={"Produtos Coletados"} textStyle={{ marginLeft: "1rem" }} onClick={() => handleButtonClick("Produtores")} />
                     </div>
                     <img id="arrow3" src="/SetaDireita.png" style={{ marginTop: "4px", visibility: shouldShowImage("Produtores") ? "visible" : "hidden" }}></img>
                 </div>
 
                 <div style={{ paddingTop: "15px" }}>
                     <div style={{ float: "left" }}>
-                        <CustomButton href={"/ListBenefIntermed"} className={"btnn"} buttonText={"Beneficiários"} textStyle={{ marginLeft: "1rem" }} onClick={() => handleButtonClick("Beneficiarios")} />
+                        <CustomButton href={"/ListBenefIntermed"} className={"btnn"} buttonText={"Produtos Enviados"} textStyle={{ marginLeft: "1rem" }} onClick={() => handleButtonClick("Beneficiarios")} />
                     </div>
                     <img id="arrow4" src="/SetaDireita.png" style={{ marginTop: "4px", visibility: shouldShowImage("Beneficiarios") ? "visible" : "hidden" }}></img>
                 </div>
