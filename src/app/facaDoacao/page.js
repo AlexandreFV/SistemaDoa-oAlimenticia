@@ -240,8 +240,7 @@ export default function FacaDoacao() {
                     Cidade:
                   </label>
                   <input type="text" name="cidade" class="form-control" value={cidade}
-                    onChange={(e) => setCidade(e.target.value)} />
-
+                    onChange={(e) => setCidade(e.target.value)} disabled/>
                 </div>
 
 

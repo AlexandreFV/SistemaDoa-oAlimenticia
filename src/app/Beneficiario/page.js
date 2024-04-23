@@ -12,7 +12,7 @@ import { Cedarville_Cursive } from "next/font/google";
 
 export default function Beneficiario() {
     const router = useRouter();
-    
+
     useEffect(() => {
         const token = localStorage.getItem("token");
          
@@ -27,6 +27,8 @@ export default function Beneficiario() {
         }
         } 
     })
+
+
     return (
         <div className="DVBF">
             <Navbar></Navbar>

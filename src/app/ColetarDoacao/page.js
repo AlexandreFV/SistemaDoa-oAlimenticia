@@ -66,8 +66,10 @@ export default function ColetarDoacao() {
         const fetchDoacoes = async () => {
           try {
             const token = localStorage.getItem('token');
-    
-            const response = await fetch(`http://localhost:3001/ColetarDoacao`, {
+            const decodedToken = jwt.decode(token);
+            const usuariodoadorId = decodedToken.id;
+  
+              const response = await fetch(`http://localhost:3001/ColetarDoacao/${usuariodoadorId}`, {
               headers: {
                 'Authorization': `Bearer ${token}`
               },
@@ -111,7 +113,7 @@ export default function ColetarDoacao() {
                             <div key={index} className="CardProduct" style={{ width: "90%", height: "6.4rem", background: "#EBEBEB", borderRadius: "10px", marginTop: "40px", marginLeft: "auto", marginRight: "auto" }}>
 
                                 <div style={{ float: "left" }}>
-                                    <img style={{ borderTopLeftRadius: "10px", borderBottomLeftRadius: "10px",height:"100px",width:"150px" }} 
+                                    <img id="imgColetarDoacao" className="IFD" 
                                     src={`data:image/png;base64, ${doacao.imagemBase64}`}
                                     alt={`Foto da doação ${index + 1}`}></img>
                                 </div>

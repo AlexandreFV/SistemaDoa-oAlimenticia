@@ -23,7 +23,7 @@ export default function menuDoador() {
 
             <div style={{
                 color: "white", backgroundColor: "#FEFEFE", top: -15,
-                width: "250px", height: "200px", borderBottomRightRadius: "20px",
+                width: "250px", height: "250px", borderBottomRightRadius: "20px",
                 position: "relative", zIndex: 1
             }}>
 
@@ -35,7 +35,11 @@ export default function menuDoador() {
                 </div>
 
                 <div style={{ paddingTop: "15px" }}>
-                    <CustomButton rel="preload" href={"/MinhasDoacoes"} className={"btnn"} buttonText={"Minhas doações"} textStyle={{ marginLeft: "1rem" }} />
+                    <CustomButton rel="preload" href={"/MinhasDoacoes"} className={"btnn"} buttonText={"Meus Produtos à Venda"} textStyle={{ marginLeft: "1rem" }} />
+                </div>
+
+                <div style={{ paddingTop: "15px" }}>
+                    <CustomButton rel="preload" href={"/MeusProdutosVendidos"} className={"btnn"} buttonText={"Meus Produtos vendidos"} textStyle={{ marginLeft: "1rem" }} />
                 </div>
 
                 <div style={{ paddingTop: "15px" }}>

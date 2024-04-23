@@ -48,7 +48,7 @@ export default function CadastroDoador(){
             console.log("Cadastro realizado com sucesso!");
             // Redirecionar ou exibir uma mensagem de sucesso aqui
             setCadastroConcluido(true); // Atualiza o estado para indicar que o cadastro foi concluído
-            router.push('/EntrarDoador');
+            router.push('/EntrarProdutor');
 
           } else {
             const responseData = await response.json();

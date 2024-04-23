@@ -604,20 +604,27 @@ app.get("/ObterDadosEndereco", checkToken, verificarUsuarioDoador, async functio
 });
 
 
-app.get("/ColetarDoacao", checkToken,verificarUsuarioIntermediario, async function(req,res){
+app.get("/ColetarDoacao/:id", checkToken,verificarUsuarioIntermediario, async function(req,res){
+    const userId = req.params.id;
 
   try{
+    const usuarioIntermediario = await usuariointermediario.findByPk(userId);
+    const cidadeUsuario = usuarioIntermediario.cidade;
 
     const doacoes = await doacao.findAll({
       include: {
-        model: usuariodoador, // Substitua 'Doador' pelo nome do seu modelo de doador
-        attributes: ['nome','telefone'] // Inclua apenas o nome do doador
+          model: usuariodoador,
+          attributes: ['nome', 'telefone'],
+          where: {
+              cidade: cidadeUsuario // Filtrar doações pela cidade do usuário intermediário
+          }
       }
-    });
+  });
     
       // Converter imagens em formato base64
       const doacoesComImagens = await Promise.all(doacoes.map(async (doacao) => {
-        const imagemBase64 = Buffer.from(doacao.foto, 'binary').toString('base64');
+        const imagemRedimensionada = await sharp(doacao.foto).resize({ width: 1000, height: 1000, fit: 'inside' }).toBuffer();
+        const imagemBase64 = imagemRedimensionada.toString('base64');
         return { ...doacao.toJSON(), imagemBase64 }; // Incluir a imagem convertida na representação JSON da doação
       }));
 
@@ -728,33 +735,52 @@ app.get("/ListProdutorIntermed", checkToken, verificarUsuarioIntermediario, asyn
   }
 });
 
-app.get("/ListarBeneficiario", checkToken, verificarUsuarioIntermediario, async function(req, res) {
-  const usuariointermediarioId = req.userId;
+// app.get("/ListarBeneficiario", checkToken, verificarUsuarioIntermediario, async function(req, res) {
+//   const usuariointermediarioId = req.userId;
+//   try {
+      
+//       const contagemDoacoesPorBeneficiario = await DoacaoIntermParaBenef.findAll({
+//           attributes: [
+//               'usuariobeneficiarioId', 
+//               [sequelize.fn('COUNT', sequelize.col('*')), 'count']
+//           ],
+//           include: [{
+//               model: usuariobeneficiario,
+//               attributes: ["nome", "rua", "numero", "cidade", "cpf", "telefone", "createdAt","updatedAt"]
+//           }],
+//           where: { usuariointermediarioId: usuariointermediarioId},
+//           group: ['usuariobeneficiarioId']
+//       });
+
+//       if (contagemDoacoesPorBeneficiario.length === 0) {
+//           return res.status(404).json({ message: "Nenhuma doação encontrada!" });
+//       }
+
+//       res.status(200).json({ contagemDoacoesPorBeneficiario });
+//   } catch (error) {
+//       console.error("Erro:", error);
+//       res.status(500).json({ message: "Erro interno do servidor." });
+//   }
+// });
+
+
+app.get("/ListarBeneficiario/:id", checkToken, verificarUsuarioIntermediario, async function(req, res) {
+  const usuariointermediarioId = req.params.id;
   try {
-      const contagemDoacoesPorBeneficiario = await DoacaoIntermParaBenef.findAll({
-          attributes: [
-              'usuariobeneficiarioId', 
-              [sequelize.fn('COUNT', sequelize.col('*')), 'count']
-          ],
-          include: [{
-              model: usuariobeneficiario,
-              attributes: ["nome", "id", "rua", "numero", "cidade", "cpf", "telefone", "createdAt","updatedAt"]
-          }],
-          where: { usuariointermediarioId: usuariointermediarioId},
-          group: ['usuariobeneficiarioId']
-      });
-
-      if (contagemDoacoesPorBeneficiario.length === 0) {
-          return res.status(404).json({ message: "Nenhuma doação encontrada!" });
+    const usuarioInterm = await usuariointermediario.findByPk(usuariointermediarioId);
+    const usuarioIntermCidade = usuarioInterm.cidade;
+    const beneficiariosDispo = await usuariobeneficiario.findAll({
+      where: {
+      cidade: usuarioIntermCidade,
       }
+    })
 
-      res.status(200).json({ contagemDoacoesPorBeneficiario });
+      res.status(200).json({ beneficiariosDispo });
   } catch (error) {
       console.error("Erro:", error);
       res.status(500).json({ message: "Erro interno do servidor." });
   }
 });
-
 
 
 app.get("/InfoMinhaDoacao/:id",checkToken, verificarUsuarioDoador, async function (req, res) {
@@ -784,7 +810,7 @@ app.delete("/ApagarDoacao/:id",checkToken, verificarUsuarioDoador, async functio
 
       const doacaoApagar = await doacao.findByPk(id);
       if(!doacaoApagar){
-        res.status(404).json({error:"Doacao Não encontrada!"});
+        return res.status(404).json({error:"Doacao Não encontrada!"});
       }
       doacaoApagar.destroy();
 
@@ -792,5 +818,38 @@ app.delete("/ApagarDoacao/:id",checkToken, verificarUsuarioDoador, async functio
     
     } catch (error){
       res.status(500).json ({error:"Erro ao Buscar Doação"});
+    }
+})
+
+app.get("/MeusProdutosVendidos/:id", async function (req,res){
+    const userId = req.params.id;
+
+    try{
+
+      const vendasRealizadas = await doacaoColetada.findAll( {
+        where: 
+        {usuariodoadorId: userId},
+        include: {
+          model: usuariointermediario,
+          attributes: ["nome"],
+        } 
+      });
+
+      if (vendasRealizadas.length === 0) {
+        return res.status(404).json ("Vendas não encontradas");
+      }
+
+          // Mapear as doações para incluir as imagens redimensionadas e convertidas em base64
+      const vendasComImagem = await Promise.all(vendasRealizadas.map(async (vendas) => {
+      // Redimensionar a imagem para 100x100 pixels mantendo a proporção
+      const imagemRedimensionada = await sharp(vendas.foto).resize({ width: 1000, height: 1000, fit: 'inside' }).toBuffer();
+      const imagemBase64 = imagemRedimensionada.toString('base64');
+      
+      return { ...vendas.toJSON(), imagemBase64 }; // Incluir a imagem convertida na representação JSON da doação
+    }));
+
+      res.status(200).json(vendasComImagem);
+    } catch (error){
+      res.status(500).json ("Erro ao buscar vendas");
     }
 })
