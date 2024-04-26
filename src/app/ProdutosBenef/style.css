@@ -1,0 +1,140 @@
+.DPCOLETARDOACAO{
+
+    height: 100%;
+    width: 100%;
+}
+
+.DFCOLETARDOACAO {
+    display: flex;
+    flex-direction: row;
+}
+
+
+.DICOLETARDOACAO {
+
+    position: relative;
+    background-size: cover;
+    /* Garante que a imagem cubra toda a área da div */
+    background-position: center;
+    /* Centraliza a imagem */
+    height: calc(100vh - 90px);
+    /* Define a altura da div como 100% da altura da janela menos 90px do navbar */
+    margin-left: 2%;
+    margin-right: 8%;
+    background-image: url(/high-angle-vegetables-with-copy-space.png);
+    width: 100%;
+}
+
+.DFPCOLETARDOACAO {
+
+    position: absolute;
+    /* Define a posição absoluta */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 90%;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    /* Cor branca com 80% de visibilidade */
+    border-radius: 10px;
+    justify-content: center;
+    /* Centraliza horizontalmente */
+
+}
+
+.VoltarIco {
+
+    display: inline-block;
+    margin-top: 3rem;
+    margin-left: 4rem;
+    width: 3.5rem;
+    height: 3.5rem;
+}
+
+.h1MinDoaCOLETARDOACAO {
+    text-align: center;
+    margin-top: -20px;
+    font-size: 30px;
+    font-family: 'Poller One', sans-serif;
+}
+
+.DFFCOLETARDOACAO {
+
+    background-color: white;
+    width: 90%;
+    height: 70%;
+    align-items: center;
+    justify-content: center;
+    margin-left: 5%;
+    margin-right: 5%;
+    border-radius: 5px;
+    position: relative;
+    margin-top: 40px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.h1ProdutosEnv {
+
+    text-align: center;
+    justify-content: center;
+    padding-top: 20px;
+    display: inline-block;
+    position: relative;
+    margin: 0 auto;
+    font-family: 'Poller One', sans-serif;
+    font-size: 1.2rem;
+
+}
+
+.imgFiltrar {
+    width: 20px;
+    display: inline-block;
+    height: 25px;
+
+}
+
+.custom-checkbox {
+    display: inline-block;
+
+}
+
+.checkbox-input {
+    display: none;
+}
+
+.checkbox-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    background-color: #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.checkbox-input:checked+.checkbox-label {
+    background-color: green;
+    /* Define a cor verde quando o checkbox está marcado */
+}
+
+.checkbox-icon {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+}
+.IFD {
+
+    height: 100px;
+    max-width: 200px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+#imgColetarDoacao{
+    max-height: 100px;
+    max-width: 200px;
+}

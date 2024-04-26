@@ -54,6 +54,30 @@ export default function ListProdutorIntermed() {
         }; 
         beneficiariosDisp();
     }, []);
+
+    
+    const handleExibirBenef = async (idBenef) => {
+        try {
+            const token = localStorage.getItem('token');
+            const decodedToken = jwt.decode(token);
+            const usuariodoadorId = decodedToken.id;
+            
+            const response = await fetch(`http://localhost:3001/ProdutosBenef/${usuariodoadorId}/${idBenef}`, {
+                method: "GET",
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (response.ok) {
+                router.push(`/ProdutosBenef?id=${usuariodoadorId}&id=${idBenef}`);
+            } else {
+                console.log("Tws");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
     return (
         <div className="DPLISTBENE">
             <Navbar></Navbar>
@@ -81,7 +105,7 @@ export default function ListProdutorIntermed() {
     <div>
         {beneficiario.map((bene, index) => (
             <div>
-            <div key={index} className="CardProduct" style={{ width: "90%", height: "9rem", background: "#EBEBEB", borderRadius: "10px", marginTop: "2rem", marginLeft: "auto", marginRight: "auto", display: "flex", justifyContent: "center" }}>
+            <div key={index} className="CardProduct" style={{ width: "90%", height: "9rem", background: "#EBEBEB", borderRadius: "10px", marginTop: "2rem", marginLeft: "auto", marginRight: "auto", display: "flex", justifyContent: "center" }} onClick={() => handleExibirBenef(bene.id)}>
                 <div style={{ float: "left", flexWrap: "wrap", marginLeft: "0", marginRight: "0" }}>
                     <div style={{ marginLeft: "2rem", marginTop: "1rem", fontSize: 18, fontFamily: "Inter", fontWeight: "bold" }}> {bene.nome}</div>
                     <div style={{ marginLeft: "2rem", marginTop: "1.2rem", fontSize: "1rem", fontFamily: 'Inter', fontWeight: '500', wordWrap: 'break-word', display: "flex", alignItems: "center" }}>

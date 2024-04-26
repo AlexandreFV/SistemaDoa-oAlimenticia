@@ -853,3 +853,36 @@ app.get("/MeusProdutosVendidos/:id", async function (req,res){
       res.status(500).json ("Erro ao buscar vendas");
     }
 })
+
+app.get("/ProdutosBenef/:idIntermed/:idBenef", async function (req,res){
+    const idIntermed = req.params.idIntermed;
+    const idBenef = req.params.idBenef;
+
+    try{
+    const doacoesColetadas = await doacaoColetada.findAll({
+      where: 
+        {usuariointermediarioId: idIntermed},
+        include: {
+        model: usuariointermediario,
+        attributes: ['nome','telefone'],
+        },
+    });  
+
+    if (!doacoesColetadas || doacoesColetadas.length === 0) {
+      return res.status(404).json({ error: "Nenhum Produto disponivel encontrada" });
+    }
+
+      // Converter imagens em formato base64
+      const doacoesComImagens = await Promise.all(doacoesColetadas.map(async (doacao) => {
+        const imagemRedimensionada = await sharp(doacao.foto).resize({ width: 1000, height: 1000, fit: 'inside' }).toBuffer();
+        const imagemBase64 = imagemRedimensionada.toString('base64');
+        return { ...doacao.toJSON(), imagemBase64 }; // Incluir a imagem convertida na representação JSON da doação
+      }));
+
+    res.status(200).json({ doacoesComImagens });
+
+    } catch (error){
+    res.status(500).json({ error: "Erro ao buscar doações por usuário", message: error.message });
+    }
+
+})

@@ -108,7 +108,7 @@ export default function ColetarDoacao() {
                                     <p >Filtro</p>
                                 </div>
                             </div>
-                            <div style={{ backgroundColor: "black", width: "100%", height: "2px" }}></div>
+                            <div style={{backgroundColor: "black", width: "100%", height: "2px" }}></div>
                             {doacoes.map((doacao, index) => (
                             <div key={index} className="CardProduct" style={{ width: "90%", height: "6.4rem", background: "#EBEBEB", borderRadius: "10px", marginTop: "40px", marginLeft: "auto", marginRight: "auto" }}>
 

@@ -50,6 +50,7 @@
             };
             handleExibir();
         }, []);
+
         
         return (
             <div className="DPLISTPRODINTER">
@@ -71,7 +72,8 @@
                                 <div style={{ backgroundColor: "black", width: "100%", height: "2px" }}></div>
                                 {intermedio && intermedio.length > 0 && intermedio.map((meuIntermedio, index) => (
                                 <div>
-                                <div key={index} className="CardProduct" style={{ width: "90%", height: "9rem", background: "#EBEBEB", borderRadius: "10px", marginTop: "2rem", marginLeft: "auto", marginRight: "auto", display: "flex", justifyContent: "center" }}>
+                                <a>
+                                <div className="CardProduct" style={{ width: "90%", height: "9rem", background: "#EBEBEB", borderRadius: "10px", marginTop: "2rem", marginLeft: "auto", marginRight: "auto", display: "flex", justifyContent: "center" }} >
 
                                     <div style={{ float: "left", flexWrap: "wrap", marginLeft: "0", marginRight: "0" }}>
                                         <div style={{ marginLeft: "2rem", marginTop: "1rem", fontSize: 18, fontFamily: "Inter", fontWeight: "bold" }}>{meuIntermedio.usuariodoador.nome}</div>
@@ -91,8 +93,9 @@
                                     </div>
                                 </div>
                                         <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '500', textAlign: "right", marginRight: "5%" }}><b>Data de validade: </b>{meuIntermedio && meuIntermedio.validade && new Date(meuIntermedio.validade).toLocaleDateString()}</div>
-                                        </div>
+                                        </a>
 
+                                        </div>
                                     ))}
 
                                 </div>
