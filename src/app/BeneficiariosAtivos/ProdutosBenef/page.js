@@ -1,19 +1,22 @@
 "use client"
 
-import Navbar from "../components/layoutCadastroLogin";
+import Navbar from "../../components/layoutCadastroLogin";
 import "./style.css";
-import MenuDireito from "../components/MenuIntermediario";
-import { BackButton, CustomButton } from "../components/customButton";
+import MenuDireito from "../../components/MenuIntermediario";
+import { BackButtonProdutosBenef, CustomButton } from "../../components/customButton";
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
 import jwt from 'jsonwebtoken';
 import { Cedarville_Cursive } from "next/font/google";
+import ModalEnviarProd from "../../components/modalEnviarProd";
 
-export default function ProdutosBenef() {
+const ProdutosBenef = ({idBenef,nomeBenef}) => {
     const router = useRouter();
     const [produtos, setProdutos] = useState([]);
-
+    const [selectedProducts, setSelectedProducts] = useState([]); // Estado para armazenar os produtos selecionados
+    const [selectedProductNames, setSelectedProductNames] = useState([]);
+    const [selectedProductQuantities, setSelectedProductQuantities] = useState([]);
     useEffect(() => {
         const token = localStorage.getItem("token");
          
@@ -32,13 +35,8 @@ export default function ProdutosBenef() {
         const fetchDoacoes = async () => {
           try {
             const token = localStorage.getItem('token');
-            const idsFromURL = window.location.search.match(/id=(\d+)/g); // Captura todos os IDs da URL
-
-            if (idsFromURL && idsFromURL.length === 2) {
-                const id1 = idsFromURL[0].split('=')[1]; // Primeiro ID
-                const id2 = idsFromURL[1].split('=')[1]; // Segundo ID
         
-                const response = await fetch(`http://localhost:3001/ProdutosBenef/${id1}/${id2}`, {
+                const response = await fetch(`http://localhost:3001/ProdutosBenef/${idBenef}`, {
                   headers: {
                     'Authorization': `Bearer ${token}`
                   }
@@ -46,14 +44,14 @@ export default function ProdutosBenef() {
         
                 if (response.ok) {
                   const data = await response.json();
+                  console.log(idBenef);
+
                   setProdutos(data.doacoesComImagens);
 
                 } else {
                   console.error('Erro ao buscar doações:', response.statusText);
                 }
-              } else {
-                console.error('A URL não contém dois IDs.');
-              }
+
             } catch (error) {
               console.error('Erro ao buscar doações:', error.message);
             }
@@ -62,27 +60,38 @@ export default function ProdutosBenef() {
           fetchDoacoes();
         }, []);
     
-    const handleExibirBenef = async (idBenef) => {
-        try {
-            const token = localStorage.getItem('token');
-            const decodedToken = jwt.decode(token);
-            const usuariodoadorId = decodedToken.id;
-            
-            const response = await fetch(`http://localhost:3001/ProdutosBenef/${usuariodoadorId}/${idBenef}`, {
-                method: "GET",
-                headers: { 'Authorization': `Bearer ${token}` }
+        const handleProductSelect = (productId, productName, productQuantity) => {
+            setSelectedProducts((prevSelectedProducts) => {
+                const isSelected = prevSelectedProducts.includes(productId);
+                if (isSelected) {
+                    // Remove o produto da lista de produtos selecionados
+                    const newSelectedProducts = prevSelectedProducts.filter((id) => id !== productId);
+                    const indexToRemove = selectedProductNames.findIndex((name) => name === productName);
+                    const newSelectedProductNames = [...selectedProductNames.slice(0, indexToRemove), ...selectedProductNames.slice(indexToRemove + 1)];
+                    const newSelectedProductQuantities = [...selectedProductQuantities.slice(0, indexToRemove), ...selectedProductQuantities.slice(indexToRemove + 1)];
+                    setSelectedProductNames(newSelectedProductNames);
+                    setSelectedProductQuantities(newSelectedProductQuantities);
+                    return newSelectedProducts;
+                } else {
+                    // Adiciona o produto à lista de produtos selecionados
+                    const newSelectedProducts = [...prevSelectedProducts, productId];
+                    const newSelectedProductNames = [...selectedProductNames, productName];
+                    const newSelectedProductQuantities = [...selectedProductQuantities, productQuantity];
+                    setSelectedProductNames(newSelectedProductNames);
+                    setSelectedProductQuantities(newSelectedProductQuantities);
+                    return newSelectedProducts;
+                }
             });
-
-            if (response.ok) {
-                router.push(`/ProdutosBenef?id=${usuariodoadorId}&id=${idBenef}`);
-            } else {
-                console.log("Tws");
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
+        };
+        
+        
+        
+        
+    
+    
+        
+        
+            
 
     return (
         <div className="DPCOLETARDOACAO">
@@ -91,14 +100,22 @@ export default function ProdutosBenef() {
             <MenuDireito />
             <div className="DICOLETARDOACAO">
                 <div className="DFPCOLETARDOACAO">
-                    <BackButton />
+                {selectedProducts.length > 0 && 
+                    <ModalEnviarProd 
+                        selectedProducts={selectedProducts} 
+                        selectedProductNames={selectedProductNames} 
+                        selectedProductQuantities = {selectedProductQuantities}
+                        idBenef={idBenef}
+                    />
+                }
+                    <BackButtonProdutosBenef />
                     <h1 className="h1MinDoaCOLETARDOACAO">Enviar produtos doados</h1>
                     <div className="DFFCOLETARDOACAO">
                         <div style={{ display: "flex", alignItens: "center", textAlign: "center" }}>
-                            <h1 style={{ display: "flex", justifyContent: "center", alignItems: "center", left: "1.6rem" }} className="h1ProdutosEnv">Produtos disponíveis para Nome Beneficiário</h1>
+                            <h1 style={{ display: "flex", justifyContent: "center", alignItems: "center", left: "1.6rem" }} className="h1ProdutosEnv">Produtos disponíveis para {nomeBenef}</h1>
                             <div style={{ marginRight: "1.2rem", marginTop: "1rem" }}>
                                 <img src="./filtrar.png" className="imgFiltrar"></img>
-                                <p >Filtro</p>
+                                <p>Filtro</p>
                             </div>
                         </div>
                         <div style={{ backgroundColor: "black", width: "100%", height: "2px" }}></div>
@@ -128,8 +145,13 @@ export default function ProdutosBenef() {
                                 </div>
                                 <div style={{ marginLeft: "auto", marginTop: "2.5rem", marginRight: "1.5rem" }}>
                                     <div>
-                                        <button className="btn btn-primary" style={{ width: "40px",height:"40px", backgroundColor:"green" }}></button>
-                                    </div>
+                                    <input
+                                        type="checkbox"
+                                        id={`product-${index}`}
+                                        value={doacao.id} // Você pode definir o valor do checkbox como o ID do produto
+                                        checked={selectedProducts.includes(doacao.id)} // Verifica se o produto está na lista de produtos selecionados
+                                        onChange={() => handleProductSelect(doacao.id,doacao.nome_alimento,doacao.quantidade)} // Lidar com a seleção/deseleção do produto
+                                    />                                    </div>
                                 </div>
                             </div>
 
@@ -144,15 +166,14 @@ export default function ProdutosBenef() {
 
 
                     </div>
+
                 </div>
             </div>
 
         </div>
         
-
-            
-
     </div>
 
 );
 }
+export default ProdutosBenef;

@@ -854,8 +854,8 @@ app.get("/MeusProdutosVendidos/:id", async function (req,res){
     }
 })
 
-app.get("/ProdutosBenef/:idIntermed/:idBenef", async function (req,res){
-    const idIntermed = req.params.idIntermed;
+app.get("/ProdutosBenef/:idBenef",checkToken,verificarUsuarioIntermediario, async function (req,res){
+    const idIntermed = req.userId;
     const idBenef = req.params.idBenef;
 
     try{
@@ -886,3 +886,52 @@ app.get("/ProdutosBenef/:idIntermed/:idBenef", async function (req,res){
     }
 
 })
+
+app.post("/EnviarParaBenef", checkToken, verificarUsuarioIntermediario, async function (req, res) {
+  const { id, quantidade, idBenef } = req.body;
+  const idUser = req.userId;
+  try {
+      // Iterar sobre os IDs e quantidades recebidos
+      for (let i = 0; i < id.length; i++) {
+          const idProduto = id[i];
+          const quantidadeRecebida = quantidade[i];
+
+          // Encontrar o registro da doação coletada com base no ID do produto
+          const doacaoColetada1 = await doacaoColetada.findByPk(idProduto);
+
+          if (doacaoColetada1) {
+              // Criar uma nova entrada na tabela DoacaoIntermParaBenef com os detalhes da doação
+              await DoacaoIntermParaBenef.create({
+                  ...doacaoColetada1.toJSON(), // Copiar todas as outras informações da doação coletada
+                  quantidade: quantidadeRecebida,
+                  doacaoColetadaId: id,
+                  usuariobeneficiarioId: idBenef,
+                  usuariointermediarioId: idUser,
+                  // Copie outras informações relevantes da doação coletada, se necessário
+              });
+
+              // Subtrair a quantidade recebida do valor armazenado na tabela DoacaoColetada
+              doacaoColetada1.quantidade -= quantidadeRecebida;
+
+              // Verificar se a quantidade na tabela DoacaoColetada é zero
+              if (doacaoColetada1.quantidade === 0) {
+                  // Se for zero, remover o registro da tabela DoacaoColetada
+                  await doacaoColetada1.destroy();
+                } else {
+                  // Se não for zero, salvar as alterações na tabela DoacaoColetada
+                  await doacaoColetada1.save();
+              }
+          } else {
+              console.log(`Doação coletada não encontrada para o ID do produto: ${idProduto}`);
+              // Tratar o caso em que a doação coletada não foi encontrada para o ID do produto
+          }
+      }
+
+      // Resposta de sucesso
+      res.status(200).json({ message: "Produtos enviados com sucesso para o beneficiário." });
+  } catch (error) {
+      console.error('Erro ao enviar produtos para o beneficiário:', error.message);
+      // Resposta de erro
+      res.status(500).json({ error: "Erro ao enviar produtos para o beneficiário." });
+  }
+});

@@ -1,0 +1,22 @@
+.FundoModalEnviarProd {
+    width: 350px;
+    height: 100px;
+    background-color: #85BB61;
+    position: absolute;
+    bottom: 20px;
+    right: 0;
+    z-index: 999 !important;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.btnEnviarModalEnviar{
+
+    background-color: #FFFFFF;
+    width: 100%;
+    color: #42A8A1;
+    position: absolute;
+    bottom: 0;
+    border-bottom-left-radius: 10px;
+    height: 30px;
+}
