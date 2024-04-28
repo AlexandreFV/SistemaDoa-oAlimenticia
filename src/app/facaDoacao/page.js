@@ -106,6 +106,7 @@ export default function FacaDoacao() {
           setTimeout(() => {
             setErroCadastro("");
             setSuccesCadastro("");
+            router.push("/facaDoacao");
           }, 3000);
         } else {
           const responseData = await response.json();

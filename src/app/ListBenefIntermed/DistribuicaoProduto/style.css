@@ -1,16 +1,14 @@
-.DPCOLETARDOACAO{
-
-    height: 100%;
-    width: 100%;
-}
-
-.DFCOLETARDOACAO {
+.DFINFOPROD {
     display: flex;
     flex-direction: row;
 }
 
+.DPLISTBENE{
+    height: 100%;
+    width: 100%;
+}
 
-.DICOLETARDOACAO {
+.DIINFOPROD {
 
     position: relative;
     background-size: cover;
@@ -25,7 +23,7 @@
     width: 100%;
 }
 
-.DFPCOLETARDOACAO {
+.DFPINFOPROD {
 
     position: absolute;
     /* Define a posição absoluta */
@@ -53,14 +51,14 @@
     height: 3.5rem;
 }
 
-.h1MinDoaCOLETARDOACAO {
+.h1MinDoaINFOPROD {
     text-align: center;
     margin-top: -20px;
     font-size: 30px;
     font-family: 'Poller One', sans-serif;
 }
 
-.DFFCOLETARDOACAO {
+.DFFINFOPROD {
 
     background-color: white;
     width: 90%;
@@ -72,11 +70,11 @@
     border-radius: 5px;
     position: relative;
     margin-top: 40px;
-    max-height: 400px;
+    max-height: 500px;
     overflow-y: auto;
 }
 
-.h1ProdutosEnv {
+.h1ProdutosEnvINFOPROD {
 
     text-align: center;
     justify-content: center;
@@ -89,40 +87,10 @@
 
 }
 
-.imgFiltrar {
+.imgFiltrarINFOPROD {
     width: 20px;
     display: inline-block;
     height: 25px;
 
 }
 
-.custom-checkbox {
-    display: inline-block;
-
-}
-
-.checkbox-input {
-    display: none;
-}
-
-.checkbox-label {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 24px;
-    height: 24px;
-    background-color: #ccc;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.checkbox-input:checked+.checkbox-label {
-    background-color: green;
-    /* Define a cor verde quando o checkbox está marcado */
-}
-
-.checkbox-icon {
-    width: 60%;
-    height: 60%;
-    object-fit: contain;
-}

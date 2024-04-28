@@ -107,7 +107,7 @@ export default function ListProdutorIntermed() {
                       <div style={{ backgroundColor: "black", width: "100%", height: "2px" }}></div>
                       <>
                         {beneficiario.length === 0 ? (
-                          <div>Nenhum beneficiário disponível</div>
+                          <div>Nenhum beneficiário disponível na sua Cidade</div>
                         ) : (
                           <div>
                             {beneficiario.map((bene, index) => (

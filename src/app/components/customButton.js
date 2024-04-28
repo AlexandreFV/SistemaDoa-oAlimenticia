@@ -35,3 +35,15 @@ export const BackButtonProdutosBenef = () => {
         <button onClick={goBack}><img src="/iconbtnvoltar.png" alt="Ícone de voltar" className="VoltarIco" /></button>
     );
 };
+
+export const BackButtonDistribuirProd = () => {
+    const router = useRouter();
+    const goBack = () => {
+        window.location.reload();
+
+    };
+
+    return (
+        <button onClick={goBack}><img src="/iconbtnvoltar.png" alt="Ícone de voltar" className="VoltarIco" /></button>
+    );
+};

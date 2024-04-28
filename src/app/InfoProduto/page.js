@@ -12,11 +12,7 @@ import { Cedarville_Cursive } from "next/font/google";
 
 export default function InfoProduto() {
     const router = useRouter();
-    const [doacao, setDoacao] = useState(null); // Correção: Mudei "doacoes" para "doacao" para corresponder ao estado único
-    const [modalAberto, setModalAberto] = useState(false);
-    const [tempoRestante, setTempoRestante] = useState(10);
-    const [buttonClicked, setButtonClicked] = useState(false);  
-    
+    const [doacao, setDoacao] = useState(null); // Correção: Mudei "doacoes" para "doacao" para corresponder ao estado único    
 
     
     useEffect(() => {
@@ -72,18 +68,7 @@ export default function InfoProduto() {
                 setConfirmacao(true);
                 setModalAberto(true);
                 console.log('Compra confirmada!');
-
-                let tempoRestante = 10; // Definir o tempo inicial
-                let timer = setInterval(() => {
-                    setTempoRestante(prevTempoRestante => {
-                        if (prevTempoRestante === 0) {
-                            clearInterval(timer);
-                            setModalAberto(false); // Fechar o modal quando o tempo acabar
-                            router.push('/ColetarDoacao');
-                        }
-                        return prevTempoRestante - 1;
-                    });
-                }, 1000);
+                router.push("/ColetarDoacao");
 
             } else {
                 // Exibir mensagem de erro
@@ -161,22 +146,6 @@ export default function InfoProduto() {
                 </div>
             </div>
 
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Compra Realizada</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-      Você será redirecionado em {tempoRestante} segundos!
-      </div>
-      
-    </div>
-  </div>
-</div>
         </div>
     )
 }

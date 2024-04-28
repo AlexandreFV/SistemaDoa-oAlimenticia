@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import "./modalEnviarProd.css";
 
 export default function modalEnviarProd({ selectedProducts, selectedProductNames, selectedProductQuantities, idBenef }) {
 
+    const [envioRealizado, setEnvioRealizado] = useState(false);
 
     const hundleConfirmar = async () => {
         try {
@@ -21,6 +23,10 @@ export default function modalEnviarProd({ selectedProducts, selectedProductNames
                 body: JSON.stringify(requestBody)
             });
 
+            if(response.ok){
+                setEnvioRealizado(true);
+                window.location.reload();
+            }
             // Trate a resposta conforme necessário
         } catch (error) {
             console.error('Erro ao enviar produtos para o beneficiário:', error.message);
@@ -50,7 +56,9 @@ export default function modalEnviarProd({ selectedProducts, selectedProductNames
                     ))}
                 </p>
                 <p>{idBenef}</p>
-                <button className="btnEnviarModalEnviar" onClick={hundleConfirmar}>Confirmar</button>
+                <button className="btnEnviarModalEnviar" onClick={hundleConfirmar} disabled={envioRealizado}>
+                    {envioRealizado ? "Enviado" : "Confirmar"}
+                </button>
             </div>
         </div>
     );

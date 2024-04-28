@@ -9,19 +9,23 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const sharp = require('sharp');
 const { Sequelize } = require('sequelize');
+const { Op } = require('sequelize');
+
 // Use o middleware cors
 app.use(cors());
 
 // Middleware para analisar o corpo da solicitação como JSON
 app.use(express.json());
 
-const usuariobeneficiario = require("./models/usuarioBeneficiario");
-const usuariodoador = require("./models/usuariodoador");
-const usuariointermediario = require("./models/usuarioIntermediario");
-const doacaoColetada = require("./models/DoacaoColetada");
+const usuariobeneficiario = require("./models/usuarioBeneficiario"); //Tabela que armazena as informacoes de beneficiario
+const usuariodoador = require("./models/usuariodoador"); //Tabela que armazena as informacoes de doador
+const usuariointermediario = require("./models/usuarioIntermediario"); //Tabela que armazena as informacoes de intermediario
+const doacaoColetada = require("./models/DoacaoColetada"); //Tabela que armazena as informacoes dos produtos dos intermediarios disponiveis para serem doados
 const DoacaoIntermParaBenef = require("./models/DoacaoIntermParaBenef");
-const doacao = require("./models/doacao");
-const usuarioEmpresa = require("./models/usuarioEmpresa");
+const doacao = require("./models/doacao"); //Tabela que armazena as informacoes dos produtos ainda disponiveis para compra
+const usuarioEmpresa = require("./models/usuarioEmpresa"); //Tabela que armazena as informacoes de empresa
+const DistribuirProduto = require("./models/DistribuirProduto"); //Tabela que armazena as informacoes de distribuicao de um determinado produto comprado pelo intermediario, dados inalteraveis
+const produtoCompradoOriginal = require('./models/ProdutoComprado');  //Tabela que armazena as informacoes de registro da compra, são dados inalteraveis para registro
 
   // Configurações de conexão com o banco de dados
 const connection = mysql.createPool({ 
@@ -67,6 +71,9 @@ async function sincronizarTabela() {
     await doacao.sync({force : true});
     await doacaoColetada.sync({force : true});
     await DoacaoIntermParaBenef.sync({force : true});
+    await produtoCompradoOriginal.sync({force : true});
+    await DistribuirProduto.sync({force : true});
+
     console.log('Tabela sincronizada com sucesso.');
   } catch (error) {
     console.error('Erro ao sincronizar tabela:', error);
@@ -561,7 +568,7 @@ app.post("/EnviarDoacao", upload.single('foto'), checkToken, verificarUsuarioDoa
   }
 });
 
-
+//Exibe as doacoes que não foram compradas
 app.get("/MinhasDoacoes/:usuariodoadorId", checkToken, verificarUsuarioDoador, async function(req, res) {
   const usuariodoadorId = req.params.usuariodoadorId;
 
@@ -693,9 +700,9 @@ app.post("/ComprarProduto/:id",checkToken,verificarUsuarioIntermediario, async f
     };
 
       await doacaoColetada.create(doacaoColetadaValues);
-
+      await produtoCompradoOriginal.create(doacaoColetadaValues);
         // Remover a doação encontrada da tabela doacaos
-        await doacao1.destroy();
+      await doacao1.destroy();
 
       // Responder ao cliente com sucesso
       res.status(200).json({ message: "Doação coletada com sucesso" });
@@ -710,18 +717,24 @@ app.get("/MeusIntermedios", checkToken, verificarUsuarioIntermediario, async fun
 
 })
 
-
+//Exibe os produtos disponiveis para serem doados
 app.get("/ListProdutorIntermed", checkToken, verificarUsuarioIntermediario, async function (req, res){
   const usuarioId = req.userId;
   try {
 
     const meusIntermedios = await doacaoColetada.findAll({ 
-      where: { usuariointermediarioId: usuarioId },
+      where: { 
+        usuariointermediarioId: usuarioId,
+        quantidade: {
+          [Op.gt]: 0 // Buscar produtos com quantidade maior que 0
+        }
+      },
       include: { // Incluir informações do doador
         model: usuariodoador, // Nome do modelo do doador
-        attributes: ['nome', 'cpf','telefone'] // Atributos a serem incluídos
+        attributes: ['nome', 'cpf', 'telefone'] // Atributos a serem incluídos
       }
     });    
+    
     if (!meusIntermedios || meusIntermedios.length === 0) {
       return res.status(404).json({ error: "Nenhuma doação intermediária encontrada" });
     }
@@ -735,35 +748,8 @@ app.get("/ListProdutorIntermed", checkToken, verificarUsuarioIntermediario, asyn
   }
 });
 
-// app.get("/ListarBeneficiario", checkToken, verificarUsuarioIntermediario, async function(req, res) {
-//   const usuariointermediarioId = req.userId;
-//   try {
-      
-//       const contagemDoacoesPorBeneficiario = await DoacaoIntermParaBenef.findAll({
-//           attributes: [
-//               'usuariobeneficiarioId', 
-//               [sequelize.fn('COUNT', sequelize.col('*')), 'count']
-//           ],
-//           include: [{
-//               model: usuariobeneficiario,
-//               attributes: ["nome", "rua", "numero", "cidade", "cpf", "telefone", "createdAt","updatedAt"]
-//           }],
-//           where: { usuariointermediarioId: usuariointermediarioId},
-//           group: ['usuariobeneficiarioId']
-//       });
 
-//       if (contagemDoacoesPorBeneficiario.length === 0) {
-//           return res.status(404).json({ message: "Nenhuma doação encontrada!" });
-//       }
-
-//       res.status(200).json({ contagemDoacoesPorBeneficiario });
-//   } catch (error) {
-//       console.error("Erro:", error);
-//       res.status(500).json({ message: "Erro interno do servidor." });
-//   }
-// });
-
-
+//Exibe os beneficiarios que estejam na mesma cidade para doacao
 app.get("/ListarBeneficiario/:id", checkToken, verificarUsuarioIntermediario, async function(req, res) {
   const usuariointermediarioId = req.params.id;
   try {
@@ -782,7 +768,7 @@ app.get("/ListarBeneficiario/:id", checkToken, verificarUsuarioIntermediario, as
   }
 });
 
-
+//Exbie as inforamcoes de uma doacao
 app.get("/InfoMinhaDoacao/:id",checkToken, verificarUsuarioDoador, async function (req, res) {
   const id = req.params.id;
 
@@ -803,6 +789,7 @@ app.get("/InfoMinhaDoacao/:id",checkToken, verificarUsuarioDoador, async functio
   }
 });
 
+
 app.delete("/ApagarDoacao/:id",checkToken, verificarUsuarioDoador, async function (req,res){
     const id = req.params.id;
 
@@ -821,12 +808,13 @@ app.delete("/ApagarDoacao/:id",checkToken, verificarUsuarioDoador, async functio
     }
 })
 
-app.get("/MeusProdutosVendidos/:id", async function (req,res){
+//Exibe os produtos dos doadores que foram comprados e por quem foi comprado
+app.get("/MeusProdutosVendidos/:id",checkToken,verificarUsuarioDoador, async function (req,res){
     const userId = req.params.id;
 
     try{
-
-      const vendasRealizadas = await doacaoColetada.findAll( {
+     
+      const vendasRealizadas = await produtoCompradoOriginal.findAll( {
         where: 
         {usuariodoadorId: userId},
         include: {
@@ -854,6 +842,7 @@ app.get("/MeusProdutosVendidos/:id", async function (req,res){
     }
 })
 
+//Exibe os produtos disponiveis para serem doados aos beneficiarios
 app.get("/ProdutosBenef/:idBenef",checkToken,verificarUsuarioIntermediario, async function (req,res){
     const idIntermed = req.userId;
     const idBenef = req.params.idBenef;
@@ -861,7 +850,7 @@ app.get("/ProdutosBenef/:idBenef",checkToken,verificarUsuarioIntermediario, asyn
     try{
     const doacoesColetadas = await doacaoColetada.findAll({
       where: 
-        {usuariointermediarioId: idIntermed},
+        {usuariointermediarioId: idIntermed, quantidade: { [Op.gt]: 0 }},
         include: {
         model: usuariointermediario,
         attributes: ['nome','telefone'],
@@ -869,7 +858,7 @@ app.get("/ProdutosBenef/:idBenef",checkToken,verificarUsuarioIntermediario, asyn
     });  
 
     if (!doacoesColetadas || doacoesColetadas.length === 0) {
-      return res.status(404).json({ error: "Nenhum Produto disponivel encontrada" });
+      return res.status(404).json({ error: "Todos os Produtos já foram doados!" });
     }
 
       // Converter imagens em formato base64
@@ -887,6 +876,7 @@ app.get("/ProdutosBenef/:idBenef",checkToken,verificarUsuarioIntermediario, asyn
 
 })
 
+
 app.post("/EnviarParaBenef", checkToken, verificarUsuarioIntermediario, async function (req, res) {
   const { id, quantidade, idBenef } = req.body;
   const idUser = req.userId;
@@ -897,30 +887,20 @@ app.post("/EnviarParaBenef", checkToken, verificarUsuarioIntermediario, async fu
           const quantidadeRecebida = quantidade[i];
 
           // Encontrar o registro da doação coletada com base no ID do produto
-          const doacaoColetada1 = await doacaoColetada.findByPk(idProduto);
-
+            const doacaoColetada1 = await doacaoColetada.findByPk(idProduto);
           if (doacaoColetada1) {
-              // Criar uma nova entrada na tabela DoacaoIntermParaBenef com os detalhes da doação
-              await DoacaoIntermParaBenef.create({
-                  ...doacaoColetada1.toJSON(), // Copiar todas as outras informações da doação coletada
-                  quantidade: quantidadeRecebida,
-                  doacaoColetadaId: id,
-                  usuariobeneficiarioId: idBenef,
-                  usuariointermediarioId: idUser,
-                  // Copie outras informações relevantes da doação coletada, se necessário
+              // Subtrai a quantidade de produtos disponiveis do registro
+              doacaoColetada1.quantidade -= quantidadeRecebida;
+              await doacaoColetada1.save();
+
+              await DistribuirProduto.create({
+                quantidade: quantidadeRecebida,
+                usuariobeneficiarioId: idBenef,
+                usuariointermediarioId: idUser,
+                produtoCompradoId: idProduto,
               });
 
-              // Subtrair a quantidade recebida do valor armazenado na tabela DoacaoColetada
-              doacaoColetada1.quantidade -= quantidadeRecebida;
-
-              // Verificar se a quantidade na tabela DoacaoColetada é zero
-              if (doacaoColetada1.quantidade === 0) {
-                  // Se for zero, remover o registro da tabela DoacaoColetada
-                  await doacaoColetada1.destroy();
-                } else {
-                  // Se não for zero, salvar as alterações na tabela DoacaoColetada
-                  await doacaoColetada1.save();
-              }
+              
           } else {
               console.log(`Doação coletada não encontrada para o ID do produto: ${idProduto}`);
               // Tratar o caso em que a doação coletada não foi encontrada para o ID do produto
@@ -935,3 +915,63 @@ app.post("/EnviarParaBenef", checkToken, verificarUsuarioIntermediario, async fu
       res.status(500).json({ error: "Erro ao enviar produtos para o beneficiário." });
   }
 });
+
+app.get("/MeusProdutosComprados/:id", checkToken, verificarUsuarioIntermediario,async function (req,res){
+    const id = req.params.id;
+
+    try{
+
+      const produtosComprados = await produtoCompradoOriginal.findAll({where:{usuariointermediarioId: id}, include:{
+        model: usuariodoador,
+        attributes: ["nome","telefone","cpf"]
+      }});
+
+      if(!produtosComprados){
+        return res.status(404).json( {error:"Nenhuma Compra Encontrada!"});
+      }
+
+      // Converter imagens em formato base64
+      const produtosCompradosComImagem = await Promise.all(produtosComprados.map(async (doacao) => {
+        const imagemRedimensionada = await sharp(doacao.foto).resize({ width: 1000, height: 1000, fit: 'inside' }).toBuffer();
+        const imagemBase64 = imagemRedimensionada.toString('base64');
+        return { ...doacao.toJSON(), imagemBase64 }; // Incluir a imagem convertida na representação JSON da doação
+      }));
+      res.status(200).json({produtosCompradosComImagem})
+    }catch (error){
+      res.status(500).json({ error: "Erro ao enviar produtos comprados." });
+    }
+})
+
+app.get("/MeusIntermedios/:id/:idProd",checkToken, verificarUsuarioIntermediario,  async function (req,res){
+    const idUser = req.params.id;
+    const idProd = req.params.idProd;
+
+    try{
+
+      const meusIntermedios = await DistribuirProduto.findAll({ 
+        where: { 
+            produtoCompradoId: idProd, 
+            usuariointermediarioId: idUser 
+        }, 
+        include: [
+            { 
+                model: usuariobeneficiario, 
+                attributes: ["nome", "rua", "cidade", "numero", "telefone"] 
+            },
+            { 
+                model: produtoCompradoOriginal, 
+                attributes: ["nome_alimento", "descricao", "categoria"] 
+            }
+        ]
+    });
+    
+      if(!meusIntermedios || meusIntermedios.length === 0){
+        return res.status(404).json( {error:"Nenhum Intermedio Encontrado!"});
+      }
+
+      res.status(200).json(meusIntermedios);
+
+    }catch (error){
+      res.status(500).json({ error: "Erro ao enviar produtos comprados." });
+    }
+})

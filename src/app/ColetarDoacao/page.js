@@ -90,10 +90,10 @@ export default function ColetarDoacao() {
       }, []);
 
 
-    return (
+      return (
 
         <div className="DPCOLETARDOACAO">
-            <Navbar></Navbar>
+            <Navbar />
             <div className="DFCOLETARDOACAO">
                 <MenuDireito />
                 <div className="DICOLETARDOACAO">
@@ -104,64 +104,62 @@ export default function ColetarDoacao() {
                             <div style={{ display: "flex", alignItens: "center", textAlign: "center" }}>
                                 <h1 style={{ display: "flex", justifyContent: "center", alignItems: "center", left: "1.6rem" }} className="h1ProdutosEnv">Doações disponíveis</h1>
                                 <div style={{ marginRight: "1.2rem", marginTop: "1rem" }}>
-                                    <img src="./filtrar.png" className="imgFiltrar"></img>
+                                    <img src="./filtrar.png" className="imgFiltrar" />
                                     <p >Filtro</p>
                                 </div>
                             </div>
                             <div style={{backgroundColor: "black", width: "100%", height: "2px" }}></div>
-                            {doacoes.map((doacao, index) => (
-                            <div key={index} className="CardProduct" style={{ width: "90%", height: "6.4rem", background: "#EBEBEB", borderRadius: "10px", marginTop: "40px", marginLeft: "auto", marginRight: "auto" }}>
+                            {doacoes.length === 0 ? (
+                                <p>Não há doações disponíveis na sua cidade no momento.</p>
+                            ) : (
+                                <div>
+                                    {doacoes.map((doacao, index) => (
+                                        <div key={index} className="CardProduct" style={{ width: "90%", height: "6.4rem", background: "#EBEBEB", borderRadius: "10px", marginTop: "40px", marginLeft: "auto", marginRight: "auto" }}>
 
-                                <div style={{ float: "left" }}>
-                                    <img id="imgColetarDoacao" className="IFD" 
-                                    src={`data:image/png;base64, ${doacao.imagemBase64}`}
-                                    alt={`Foto da doação ${index + 1}`}></img>
-                                </div>
-                                <div style={{ float: "left" }}>
-                                    <div style={{ marginLeft: "1rem", paddingTop: "0.7rem", fontSize: 19, fontFamily: "Inter", fontWeight: "bold" }}>{doacao.usuariodoador.nome}</div>
-                                    <div style={{ marginLeft: "1rem", marginTop: "1rem", fontSize: 19, fontFamily: 'Inter', fontWeight: '500', wordWrap: 'break-word' }}><b>Produto:</b> {doacao.nome_alimento}</div>
-                                </div>
-                                <div style={{ display: "flex", justifyContent: "center", textAlign: "center", flexWrap: "wrap" }}>
-                                    <div style={{ paddingTop: "1.5rem", flex: "1", marginRight: "-5rem", marginLeft: "-10%" }}>
-                                        <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: 'bold' }}>Categoria</div>
-                                        <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '400' }}>{doacao.categoria}</div>
-                                    </div>
-                                    <div style={{ paddingTop: "1.5rem", flex: "1", marginRight: "-5rem" }}>
-                                        <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: 'bold' }}>Formato</div>
-                                        <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '400' }}>Caixa</div>
-                                    </div>
-                                    <div style={{ paddingTop: "1.5rem", flex: "1" }}>
-                                        <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: 'bold' }}>Quantidade</div>
-                                        <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '400' }}>{doacao.quantidade}</div>
-                                    </div>
-                                    <div style={{ marginLeft: "auto", marginTop: "2.5rem", marginRight: "1.5rem" }}>
-                                        <div>
-                                            <button className="btn btn-primary" style={{ width: "40px",height:"40px", backgroundColor:"green" }} onClick={() => handleComprarClick(doacao.id)}></button>
+                                            <div style={{ float: "left" }}>
+                                                <img id="imgColetarDoacao" className="IFD" 
+                                                src={`data:image/png;base64, ${doacao.imagemBase64}`}
+                                                alt={`Foto da doação ${index + 1}`} />
+                                            </div>
+                                            <div style={{ float: "left" }}>
+                                                <div style={{ marginLeft: "1rem", paddingTop: "0.7rem", fontSize: 19, fontFamily: "Inter", fontWeight: "bold" }}>{doacao.usuariodoador.nome}</div>
+                                                <div style={{ marginLeft: "1rem", marginTop: "1rem", fontSize: 19, fontFamily: 'Inter', fontWeight: '500', wordWrap: 'break-word' }}><b>Produto:</b> {doacao.nome_alimento}</div>
+                                            </div>
+                                            <div style={{ display: "flex", justifyContent: "center", textAlign: "center", flexWrap: "wrap" }}>
+                                                <div style={{ paddingTop: "1.5rem", flex: "1", marginRight: "-5rem", marginLeft: "-10%" }}>
+                                                    <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: 'bold' }}>Categoria</div>
+                                                    <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '400' }}>{doacao.categoria}</div>
+                                                </div>
+                                                <div style={{ paddingTop: "1.5rem", flex: "1", marginRight: "-5rem" }}>
+                                                    <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: 'bold' }}>Formato</div>
+                                                    <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '400' }}>Caixa</div>
+                                                </div>
+                                                <div style={{ paddingTop: "1.5rem", flex: "1" }}>
+                                                    <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: 'bold' }}>Quantidade</div>
+                                                    <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '400' }}>{doacao.quantidade}</div>
+                                                </div>
+                                                <div style={{ marginLeft: "auto", marginTop: "2.5rem", marginRight: "1.5rem" }}>
+                                                    <div>
+                                                        <button className="btn btn-primary" style={{ width: "40px",height:"40px", backgroundColor:"green" }} onClick={() => handleComprarClick(doacao.id)}></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div style={{ clear: "both" }}></div>
+
+                                            <div style={{ display: "flex", justifyContent: "space-between", marginTop: "0", marginLeft: "5%", marginRight: "5%" }}>
+                                              <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '500' }}><b>Contato: {doacao.usuariodoador.telefone}</b> </div>
+                                              <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '500' }}><b>Validade:</b> {new Date(doacao.validade).toLocaleDateString('pt-BR')}</div>
+                                            </div>
+
                                         </div>
-                                    </div>
+                                    ))}
                                 </div>
-
-                                <div style={{ clear: "both" }}></div>
-
-                                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "0", marginLeft: "5%", marginRight: "5%" }}>
-                                  <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '500' }}><b>Contato: {doacao.usuariodoador.telefone}</b> </div>
-                                  <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '500' }}><b>Validade:</b> {new Date(doacao.validade).toLocaleDateString('pt-BR')}</div>
-                                </div>
-
-                            </div>
-                            ))}
-
-
+                            )}
                         </div>
                     </div>
                 </div>
-
             </div>
-            
-
-                
-
         </div>
-
     );
 }
