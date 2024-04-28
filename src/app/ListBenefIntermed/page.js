@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import jwt from 'jsonwebtoken';
 import { Cedarville_Cursive } from "next/font/google";
 import ProdutosDistribuidos from "./DistribuicaoProduto/page";
+import DistribuicaoProduto from "./DistribuicaoProduto/page";
 
 export default function ListProdutorIntermed() {
 
@@ -18,7 +19,7 @@ export default function ListProdutorIntermed() {
     const [idProd, setIdProd] = useState(null);
     const [idUser, setIdUser] = useState(null);
     const [nomeProduto, setNomeProd] = useState(null);
-
+    const [produtosEnviados, setProdEnviados] = useState(null);
     useEffect(() => {
         const token = localStorage.getItem("token");
          
@@ -47,7 +48,26 @@ export default function ListProdutorIntermed() {
     
                 if (response.ok) {
                     const data = await response.json();
-                    setProdutosComprados(data.produtosCompradosComImagem);
+                    setProdutosComprados(data.produtosComprados);
+                    const prodComp = data.produtosComprados;
+
+                    const response2 = await fetch (`http://localhost:3001/MeusProdutosDistribuidos/${usuarioIntermediarioId}`, {
+                        method: "GET",
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+        
+                    if (response2.ok) {
+                        const data2 = await response2.json();
+                        const produtosDistribuidos = data2.produtosDistribuidos;
+                        console.log(produtosDistribuidos);
+                        // Comparar os IDs e salvar os produtos correspondentes
+                        const produtosEnviadosIds = prodComp.map(prod => prod.id);
+                        const produtosEnviados = produtosDistribuidos.filter(prodDist => produtosEnviadosIds.includes(prodDist.produtoCompradoId));
+
+                    // Atualizar o estado com os produtos enviados
+                    console.log("Ids iguais: ",produtosEnviados);
+                    setProdEnviados(produtosEnviados);
+                }
                 }
             } catch (error) {
                 console.log(error);
@@ -55,7 +75,7 @@ export default function ListProdutorIntermed() {
         };
         handleExibir();
     }, []);
-
+    
 
     const handleExibirBenef = async (idUser, idProd,nomeProduto) => {
         try {
@@ -109,8 +129,9 @@ export default function ListProdutorIntermed() {
                             ) : (
                                 <div>
                                     {produtosComprados.map((meusprodutos, index) => (
+                                        
                                         <div key={index}>
-                                            <div className="CardProduct" style={{ width: "90%", height: "9rem", background: "#EBEBEB", borderRadius: "10px", marginTop: "2rem", marginLeft: "auto", marginRight: "auto", display: "flex", justifyContent: "center" }} onClick={() => handleExibirBenef(meusprodutos.usuariointermediarioId, meusprodutos.id, meusprodutos.nome_alimento)}>
+                                        <div className="CardProduct" style={{ width: "90%", height: "9rem", background: "#EBEBEB", borderRadius: "10px", marginTop: "2rem", marginLeft: "auto", marginRight: "auto", display: "flex", justifyContent: "center"}}>
 
                                                 <div style={{ float: "left", flexWrap: "wrap", marginLeft: "0", marginRight: "0" }}>
                                                     <div style={{ marginLeft: "2rem", marginTop: "1rem", fontSize: 18, fontFamily: "Inter", fontWeight: "bold" }}>{meusprodutos.usuariodoador.nome} </div>
@@ -128,6 +149,12 @@ export default function ListProdutorIntermed() {
                                                     <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Formato: Caixa</p>
                                                     <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Quantidade: {meusprodutos.quantidade}</p>
                                                 </div>
+                                                <button style={{marginRight:"10px",padding:"0px",opacity: produtosEnviados && produtosEnviados.some(prod => prod.produtoCompradoId === meusprodutos.id) ? "1" : "0.5", pointerEvents: produtosEnviados && produtosEnviados.some(prod => prod.produtoCompradoId === meusprodutos.id) ? "auto" : "none" }} onClick={() => handleExibirBenef(meusprodutos.usuariointermediarioId, meusprodutos.id, meusprodutos.nome_alimento)}>
+                                                <span>Envios</span>
+                                                <img src="./car.png" className="carImg" alt="Car"></img>
+
+                                                </button>
+
                                             </div>
                                             <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '500', textAlign: "right", marginRight: "5%" }}><b>Data de Compra:  {meusprodutos.createdAt && new Date(meusprodutos.createdAt).toLocaleDateString()}</b></div>
                                         </div>

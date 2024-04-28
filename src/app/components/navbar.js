@@ -41,7 +41,6 @@ export default function Navbar({ isAuthenticated, userEmail, userType }) {
           Inicio
         </a>
 
-        <a style={{ display: "inline-block", marginRight: "40px" }} >Faça sua doação</a>
         <a style={{ display: "inline-block", marginRight: "40px" }}>Suporte</a>
 
         <div className="dropdown" style={{ display: "inline-block", marginRight: "40px", position: "relative" }}>
@@ -49,20 +48,29 @@ export default function Navbar({ isAuthenticated, userEmail, userType }) {
             Mais
           </button>
           <div className="dropdown-menu" aria-labelledby="dropdownMenu2">
-          <button className="dropdown-item" type="button">Anuncio de Doações</button>
-          <button className="dropdown-item" type="button">Ranking de Doações</button>
-          <button className="dropdown-item" type="button">Meu perfil</button>
+
 
             {/* Exibir itens do menu de forma condicional */}
             {userType === 'intermediario' && (
-              <Link href={"/ColetarDoacao"} className="dropdown-item" type="button">Meus Intermediários</Link>
+              <div>
+              <Link href={"/ColetarDoacao"} className="dropdown-item" type="button">Anuncio de Doações</Link>
+              <Link href={"/ListBenefIntermed"} className="dropdown-item" type="button">Meus Intermediários</Link>
+              </div>
             )}
             {userType === 'doador' && (
-        <Link href={"/MinhasDoacoes"} className="dropdown-item" type="button">Minhas Doações</Link>
+              <div>
+            <Link href={"/facaDoacao"} className="dropdown-item" type="button">Fazer Doação</Link>
+            <Link href={"/MeusProdutosVendidos"} className="dropdown-item" type="button">Meus Produtos Doados</Link>
+            <Link href={"/MinhasDoacoes"} className="dropdown-item" type="button">Meus Produtos em Doação</Link>
+
+            </div>
+
             )}
             {userType === 'beneficiario' && (
               <button className="dropdown-item" type="button">Doações Recebidas</button>
             )}
+          <button className="dropdown-item" type="button">Ranking de Doações</button>
+          <button className="dropdown-item" type="button">Meu perfil</button>
           </div>
         </div>
 

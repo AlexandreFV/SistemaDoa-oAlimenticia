@@ -100,13 +100,13 @@ export default function FacaDoacao() {
 
         if (response.ok) {
           console.log("Cadastro realizado com sucesso!");
-
+          router.push("/facaDoacao");
           setSuccesCadastro("Adicionado Com sucesso!");
           // Limpa os estados de erro e sucesso após 3 segundos
           setTimeout(() => {
             setErroCadastro("");
             setSuccesCadastro("");
-            router.push("/facaDoacao");
+            
           }, 3000);
         } else {
           const responseData = await response.json();

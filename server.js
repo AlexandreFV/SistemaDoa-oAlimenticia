@@ -876,7 +876,7 @@ app.get("/ProdutosBenef/:idBenef",checkToken,verificarUsuarioIntermediario, asyn
 
 })
 
-
+//Envia um produto para um beneficiario
 app.post("/EnviarParaBenef", checkToken, verificarUsuarioIntermediario, async function (req, res) {
   const { id, quantidade, idBenef } = req.body;
   const idUser = req.userId;
@@ -916,31 +916,65 @@ app.post("/EnviarParaBenef", checkToken, verificarUsuarioIntermediario, async fu
   }
 });
 
+//Exibe todos os produtos comprados com suas informacoes de compra
 app.get("/MeusProdutosComprados/:id", checkToken, verificarUsuarioIntermediario,async function (req,res){
     const id = req.params.id;
 
     try{
 
-      const produtosComprados = await produtoCompradoOriginal.findAll({where:{usuariointermediarioId: id}, include:{
-        model: usuariodoador,
-        attributes: ["nome","telefone","cpf"]
-      }});
+      const produtosComprados = await produtoCompradoOriginal.findAll({
+        where: { usuariointermediarioId: id },
+        attributes: { exclude: ["foto"] },
+        include: {
+          model: usuariodoador,
+          attributes: ["nome", "telefone", "cpf"]
+        }
+      });
+      
 
       if(!produtosComprados){
         return res.status(404).json( {error:"Nenhuma Compra Encontrada!"});
       }
 
-      // Converter imagens em formato base64
-      const produtosCompradosComImagem = await Promise.all(produtosComprados.map(async (doacao) => {
-        const imagemRedimensionada = await sharp(doacao.foto).resize({ width: 1000, height: 1000, fit: 'inside' }).toBuffer();
-        const imagemBase64 = imagemRedimensionada.toString('base64');
-        return { ...doacao.toJSON(), imagemBase64 }; // Incluir a imagem convertida na representação JSON da doação
-      }));
-      res.status(200).json({produtosCompradosComImagem})
+      res.status(200).json({produtosComprados})
     }catch (error){
       res.status(500).json({ error: "Erro ao enviar produtos comprados." });
     }
 })
+
+//Verifica quais produtos foram distribuidos, para exibir o botão de envios
+app.get("/MeusProdutosDistribuidos/:id", checkToken, verificarUsuarioIntermediario, async function (req, res) {
+  const id = req.params.id;
+
+  try {
+      const produtosDistribuidos = await DistribuirProduto.findAll({ where: { usuariointermediarioId: id } });
+      if (!produtosDistribuidos) {
+          return res.status(404).json({ error: "Nenhum Produto Distribuído Encontrado!" });
+      }
+      res.status(200).json({ produtosDistribuidos });
+  } catch (error) {
+      res.status(500).json({ error: "Erro ao enviar produtos distribuídos." });
+  }
+});
+
+app.get("/MeusProdutosDisponiveisParaDoacao/:id", checkToken, verificarUsuarioIntermediario, async function (req,res){
+  const id = req.params.id;
+
+  try{
+    const doacoesColetadas = await doacaoColetada.findAll({
+      where: 
+        {usuariointermediarioId: id, quantidade: { [Op.gt]: 0 }}});
+
+        if(!doacoesColetadas ||  doacoesColetadas.length === 0){
+          return res.status(404).json({doacoesColetadas});
+        }
+        res.status(200).json({ doacoesColetadas });
+
+    }catch (error){
+      res.status(500).json({ error: "Erro ao enviar produtos disponiveis." });
+    }
+})
+
 
 app.get("/MeusIntermedios/:id/:idProd",checkToken, verificarUsuarioIntermediario,  async function (req,res){
     const idUser = req.params.id;

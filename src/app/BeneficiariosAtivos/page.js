@@ -16,7 +16,7 @@ export default function ListProdutorIntermed() {
     const [beneficiario, setBenef] = useState([]);
     const [idBenef, setIdBenef] = useState(null); // Estado para armazenar o ID
     const [nomeBenef, setNomeBenef] = useState(null);
-
+    const[ExisteProd, setExisteProd] = useState(null);
     useEffect(() => {
         const token = localStorage.getItem("token");
          
@@ -46,10 +46,24 @@ export default function ListProdutorIntermed() {
                 if(response.ok){
                 const data = await response.json();
                 setBenef(data.beneficiariosDispo);
-                console.log(beneficiario);
-                }else {
-                    console.error('Erro ao buscar beneficiarios:', response.statusText);
-                  }
+                // console.log(beneficiario);
+
+                const response2 = await fetch (`http://localhost:3001/MeusProdutosDisponiveisParaDoacao/${usuarioIntermeId}`, {
+                  headers: {
+                      'Authorization': `Bearer ${token}`
+                    },
+              });
+
+              if (!response2.ok) {
+                const data2 = await response2.json();
+                if (!data2.doacoesColetadas || data2.doacoesColetadas.length === 0) {
+                    setExisteProd(false);
+                }
+              }else{
+                setExisteProd(true);
+              }
+          
+                } 
               } catch (error){
                 console.error('Erro ao buscar doações:', error.message);
               }
@@ -111,7 +125,7 @@ export default function ListProdutorIntermed() {
                         ) : (
                           <div>
                             {beneficiario.map((bene, index) => (
-                              <div key={index} className="CardProduct" style={{ width: "90%", height: "9rem", background: "#EBEBEB", borderRadius: "10px", marginTop: "2rem", marginLeft: "auto", marginRight: "auto", display: "flex", justifyContent: "center" }} onClick={() => handleExibirBenef(bene.id, bene.nome)}>
+                              <div key={index} className="CardProduct" style={{ width: "90%", height: "9rem", background: "#EBEBEB", borderRadius: "10px", marginTop: "2rem", marginLeft: "auto", marginRight: "auto", display: "flex", justifyContent: "center" }}>
                                 <div style={{ float: "left", flexWrap: "wrap", marginLeft: "0", marginRight: "0" }}>
                                   <div style={{ marginLeft: "2rem", marginTop: "1rem", fontSize: 18, fontFamily: "Inter", fontWeight: "bold" }}> {bene.nome}</div>
                                   <div style={{ marginLeft: "2rem", marginTop: "1.2rem", fontSize: "1rem", fontFamily: 'Inter', fontWeight: '500', wordWrap: 'break-word', display: "flex", alignItems: "center" }}>
@@ -125,6 +139,11 @@ export default function ListProdutorIntermed() {
                                 <div style={{ flexWrap: "wrap", marginLeft: "2rem", marginRight: "auto", marginTop: "1rem" }}>
                                   <p style={{ maxWidth: "220px", width: "220px" }}>Localização: {bene.rua}, {bene.numero} - {bene.telefone}</p>
                                 </div>
+                                <button style={{marginRight:"10px",padding:"0px", opacity: ExisteProd ? "1" : "0.5",pointerEvents: ExisteProd ? "auto" : "none"}} onClick={() => handleExibirBenef(bene.id, bene.nome)}>
+                                                <span>Enviar</span>
+                                                <img src="./car.png" className="carImg" alt="Car"></img>
+
+                                </button>
                               </div>
                             ))}
                           </div>
