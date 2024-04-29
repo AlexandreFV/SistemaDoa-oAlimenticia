@@ -33,13 +33,13 @@ export default function Navbar({ isAuthenticated, userEmail, userType }) {
       }}>
 
         {/* Aplicando estilo condicionalmente para o link "Inicio" */}
-        <a style={{
+        <Link href={"/"} style={{
           display: "inline-block",
           marginRight: "40px",
           // Apply conditional styling
         }} id="inicio">
           Inicio
-        </a>
+        </Link>
 
         <a style={{ display: "inline-block", marginRight: "40px" }}>Suporte</a>
 

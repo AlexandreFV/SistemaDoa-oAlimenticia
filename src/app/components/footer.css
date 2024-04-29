@@ -1,0 +1,84 @@
+.FundoSistemaFunciona {
+    background-image: url("/FundoSistemaFun.png");
+    background-size: 100% 100%;
+}
+
+/* CSS para animação da esquerda para a direita */
+@keyframes slideFromLeft {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0%);
+    }
+}
+
+/* CSS para animação da direita para a esquerda */
+@keyframes slideFromRight {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0%);
+    }
+}
+
+/* Adiciona a classe "visible" quando a div está visível */
+.VirDaEsquerda {
+    transform: translateX(-100%); /* Inicialmente fora da tela */
+}
+.VirDaDireita{
+    transform: translateX(100%); /* Inicialmente fora da tela */
+
+}
+/* Adiciona a classe "slideLeft" quando a div está visível */
+.VirDaEsquerda.visible {
+    animation: slideFromLeft 1s ease-in-out forwards;
+}
+
+/* Adiciona a classe "slideRight" quando a div está visível */
+.VirDaDireita.visible {
+    animation: slideFromRight 1s ease-in-out forwards;
+}
+
+/* CSS para animação de esconder para a esquerda */
+@keyframes hideToLeft {
+    from {
+        transform: translateX(0%);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+/* CSS para animação de esconder para a direita */
+@keyframes hideToRight {
+    from {
+        transform: translateX(0%);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}
+
+/* Adiciona a classe "hideLeft" para esconder à esquerda */
+.VirDaEsquerda.hideLeft {
+    animation: hideToLeft 1s ease-in-out forwards;
+}
+
+/* Adiciona a classe "hideRight" para esconder à direita */
+.VirDaDireita.hideRight {
+    animation: hideToRight 1s ease-in-out forwards;
+}
+
+.VirDaEsquerda.visible,
+.VirDaDireita.visible {
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+.VirDaEsquerda.hideLeft,
+.VirDaDireita.hideRight {
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+}
