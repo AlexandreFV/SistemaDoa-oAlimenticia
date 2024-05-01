@@ -13,6 +13,7 @@ import { Cedarville_Cursive } from "next/font/google";
 export default function InfoProduto() {
     const router = useRouter();
     const [doacao, setDoacao] = useState(null); // Correção: Mudei "doacoes" para "doacao" para corresponder ao estado único    
+    const [comprando, setComprando] = useState(false);
 
     
     useEffect(() => {
@@ -47,7 +48,9 @@ export default function InfoProduto() {
             }
           } catch (error) {
             console.error('Erro ao buscar doações:', error.message);
-          }
+          }finally {
+            setComprando(false); // Após a conclusão da compra (seja bem-sucedida ou não), atualiza o estado para indicar que a compra foi concluída
+        }
         };
     
         fetchDoacoes();
@@ -55,6 +58,8 @@ export default function InfoProduto() {
 
     const handleConfirmarCompra = async (id) => {
           try{
+            setComprando(true); // Atualiza o estado para indicar que está comprando
+
             const token = localStorage.getItem('token');
             const response = await fetch(`http://localhost:3001/ComprarProduto/${id}`, {
                 method: 'POST',
@@ -65,8 +70,6 @@ export default function InfoProduto() {
             });
 
             if (response.ok) {
-                setConfirmacao(true);
-                setModalAberto(true);
                 console.log('Compra confirmada!');
                 router.push("/ColetarDoacao");
 
@@ -134,11 +137,13 @@ export default function InfoProduto() {
                                         <p style={{ marginLeft: "1.5rem", overflowWrap: "break-word" }}>{doacao && doacao.descricao}</p>
                                     </div>
                                     <button 
-                                        className="btn btn-success" style={{position:"absolute",marginLeft:"150px",marginTop:"100px"}}
-                                        onClick={() => handleConfirmarCompra(doacao.id)}
-                                    >
-                                        Confirmar Compra
-                                    </button>         </div>
+                className="btn btn-success" 
+                style={{ position: "absolute", marginLeft: "150px", marginTop: "100px" }}
+                onClick={() => handleConfirmarCompra(doacao.id)}
+                disabled={comprando} // Desativa o botão enquanto a compra está em andamento
+            >
+                {comprando ? 'Comprando...' : 'Confirmar Compra'}
+            </button>     </div>
                                 
                             </div>
                         </div>

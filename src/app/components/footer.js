@@ -17,10 +17,8 @@ export default function Footer() {
                     if (!element.classList.contains("visible")) { // Verifica se a classe visible não está presente
                         // Adiciona as classes de esconder ao sumir
                         if (element.classList.contains("VirDaEsquerda")) {
-                            console.log("Escondendo à esquerda");
                             element.classList.add("hideLeft");
                         } else if (element.classList.contains("VirDaDireita")) {
-                            console.log("Escondendo à direita");
                             element.classList.add("hideRight");
                         }
                     }

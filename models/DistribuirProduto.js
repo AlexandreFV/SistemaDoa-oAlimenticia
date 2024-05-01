@@ -22,7 +22,7 @@ DistribuirProduto.belongsTo(Intermediario);
 DistribuirProduto.belongsTo(ProdutoComprado); 
 
 // Sincronizar o modelo com o banco de dados e criar a tabela, forçando a recriação se já existir
-/*doacaoColetada.sync({ force: true }).then(() => {
+/*DistribuirProduto.sync({ force: true }).then(() => {
     console.log('Tabela criada com sucesso.');
   }).catch(error => {
     console.error('Erro ao criar tabela:', error);

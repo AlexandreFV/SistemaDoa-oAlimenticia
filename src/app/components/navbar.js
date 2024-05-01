@@ -85,6 +85,13 @@ export default function Navbar({ isAuthenticated, userEmail, userType }) {
           <p style={{ color: "white", cursor: "pointer" }} onClick={handleLogout}>Sair</p>
         </div>
       )}
+
+      {!isAuthenticated && (
+        <div style={{ position: 'fixed', top: 5, right: 30, marginTop: "15px" }}>
+          <img src="/Loign.png" alt="Perfil" width={40} height={40} />
+          <p style={{ color: "white", cursor: "pointer" }} onClick={handleLogout}>Entrar</p>
+        </div>
+      )}
     </nav>
   );
 }

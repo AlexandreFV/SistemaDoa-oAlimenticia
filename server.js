@@ -8,8 +8,8 @@ const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const sharp = require('sharp');
-const { Sequelize } = require('sequelize');
-const { Op } = require('sequelize');
+const { Sequelize, where } = require('sequelize');
+const { Op } = require("sequelize");
 
 // Use o middleware cors
 app.use(cors());
@@ -26,7 +26,7 @@ const doacao = require("./models/doacao"); //Tabela que armazena as informacoes 
 const usuarioEmpresa = require("./models/usuarioEmpresa"); //Tabela que armazena as informacoes de empresa
 const DistribuirProduto = require("./models/DistribuirProduto"); //Tabela que armazena as informacoes de distribuicao de um determinado produto comprado pelo intermediario, dados inalteraveis
 const produtoCompradoOriginal = require('./models/ProdutoComprado');  //Tabela que armazena as informacoes de registro da compra, são dados inalteraveis para registro
-
+const rankingProdUnit = require("./models/RankingVendaUnitario");
   // Configurações de conexão com o banco de dados
 const connection = mysql.createPool({ 
   host: 'localhost',
@@ -73,6 +73,7 @@ async function sincronizarTabela() {
     await DoacaoIntermParaBenef.sync({force : true});
     await produtoCompradoOriginal.sync({force : true});
     await DistribuirProduto.sync({force : true});
+    await rankingProdUnit.sync({force: true});
 
     console.log('Tabela sincronizada com sucesso.');
   } catch (error) {
@@ -351,7 +352,7 @@ res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
 });
 
 
-app.get("/", checkToken, async function(req, res) {
+app.get("/",checkToken, async function(req, res) {
   try {
     // Obtenha o e-mail do usuário do objeto de solicitação
     const userEmail = req.userEmail;
@@ -701,7 +702,25 @@ app.post("/ComprarProduto/:id",checkToken,verificarUsuarioIntermediario, async f
 
       await doacaoColetada.create(doacaoColetadaValues);
       await produtoCompradoOriginal.create(doacaoColetadaValues);
-        // Remover a doação encontrada da tabela doacaos
+
+      let RankingDoador = await rankingProdUnit.findOne({
+        where: {
+            usuariodoadorId: doacao1.usuariodoadorId
+        }
+    });
+      
+
+      if(!RankingDoador){
+        RankingDoador = await rankingProdUnit.create({
+          usuariodoadorId: doacao1.usuariodoadorId,
+          quantidade: 1, //Inicia com 1 pois é a primeira venda
+        });
+      }else{
+        RankingDoador.quantidade += 1; 
+      }
+      await RankingDoador.save();
+
+      // Remover a doação encontrada da tabela doacaos
       await doacao1.destroy();
 
       // Responder ao cliente com sucesso
@@ -1007,5 +1026,61 @@ app.get("/MeusIntermedios/:id/:idProd",checkToken, verificarUsuarioIntermediario
 
     }catch (error){
       res.status(500).json({ error: "Erro ao enviar produtos comprados." });
+    }
+})
+
+
+app.get("/RankingTop10", async function(req, res){
+  try{
+      const topRanking = await rankingProdUnit.findAll({
+          order: [
+              ['quantidade', 'DESC'] // Ordena em ordem decrescente de quantidade
+          ],
+          limit: 10, // Obtém apenas os 10 primeiros registros
+          include:{
+            model:usuariodoador,
+            attributes: ["nome","telefone"]
+          }
+      });
+      
+      res.status(200).json({ topRanking });
+  } catch(error) {
+      console.error("Erro ao obter o ranking top 10:", error);
+      res.status(500).json({ error: "Erro ao obter o ranking top 10" });
+  }
+});
+
+
+app.get("/MeuRanking",checkToken,verificarUsuarioDoador, async function(req,res){
+    const id = req.userId;
+    try{
+         const minhaColocação = await rankingProdUnit.findOne({
+          where: {
+            usuariodoadorId: id,
+          },
+          include:{
+            model: usuariodoador,
+            attributes: ["nome"],
+          }
+         });
+
+         if(!minhaColocação){
+          return res.status(404).json ({message: "Não Possui Vendas!"});
+         }
+        
+         const posicaoUsuario = await rankingProdUnit.count({
+          where: {
+              quantidade: {
+                  [Op.gt]: minhaColocação.quantidade
+              }
+          }
+      });
+
+      const posicao = posicaoUsuario + 1;
+
+      res.status(200).json({minhaColocação,posicao });
+
+        }catch (error){
+      res.status(500).json ({error: "Erro ao buscas Colocação"});
     }
 })

@@ -17,8 +17,7 @@ export default function Home() {
     const token = localStorage.getItem('token'); // Verifica se há um token no armazenamento local
 
     if (!token) {
-      // Se não houver token, redireciona para a página de login
-      router.push('/Cadastrar');
+
     } else {
       // Se houver token, envie uma solicitação para o servidor para obter os detalhes do usuário
       fetchUserDetails(token);
@@ -85,10 +84,7 @@ export default function Home() {
   };
 
 
-  if (!authenticated) {
-    // Se não autenticado, não renderiza o conteúdo da página Home
-    return null;
-  }
+
   return (
 
     <div>

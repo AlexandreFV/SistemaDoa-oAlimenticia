@@ -100,13 +100,11 @@ export default function FacaDoacao() {
 
         if (response.ok) {
           console.log("Cadastro realizado com sucesso!");
-          router.push("/facaDoacao");
-          setSuccesCadastro("Adicionado Com sucesso!");
+          router.push("/MinhasDoacoes");
+
           // Limpa os estados de erro e sucesso após 3 segundos
           setTimeout(() => {
-            setErroCadastro("");
-            setSuccesCadastro("");
-            
+            setErroCadastro("");            
           }, 3000);
         } else {
           const responseData = await response.json();
@@ -124,7 +122,6 @@ export default function FacaDoacao() {
       // Limpa os estados de erro e sucesso após 3 segundos
       setTimeout(() => {
         setErroCadastro("");
-        setSuccesCadastro("");
       }, 3000);
     }
   };
@@ -213,9 +210,9 @@ export default function FacaDoacao() {
                   </label>
 
                   <div class="form-groupFACADOA">
-                    <input type="text" name="quantidade" class="form-control quantFACADOA"
+                    <input type="number" name="quantidade" class="form-control quantFACADOA"
                       placeholder="quant." value={quantidade}
-                      onChange={(e) => setQuant(e.target.value)} />
+                      onChange={(e) => setQuant(e.target.value)} min={1} pattern="[0-9]*"  />
                     <select name="categoria" className="form-control categoFACADOA" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
                       <option value="">Selecione a categoria</option>
                       <option value="fruta">Fruta</option>
