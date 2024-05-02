@@ -38,8 +38,11 @@ const usuariodoador = sequelize.define('usuariodoador', {
   telefone: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  recoveryToken:{
+    type: DataTypes.STRING,
+    allowNull: true,
   }
-  
 });
 
 // Sincronizar o modelo com o banco de dados e criar a tabela, forçando a recriação se já existir

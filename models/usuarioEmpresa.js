@@ -38,6 +38,9 @@ const usuarioEmpresa = sequelize.define('usuarioEmpresa', {
   telefone: {
     type: DataTypes.STRING,
     allowNull: false
+  },  recoveryToken:{
+    type: DataTypes.STRING,
+    allowNull: true,
   }
 });
 

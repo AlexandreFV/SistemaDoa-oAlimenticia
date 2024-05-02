@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import Link from "next/link"
 import Navbar from "../components/layoutCadastroLogin";
 import { useState } from "react";
-import ErroCadastro from '../components/ErroCadastro';
+import ErroCadastro from '../components/erroCadastro';
 import "./style.css";
 import CustomButton from '../components/customButton';
 

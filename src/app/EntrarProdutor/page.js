@@ -101,7 +101,7 @@ export default function EntrarDoador(){
         style={{backgroundColor:"transparent"}} name="senha"
         value={senha} onChange={(e) => setSenha(e.target.value)}/>
         <div style={{ position: "absolute", right: 0, marginRight:"5%",marginTop:"10px"}}>
-        <a href="#" style={{ color: "#ffffff", textDecoration: "underline" }}>Esqueceu sua senha?</a>
+        <a href="/EsqueciSenha" style={{ color: "#ffffff", textDecoration: "underline" }}>Esqueceu sua senha?</a>
         </div>
     </div>
 

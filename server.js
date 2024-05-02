@@ -10,6 +10,8 @@ const multer = require('multer');
 const sharp = require('sharp');
 const { Sequelize, where } = require('sequelize');
 const { Op } = require("sequelize");
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 
 // Use o middleware cors
 app.use(cors());
@@ -163,14 +165,15 @@ app.post("/CadastrarBeneficiario", async function(req, res){
 
     try{
 
-      // Verifique se o e-mail já está em uso por qualquer tipo de usuário
-      const [doador, intermediario, beneficiario] = await Promise.all([
-        usuariodoador.findOne({ where: { email: email } }),
-        usuariointermediario.findOne({ where: { email: email } }),
-        usuariobeneficiario.findOne({ where: { email: email } })
-      ]);
+    // Verifique se o e-mail já está em uso por qualquer tipo de usuário
+    const [doador, intermediario, beneficiario, empresa] = await Promise.all([
+      usuariodoador.findOne({ where: { email: email } }),
+      usuariointermediario.findOne({ where: { email: email } }),
+      usuariobeneficiario.findOne({ where: { email: email } }),
+      usuarioEmpresa.findOne({ where: { email: email } })
+    ]);
 
-     if (doador || intermediario || beneficiario) {
+     if (doador || intermediario || beneficiario || empresa) {
       return res.status(422).json({ msg: 'E-mail já está em uso por outro usuário!' });
     }
     
@@ -1083,4 +1086,160 @@ app.get("/MeuRanking",checkToken,verificarUsuarioDoador, async function(req,res)
         }catch (error){
       res.status(500).json ({error: "Erro ao buscas Colocação"});
     }
-})
+});
+
+
+// Função para gerar token de recuperação
+async function generateRecoveryToken() {
+  let token;
+  let tokenExists = true;
+
+  while (tokenExists) {
+    token = crypto.randomBytes(20).toString('hex');
+    const [doador, intermediario, beneficiario, empresa] = await Promise.all([
+      usuariodoador.findOne({ where: { recoveryToken: token } }),
+      usuariointermediario.findOne({ where: { recoveryToken: token } }),
+      usuariobeneficiario.findOne({ where: { recoveryToken: token } }),
+      usuarioEmpresa.findOne({ where: { recoveryToken: token } })
+    ]);
+
+    // Verifica se nenhum usuário possui o token gerado atualmente
+    if (!doador && !intermediario && !beneficiario && !empresa) {
+      tokenExists = false;
+    }
+  }
+
+  console.log(token);
+  return token;
+}
+
+
+async function sendRecoveryEmail(email, token) {
+  try {
+      // Tentar enviar o e-mail usando o serviço Gmail
+      const gmailTransporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+              user: 'DoaAlimentaSuporte@gmail.com',
+              pass: 'SenhaDoaAli123'
+          }
+      });
+
+      const gmailMailOptions = {
+          from: 'DoaAlimentaSuporte@gmail.com',
+          to: email,
+          subject: 'Recuperação de Senha',
+          text: `Olá! Você solicitou a recuperação de senha. Clique no link a seguir para redefinir sua senha: http://localhost:3000/AlterarSenha?token=${token}`
+      };
+
+      await gmailTransporter.sendMail(gmailMailOptions);
+
+      console.log('E-mail enviado com sucesso pelo Gmail');
+  } catch (error) {
+      console.error('Erro ao enviar e-mail pelo Gmail:', error);
+      // Se ocorrer um erro ao enviar pelo Gmail, enviar pelo Outlook
+      const outlookTransporter = nodemailer.createTransport({
+          service: 'outlook',
+          auth: {
+              user: 'DoaAlimentaSuporte@outlook.com',
+              pass: 'SenhaDoaAli123'
+          }
+      });
+
+      const outlookMailOptions = {
+          from: 'DoaAlimentaSuporte@outlook.com',
+          to: email,
+          subject: 'Recuperação de Senha',
+          text: `Olá! Você solicitou a recuperação de senha. Clique no link a seguir para redefinir sua senha: http://localhost:3000/AlterarSenha?token=${token}`
+      };
+
+      await outlookTransporter.sendMail(outlookMailOptions);
+
+      console.log('E-mail enviado com sucesso pelo Outlook');
+  }
+}
+
+// Rota para solicitar troca de senha
+app.post('/solicitar-troca-senha', async (req, res) => {
+  const { email } = req.body;
+
+  // Verificar em qual tabela o e-mail está cadastrado
+    const [doador, intermediario, beneficiario, empresa] = await Promise.all([
+      usuariodoador.findOne({ where: { email: email } }),
+      usuariointermediario.findOne({ where: { email: email } }),
+      usuariobeneficiario.findOne({ where: { email: email } }),
+      usuarioEmpresa.findOne({ where: { email: email } })
+    ]);
+
+    // Determinar em qual tabela o usuário está e obter o registro correspondente
+    let user;
+    if (doador) {
+      user = doador;
+    } else if (intermediario) {
+      user = intermediario;
+    } else if (beneficiario) {
+      user = beneficiario;
+    } else if (empresa){
+      user = empresa;
+    } 
+    else {
+      return res.status(404).json({ error: 'E-mail não Cadastrado' });
+    }
+
+  // Gerar e salvar token de recuperação
+  let recoveryToken = await generateRecoveryToken();
+  user.recoveryToken = recoveryToken;
+  await user.save();
+
+  // Enviar e-mail de recuperação
+  await sendRecoveryEmail(email, recoveryToken);
+
+  res.status(200).json({ message: 'E-mail de recuperação enviado com sucesso' });
+});
+
+
+// Rota para redefinir senha
+app.post('/redefinir-senha', async (req, res) => {
+  const { token, novaSenha } = req.body;
+
+// Verificar se o token de recuperação é válido  
+const [doador, intermediario, beneficiario,empresa] = await Promise.all([
+  usuariodoador.findOne({ where: { recoveryToken: token} }),
+  usuariointermediario.findOne({ where: { recoveryToken: token } }),
+  usuariobeneficiario.findOne({ where: { recoveryToken: token } }),
+  usuarioEmpresa.findOne({ where: { recoveryToken: token } })
+]);
+
+    // Determinar em qual tabela o usuário está e obter o registro correspondente
+    let user;
+    if (doador) {
+      user = doador;
+    } else if (intermediario) {
+      user = intermediario;
+    } else if (beneficiario) {
+      user = beneficiario;
+    } else if (empresa){
+      user = empresa;
+    } else {
+      return res.status(404).json({ error: 'E-mail não encontrado' });
+    }
+
+
+    try {
+      // Gerar o hash da nova senha
+      const salt = await bcrypt.genSalt(12);
+      const passwordHash = await bcrypt.hash(novaSenha, salt);
+  
+      // Atualizar senha do usuário com o hash
+      user.senha = passwordHash;
+      //Muda os campos para undefined por não estar mais em processo de troca de senha
+      user.recoveryToken = undefined;
+      await user.save();
+  
+      res.status(200).json({ message: 'Senha redefinida com sucesso' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro ao redefinir a senha' });
+    }
+  });
+  

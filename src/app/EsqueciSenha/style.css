@@ -1,0 +1,97 @@
+.BCENTRAREMPRESA {
+
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("/Background_-_Cadastro.png");
+    background-size: 100% 100%;
+    filter: brightness(95%);
+}
+
+.DPENTRAREMPRESA {
+
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.DNENTRAREMPRESA {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.DBNENTRAREMPRESA {
+
+    background-color: #EDEDED;
+    height: 450px;
+    width: 60%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.DIEENTRAREMPRESA {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    left: 0;
+    margin-left: 100px;
+}
+
+
+.button {
+
+    background-color: rgba(63, 173, 180, 0.87);
+    color: white;
+    width: 100px;
+    height: 40px;
+}
+
+.button:hover,
+.button:focus,
+.button:active {
+    background-color: rgba(63, 173, 180, 1);
+    /* Mantém a cor de fundo ao passar o mouse, focar ou clicar */
+}
+
+
+.h1EntreSeja {
+
+    font-size: 25px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-family: Inter;
+    font-weight: 800;
+}
+
+.DFBEsqueciSenha {
+
+        background-color: #578925;
+        height: 350px;
+        width: 35%;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+    
+}
+
+
+
+
+.h1EsqueciSenha {
+
+    font-size: 25px;
+    margin-top: 30px;
+    font-family: Poller One cursive;
+    font-weight: 800;
+}
