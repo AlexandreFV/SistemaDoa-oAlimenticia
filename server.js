@@ -12,6 +12,7 @@ const { Sequelize, where } = require('sequelize');
 const { Op } = require("sequelize");
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+var smtpPool = require('nodemailer-smtp-pool');
 
 // Use o middleware cors
 app.use(cors());
@@ -29,6 +30,7 @@ const usuarioEmpresa = require("./models/usuarioEmpresa"); //Tabela que armazena
 const DistribuirProduto = require("./models/DistribuirProduto"); //Tabela que armazena as informacoes de distribuicao de um determinado produto comprado pelo intermediario, dados inalteraveis
 const produtoCompradoOriginal = require('./models/ProdutoComprado');  //Tabela que armazena as informacoes de registro da compra, são dados inalteraveis para registro
 const rankingProdUnit = require("./models/RankingVendaUnitario");
+const SMTPPool = require('nodemailer/lib/smtp-pool');
   // Configurações de conexão com o banco de dados
 const connection = mysql.createPool({ 
   host: 'localhost',
@@ -1117,13 +1119,13 @@ async function generateRecoveryToken() {
 async function sendRecoveryEmail(email, token) {
   try {
       // Tentar enviar o e-mail usando o serviço Gmail
-      const gmailTransporter = nodemailer.createTransport({
+      const gmailTransporter = nodemailer.createTransport(({
           service: 'gmail',
           auth: {
               user: 'DoaAlimentaSuporte@gmail.com',
               pass: 'SenhaDoaAli123'
-          }
-      });
+          },
+      }));
 
       const gmailMailOptions = {
           from: 'DoaAlimentaSuporte@gmail.com',
@@ -1160,7 +1162,7 @@ async function sendRecoveryEmail(email, token) {
 }
 
 // Rota para solicitar troca de senha
-app.post('/solicitar-troca-senha', async (req, res) => {
+app.post('/solicitar-troca-senha', async function (req, res) {
   const { email } = req.body;
 
   // Verificar em qual tabela o e-mail está cadastrado
@@ -1199,7 +1201,7 @@ app.post('/solicitar-troca-senha', async (req, res) => {
 
 
 // Rota para redefinir senha
-app.post('/redefinir-senha', async (req, res) => {
+app.post('/redefinir-senha', async function (req, res){
   const { token, novaSenha } = req.body;
 
 // Verificar se o token de recuperação é válido  
