@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 
 export default function Navbar({ isAuthenticated, userEmail, userType }) {
   const router = useRouter();
-  
+
   const handleLogout = () => {
     // Limpar o token do armazenamento local
     localStorage.removeItem('token');
@@ -18,7 +18,7 @@ export default function Navbar({ isAuthenticated, userEmail, userType }) {
 
 
   return (
-    <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "rgba(120, 148, 74, 0.8)", height: "90px", borderBottomLeftRadius: "40px", borderBottomRightRadius: "40px",zIndex: "1000 !important" }}>
+    <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "rgba(120, 148, 74, 1.8)", height: "90px", borderBottomLeftRadius: "40px", borderBottomRightRadius: "40px", zIndex: "1000 !important" }}>
       <strong>
         <div style={{ color: "#FFFFFF", marginLeft: "30px", fontFamily: "Inter" }}>
           <h1 style={{ fontSize: "30px" }}>DoeSolidário</h1>
@@ -53,24 +53,24 @@ export default function Navbar({ isAuthenticated, userEmail, userType }) {
             {/* Exibir itens do menu de forma condicional */}
             {userType === 'intermediario' && (
               <div>
-              <Link href={"/ColetarDoacao"} className="dropdown-item" type="button">Anuncio de Doações</Link>
-              <Link href={"/ListBenefIntermed"} className="dropdown-item" type="button">Meus Intermediários</Link>
+                <Link href={"/ColetarDoacao"} className="dropdown-item" type="button">Anuncio de Doações</Link>
+                <Link href={"/ListBenefIntermed"} className="dropdown-item" type="button">Meus Intermediários</Link>
               </div>
             )}
             {userType === 'doador' && (
               <div>
-            <Link href={"/facaDoacao"} className="dropdown-item" type="button">Fazer Doação</Link>
-            <Link href={"/MeusProdutosVendidos"} className="dropdown-item" type="button">Meus Produtos Doados</Link>
-            <Link href={"/MinhasDoacoes"} className="dropdown-item" type="button">Meus Produtos em Doação</Link>
+                <Link href={"/facaDoacao"} className="dropdown-item" type="button">Fazer Doação</Link>
+                <Link href={"/MeusProdutosVendidos"} className="dropdown-item" type="button">Meus Produtos Doados</Link>
+                <Link href={"/MinhasDoacoes"} className="dropdown-item" type="button">Meus Produtos em Doação</Link>
 
-            </div>
+              </div>
 
             )}
             {userType === 'beneficiario' && (
               <button className="dropdown-item" type="button">Doações Recebidas</button>
             )}
-          <button className="dropdown-item" type="button">Ranking de Doações</button>
-          <button className="dropdown-item" type="button">Meu perfil</button>
+            <button className="dropdown-item" type="button">Ranking de Doações</button>
+            <button className="dropdown-item" type="button">Meu perfil</button>
           </div>
         </div>
 

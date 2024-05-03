@@ -1,4 +1,4 @@
-.DPCOLETARDOACAO{
+.DPCOLETARDOACAO {
 
     height: 100%;
     width: 100%;
@@ -23,6 +23,7 @@
     margin-right: 8%;
     background-image: url(/high-angle-vegetables-with-copy-space.png);
     width: 100%;
+    z-index: -1;
 }
 
 .DFPCOLETARDOACAO {
@@ -126,6 +127,7 @@
     height: 60%;
     object-fit: contain;
 }
+
 .IFD {
 
     height: 100px;
@@ -134,7 +136,7 @@
     border-bottom-left-radius: 10px;
 }
 
-#imgColetarDoacao{
+#imgColetarDoacao {
     max-height: 100px;
     max-width: 200px;
 }

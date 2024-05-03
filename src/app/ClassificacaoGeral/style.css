@@ -1,0 +1,157 @@
+body,
+html {
+    height: 100%;
+    width: 100%;
+}
+
+html {
+    background-color: white;
+}
+
+body {
+    background-image: url(/Fundo_classGeral_teste.png);
+    background-size: 100% 100%;
+    /* Garante que a imagem cubra toda a área da div */
+    background-position: center;
+    /* Centraliza a imagem */
+    background-repeat: no-repeat;
+    font-family: Rubik One;
+
+}
+
+.DivPClassGer {
+    height: 100%;
+    width: 100%;
+}
+
+.TituloClassGer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.TituloClassGer p {
+    font-size: 1.5rem;
+    background-color: white;
+    display: inline-block;
+    padding: 0.8rem 2.5rem;
+    border-radius: 8px;
+    margin-top: 2rem;
+    font-family: Rubik One;
+    font-weight: bold;
+}
+
+.DivNClassGer {
+    background-color: rgba(255, 255, 255, 0.80);
+    width: 60rem;
+    height: 45rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+    overflow-y: auto;
+    padding-bottom: 2rem;
+}
+
+.EscolhaClassUsu {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+}
+
+.btnDoador {
+    background-color: white;
+    width: 35%;
+    height: 3rem;
+    box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.25);
+    color: black;
+    border-bottom-left-radius: 0.5rem;
+    margin-right: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.textbtnProd {
+    font-size: 1.1rem;
+}
+
+.btnIntermed {
+    background-color: white;
+    width: 35%;
+    height: 3rem;
+    box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.25);
+    border-bottom-right-radius: 0.5rem;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.textbtnIntermed {
+    font-size: 1.1rem;
+}
+
+.btnDoador.active,
+.btnIntermed.active {
+    background-color: #7D9E65;
+    color: white;
+    height: 3.2rem;
+    width: 36%;
+}
+
+.ConteudoProdutor,
+.ConteudoIntermed {
+    /*Inicialmente oculto*/
+    display: none;
+}
+
+.ConteudoProdutor.active,
+.ConteudoIntermed.active {
+    /*Ativa quando o botão for clicado*/
+    display: block;
+}
+
+.Segundolugar {
+    margin-top: 4rem;
+}
+
+.Terceirolugar {
+    margin-top: 6rem;
+}
+
+.CardProdutor {
+    background-color: rgb(248, 248, 248);
+    width: 70%;
+    height: 6rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+}
+
+.PosicaoDoador {
+    margin-left: 2rem;
+}
+
+.CardIntermed {
+    background-color: rgb(248, 248, 248);
+    width: 70%;
+    height: 6rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+}
+
+.PosicaoIntermed {
+    margin-left: 2rem;
+}
