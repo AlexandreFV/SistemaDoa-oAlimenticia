@@ -31,6 +31,7 @@ const DistribuirProduto = require("./models/DistribuirProduto"); //Tabela que ar
 const produtoCompradoOriginal = require('./models/ProdutoComprado');  //Tabela que armazena as informacoes de registro da compra, são dados inalteraveis para registro
 const rankingProdUnit = require("./models/RankingVendaUnitario");
 const SMTPPool = require('nodemailer/lib/smtp-pool');
+const { Html } = require('next/document');
   // Configurações de conexão com o banco de dados
 const connection = mysql.createPool({ 
   host: 'localhost',
@@ -1117,49 +1118,29 @@ async function generateRecoveryToken() {
 
 
 async function sendRecoveryEmail(email, token) {
-  try {
-      // Tentar enviar o e-mail usando o serviço Gmail
-      const gmailTransporter = nodemailer.createTransport(({
-          service: 'gmail',
+      // Se ocorrer um erro ao enviar pelo Gmail, enviar pelo Outlook
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
           auth: {
               user: 'DoaAlimentaSuporte@gmail.com',
-              pass: 'SenhaDoaAli123'
-          },
-      }));
+              //pass: 'SenhaDoaAli123',
+              pass: 'duud ceog apgb oiul',
+          }
+      });
 
-      const gmailMailOptions = {
+      const outlookMailOptions = {
           from: 'DoaAlimentaSuporte@gmail.com',
           to: email,
           subject: 'Recuperação de Senha',
           text: `Olá! Você solicitou a recuperação de senha. Clique no link a seguir para redefinir sua senha: http://localhost:3000/AlterarSenha?token=${token}`
       };
 
-      await gmailTransporter.sendMail(gmailMailOptions);
+      await transporter.sendMail(outlookMailOptions);
 
-      console.log('E-mail enviado com sucesso pelo Gmail');
-  } catch (error) {
-      console.error('Erro ao enviar e-mail pelo Gmail:', error);
-      // Se ocorrer um erro ao enviar pelo Gmail, enviar pelo Outlook
-      const outlookTransporter = nodemailer.createTransport({
-          service: 'outlook',
-          auth: {
-              user: 'DoaAlimentaSuporte@outlook.com',
-              pass: 'SenhaDoaAli123'
-          }
-      });
-
-      const outlookMailOptions = {
-          from: 'DoaAlimentaSuporte@outlook.com',
-          to: email,
-          subject: 'Recuperação de Senha',
-          text: `Olá! Você solicitou a recuperação de senha. Clique no link a seguir para redefinir sua senha: http://localhost:3000/AlterarSenha?token=${token}`
-      };
-
-      await outlookTransporter.sendMail(outlookMailOptions);
-
-      console.log('E-mail enviado com sucesso pelo Outlook');
   }
-}
+
 
 // Rota para solicitar troca de senha
 app.post('/solicitar-troca-senha', async function (req, res) {
