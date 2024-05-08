@@ -1,14 +1,12 @@
-.DFLISTPRODINTER {
+
+
+.DFBF {
     display: flex;
     flex-direction: row;
 }
 
-.DPLISTPRODINTER{
-    height: 100%;
-    width: 100%;
-}
 
-.DILISTPRODINTER {
+.DIBF {
 
     position: relative;
     background-size: cover;
@@ -23,7 +21,7 @@
     width: 100%;
 }
 
-.DFPLISTPRODINTER {
+.DFPBF {
 
     position: absolute;
     /* Define a posição absoluta */
@@ -51,14 +49,14 @@
     height: 3.5rem;
 }
 
-.h1MinDoaLISTPRODINTER {
+.HMDBF {
     text-align: center;
     margin-top: -20px;
     font-size: 30px;
     font-family: 'Poller One', sans-serif;
 }
 
-.DFFLISTPRODINTER {
+.DFFBF {
 
     background-color: white;
     width: 90%;
@@ -74,7 +72,7 @@
     overflow-y: auto;
 }
 
-.h1ProdutosEnvLISTPRODINTER {
+.h1ProdutosEnv {
 
     text-align: center;
     justify-content: center;
@@ -82,49 +80,29 @@
     display: inline-block;
     position: relative;
     margin: 0 auto;
-    font-weight: bold;
+    font-family: 'Poller One', sans-serif;
     font-size: 1.2rem;
 
 }
+.button {
 
-.imgFiltrarLISTPRODINTER {
-    width: 20px;
-    display: inline-block;
-    height: 25px;
-
+    background-color: rgba(63, 173, 180, 0.87);
+    color: white;
+    width: 100px;
+    height: 40px;
+  }
+  
+  
+.caixa{
+    margin: 2rem;
+    padding-top: 150px;
+}
+.trofeu {
+    margin: 4rem;
 }
 
-.IT {
-    display: block;
-    margin: 0 auto;
-    padding-top: 70px;
-    width: 30px;
+.lv {
+    margin: 6rem;
+    padding-top: 100px;
 }
 
-.HND {
-
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    margin: 0 auto;
-    padding-top: 15px;
-
-    text-align: center;
-}
-
-.PSP {
-
-    display: block;
-    font-family: 'Inter', sans-serif;
-    margin: 0 auto;
-    text-align: center;
-    padding-top: 20px;
-
-}
-
-.PSPD {
-
-    display: block;
-    font-family: 'Inter', sans-serif;
-    margin: 0 auto;
-    text-align: center;
-}

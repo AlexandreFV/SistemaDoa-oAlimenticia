@@ -71,7 +71,13 @@
                                 </div>
                                 <div style={{ backgroundColor: "black", width: "100%", height: "2px" }}></div>
                                 {intermedio.length === 0 ? (
-                                <p>Não há produtos Disponiveis</p>
+                                <div>
+                                <img src="/triste.png" className="IT"></img>
+                                <h1 className="HND">Você ainda não efetuou nenhuma compra.</h1>
+                                <p className="PSP">Seja parte da solução.</p>
+                                <p className="PSPD">Faça sua primeira compra</p>
+                                <button>n sei o que é</button>
+                              </div>
                                 ) : (
     <div>
         {intermedio.map((meuIntermedio, index) => (
