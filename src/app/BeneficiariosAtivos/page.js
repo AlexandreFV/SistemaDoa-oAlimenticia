@@ -121,7 +121,11 @@ export default function ListProdutorIntermed() {
                       <div style={{ backgroundColor: "black", width: "100%", height: "2px" }}></div>
                       <>
                         {beneficiario.length === 0 ? (
-                          <div>Nenhum beneficiário disponível na sua Cidade</div>
+                          <div>
+                            <img style={{display: "flex", justifyContent: "center"}} src="/triste.png" className="BENEFATIVOIMG"></img>
+                            <h1 className="BENEFATIVOTXT1">Ainda não temos beneficiários cadastrados.</h1>
+                            <p className="BENEFATIVOTXT2">Aguarde até o encontro de um novo beneficiário.</p>
+                          </div>
                         ) : (
                           <div>
                             {beneficiario.map((bene, index) => (

@@ -110,7 +110,11 @@ export default function ColetarDoacao() {
                             </div>
                             <div style={{backgroundColor: "black", width: "100%", height: "2px" }}></div>
                             {doacoes.length === 0 ? (
-                                <p>Não há doações disponíveis na sua cidade no momento.</p>
+                              <div>
+                                <img src="/triste.png" className="COLETADOACAOIMG"></img>
+                                <h1 className="COLETADOACAOTXT1">Não temos doações disponíveis no momento.</h1>
+                                <p className="COLETADOACAOTXT2">Aguarde até que uma nova doação seja realizada.</p>
+                              </div>
                             ) : (
                                 <div>
                                     {doacoes.map((doacao, index) => (

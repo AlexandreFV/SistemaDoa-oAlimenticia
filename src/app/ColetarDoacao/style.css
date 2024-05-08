@@ -140,3 +140,30 @@
     max-height: 100px;
     max-width: 200px;
 }
+
+.COLETADOACAOIMG {
+    display: block;
+    margin: 0 auto;
+    padding-top: 70px;
+    width: 30px;
+}
+
+.COLETADOACAOTXT1 {
+
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    margin: 0 auto;
+    padding-top: 15px;
+
+    text-align: center;
+}
+
+.COLETADOACAOTXT2 {
+
+    display: block;
+    font-family: 'Inter', sans-serif;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 20px;
+
+}
