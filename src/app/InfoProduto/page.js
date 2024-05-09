@@ -63,7 +63,7 @@ export default function InfoProduto() {
             setComprando(true); // Atualiza o estado para indicar que está comprando
 
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:3001/ComprarProduto/${id}`, {
+            const response = await fetch(`http://localhost:3001/ComprarProdutoSEMPAGAR/${id}`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

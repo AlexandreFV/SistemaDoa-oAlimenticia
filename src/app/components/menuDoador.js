@@ -43,7 +43,7 @@ export default function menuDoador() {
                 </div>
 
                 <div style={{ paddingTop: "15px" }}>
-                    <CustomButton rel="preload" href={{}} className={"btnn"} buttonText={"Nível de classificação"} textStyle={{ marginLeft: "1rem" }} />
+                    <CustomButton rel="preload" href={"/MinhaClassificacaoDoador"} className={"btnn"} buttonText={"Nível de classificação"} textStyle={{ marginLeft: "1rem" }} />
                 </div>
             </div>
         </div>

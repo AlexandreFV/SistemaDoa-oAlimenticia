@@ -766,9 +766,59 @@ app.get("/InfoProduto/:id", checkToken, verificarUsuarioIntermediario, async fun
   }
 });
 
+//Para coletar o produto sem pagar no stripe (Para testes)
+app.post("/ComprarProdutoSEMPAGAR/:id",checkToken,verificarUsuarioIntermediario, async function (req, res) {
+  const id = req.params.id;
+  const usuarioId = req.userId;
+  try {
+      // Encontrar a doação na tabela doacaos com base no ID fornecido
+      const doacao1 = await doacao.findByPk(id);
+      if (!doacao1) {
+          return res.status(404).json({ error: "Doação não encontrada" });
+      }
+      const dataAtual = new Date();
+      const doacaoColetadaValues = {
+        nome_alimento: doacao1.nome_alimento,
+        quantidade: doacao1.quantidade,
+        foto: doacao1.foto,
+        rua: doacao1.rua,
+        numero: doacao1.numero,
+        cidade: doacao1.cidade,
+        validade: doacao1.validade,
+        descricao: doacao1.descricao,
+        categoria: doacao1.categoria,
+        dataColeta: dataAtual,
+        usuariodoadorId: doacao1.usuariodoadorId,
+        usuariointermediarioId:usuarioId,
+    };
+      await doacaoColetada.create(doacaoColetadaValues);
+      await produtoCompradoOriginal.create(doacaoColetadaValues);
+      let RankingDoador = await rankingProdUnit.findOne({
+        where: {
+            usuariodoadorId: doacao1.usuariodoadorId
+        }
+    });
+      
+      if(!RankingDoador){
+        RankingDoador = await rankingProdUnit.create({
+          usuariodoadorId: doacao1.usuariodoadorId,
+          quantidade: 1, //Inicia com 1 pois é a primeira venda
+        });
+      }else{
+        RankingDoador.quantidade += 1; 
+      }
+      await RankingDoador.save();
+      // Remover a doação encontrada da tabela doacaos
+      await doacao1.destroy();
+      // Responder ao cliente com sucesso
+      res.status(200).json({ message: "Doação coletada com sucesso" });
+  } catch (error) {
+      console.error("Erro ao coletar produto:", error);
+      res.status(500).json({ error: "Erro ao coletar produto" });
+  }
+});
 
 async function coletarDoacao(id, usuarioId) {
-
 
   try {
       // Encontrar a doação na tabela doacaos com base no ID fornecido
