@@ -9,11 +9,13 @@ import Link from 'next/link';
 import { useRouter } from "next/navigation";
 import jwt from 'jsonwebtoken';
 import { Cedarville_Cursive } from "next/font/google";
+import { loadStripe } from '@stripe/stripe-js';
 
 export default function InfoProduto() {
     const router = useRouter();
     const [doacao, setDoacao] = useState(null); // Correção: Mudei "doacoes" para "doacao" para corresponder ao estado único    
     const [comprando, setComprando] = useState(false);
+    const stripePromise = loadStripe('pk_test_51PCbkzB0I0kVCHBEihpetEBp7kXq1YVpTKrS6bXZYxRlH354snfCHDaGO4C4hV792xqpN0KeDmOmnSJsOZOLcZdw00oLulsgGR'); // Substitua pelo seu publishable key
 
     
     useEffect(() => {
@@ -82,6 +84,40 @@ export default function InfoProduto() {
         }
     };
 
+    const handleClickStripe = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const decodedToken = jwt.decode(token);
+            const usuariodoadorId = decodedToken.id;
+    
+            const response = await fetch(`http://localhost:3001/ComprarProduto`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    nomeProd: doacao.nome_alimento,
+                    quant: doacao.quantidade,
+                    descricao: doacao.descricao,
+                    doacaoId: doacao.id,
+                    userId: usuariodoadorId,
+                    userCpf: doacao.usuariodoador.cpf,
+                }),
+            });
+    
+            if (response.ok) {
+                const { sessionId } = await response.json();
+                const stripe = await stripePromise;
+                await stripe.redirectToCheckout({ sessionId });
+            } else {
+                console.error('Erro ao criar sessão de checkout:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Erro ao criar sessão de checkout:', error.message);
+        }
+    };
+    
 
 
     return (
@@ -108,7 +144,7 @@ export default function InfoProduto() {
                                     <div style={{ marginLeft: "1.5rem", marginTop: "4.5rem" }}>
                                         <p style={{ alignItems: "center", fontSize: "1.1rem", fontWeight: "bold" }}>Nome do Produto</p>
                                         <p style={{ fontSize: "1.1rem" }}>{doacao && doacao.nome_alimento}</p>
-
+                                        <p>{doacao && doacao.preco}</p>
 
                                     </div>
                                     <div style={{ marginLeft: "1.2rem", marginTop: "2.5rem" }}>
@@ -136,6 +172,7 @@ export default function InfoProduto() {
                                     <div>
                                         <p style={{ marginLeft: "1.5rem", overflowWrap: "break-word" }}>{doacao && doacao.descricao}</p>
                                     </div>
+                                    <button onClick={handleClickStripe}>Pagar com Stripe</button>
                                     <button 
                 className="btn btn-success" 
                 style={{ position: "absolute", marginLeft: "150px", marginTop: "100px" }}

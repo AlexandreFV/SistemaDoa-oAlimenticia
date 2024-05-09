@@ -13,12 +13,16 @@ const { Op } = require("sequelize");
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 var smtpPool = require('nodemailer-smtp-pool');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const endpointSecret = "whsec_3c9585386e4c4471c1f88efa04be199e3e2c2e2c34211adddfc8318605b69088";
 
 // Use o middleware cors
 app.use(cors());
 
 // Middleware para analisar o corpo da solicitação como JSON
 app.use(express.json());
+
+app.use(express.static('public'));
 
 const usuariobeneficiario = require("./models/usuarioBeneficiario"); //Tabela que armazena as informacoes de beneficiario
 const usuariodoador = require("./models/usuariodoador"); //Tabela que armazena as informacoes de doador
@@ -160,9 +164,9 @@ app.get('/MinhasDoacoes',checkToken, verificarUsuarioDoador, function(req, res) 
 
 
 app.post("/CadastrarBeneficiario", async function(req, res){
-    const { nome, email, cpf, senha, rua, cidade, numero,telefone  } = req.body;
+    const { nome, email, cpf, senha, rua, cidade, numero,telefone} = req.body;
 
-    if (!nome || !email || !cpf || !senha || !rua || !cidade || !numero || !telefone) {
+    if (!nome || !email || !cpf || !senha || !rua || !cidade || !numero || !telefone ) {
       return res.status(400).json({ msg: 'Por favor, preencha todos os campos obrigatórios.' });
     }
 
@@ -212,11 +216,15 @@ app.post("/CadastrarBeneficiario", async function(req, res){
 
 
 app.post("/CadastrarDoador", async function(req, res){
-  const { nome, email, cpf, senha,rua,cidade,numero,telefone } = req.body;
+  const { nome, email, cpf, senha,rua,cidade,numero,telefone,NumerAgen,NumerConta,dataNasc,NomeBanc   } = req.body;
 
-  if (!nome || !email || !cpf || !senha || !rua || !cidade || !numero || !telefone) {
+  if (!nome || !email || !cpf || !senha || !rua || !cidade || !numero || !telefone || !NumerAgen || !NumerConta 
+    || !dataNasc || !NomeBanc) {
     return res.status(400).json({ msg: 'Por favor, preencha todos os campos obrigatórios.' });
   }
+
+    // Separando a data de nascimento em dia, mês e ano
+    const [anoNasc, mesNasc, diaNasc] = dataNasc.split('-');
 
   try{
 
@@ -226,14 +234,18 @@ app.post("/CadastrarDoador", async function(req, res){
       usuariointermediario.findOne({ where: { email: email } }),
       usuariobeneficiario.findOne({ where: { email: email } }),
       usuarioEmpresa.findOne({ where: { email: email } })
-
     ]);
 
   if (doador || intermediario || beneficiario || empresa) {
     return res.status(422).json({ msg: 'E-mail já está em uso por outro usuário!' });
   }
 
-      // Crie um hash da senha usando bcrypt
+  const resultadoCriacaoStripe = await CriarProdutorStripe(nome, email, cpf, rua, cidade, telefone, NumerAgen, NumerConta, anoNasc, mesNasc, diaNasc, NomeBanc);
+  
+  if (!resultadoCriacaoStripe) {
+    return res.status(500).json({ msg: 'Erro ao criar conta na Stripe.' });
+  }
+//         // Crie um hash da senha usando bcrypt
   const salt = await bcrypt.genSalt(12);
   const passwordHash = await bcrypt.hash(senha, salt);
   
@@ -246,7 +258,8 @@ app.post("/CadastrarDoador", async function(req, res){
     rua,
     numero,
     cidade,
-    telefone
+    telefone,
+    idStripe: resultadoCriacaoStripe.id,
 });
 
 res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
@@ -254,12 +267,88 @@ res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
 
   } catch (error){
 
-    res.status(500).json({msg: error})
-    res.status(500).json({ msg: "Erro ao cadastrar beneficiário", error: error.message });
+    res.status(500).json({ msg: "Erro ao cadastrar Produtor", error: error.message });
 
   }
 
 });
+
+
+const CriarProdutorStripe = async (nome, email, cpf, rua, cidade, telefone, NumerAgen, NumerConta, anoNasc, mesNasc, diaNasc, NomeBanc) => {
+  // 1. Coletar informações bancárias durante o cadastro do usuário
+  const bankAccountInfo = {
+    country: 'BR',
+    currency: 'brl',
+    account_holder_name: nome,
+    account_holder_type: 'individual',
+    routing_number: '110-0000', // Para contas do brasil o cod de compensasao + cod da agencia
+    account_number: '0001234'	, // Número da conta
+  };
+  
+// 2. Criar um token da conta bancária
+const bankAccountToken = await stripe.tokens.create({
+  bank_account: bankAccountInfo,
+});
+
+  // 3. Criar a conta na Stripe com o token da conta bancária
+  const account = await stripe.accounts.create({
+    type: 'custom',
+    country: 'BR',
+    email: email,
+    external_account: bankAccountToken.id,
+    capabilities: {
+      card_payments: {
+        requested: true,
+      },
+      transfers: {
+        requested: true,
+      },
+    },
+    business_type: 'individual', // Tipo de empresa (pessoa física)
+    business_profile: {
+      mcc: '5734', // MCC para o setor de Software
+      url: 'https://www.exemplo.com', // Site da empresa
+    },
+    individual: {
+      address: {
+        city: cidade,
+        line1: rua,
+        postal_code: '15906762',
+        state: 'São Paulo',
+      },
+      dob: {
+        day: diaNasc,
+        month: mesNasc,
+        year: anoNasc,
+      },
+      email: email,
+      first_name: 'Alexandre',
+      last_name: 'Santos',
+      id_number: cpf,
+      phone: '+55' + telefone,
+    },  
+  });
+    
+
+  const account1 = await stripe.accounts.update(
+    account.id,
+    {
+      tos_acceptance: {
+        date: 1609798905,
+        ip: '8.8.8.8',
+      },
+    }
+  );
+
+  const conta = await stripe.accounts.retrieve(account.id);
+  if(!conta){
+    return null;
+  }
+
+  return conta;
+
+
+}
 
 
 app.post("/CadastrarIntermediario", async function(req, res){
@@ -665,7 +754,7 @@ app.get("/InfoProduto/:id", checkToken, verificarUsuarioIntermediario, async fun
     const doacoes = await doacao.findByPk(id, {
       include: {
         model: usuariodoador, // Substitua 'Doador' pelo nome do seu modelo de doador
-        attributes: ['nome','telefone'] // Inclua apenas o nome do doador
+        attributes: ['nome','telefone', 'cpf'] // Inclua apenas o nome do doador
       }
     });
 
@@ -678,9 +767,8 @@ app.get("/InfoProduto/:id", checkToken, verificarUsuarioIntermediario, async fun
 });
 
 
-app.post("/ComprarProduto/:id",checkToken,verificarUsuarioIntermediario, async function (req, res) {
-  const id = req.params.id;
-  const usuarioId = req.userId;
+async function coletarDoacao(id, usuarioId) {
+
 
   try {
       // Encontrar a doação na tabela doacaos com base no ID fornecido
@@ -730,12 +818,12 @@ app.post("/ComprarProduto/:id",checkToken,verificarUsuarioIntermediario, async f
       await doacao1.destroy();
 
       // Responder ao cliente com sucesso
-      res.status(200).json({ message: "Doação coletada com sucesso" });
-  } catch (error) {
+      return { message: "Doação coletada com sucesso" };
+    } catch (error) {
       console.error("Erro ao coletar produto:", error);
-      res.status(500).json({ error: "Erro ao coletar produto" });
+      return { error: "Erro ao coletar produto" };
   }
-});
+};
 
 app.get("/MeusIntermedios", checkToken, verificarUsuarioIntermediario, async function (req,res){
   res.status(200).json({ mensagem: 'Você está autorizado a acessar esta rota.' });
@@ -1226,3 +1314,76 @@ const [doador, intermediario, beneficiario,empresa] = await Promise.all([
     }
   });
   
+app.post("/ComprarProduto", checkToken, verificarUsuarioIntermediario, async function (req, res) {
+    const {nomeProd, quant, descricao, doacaoId, userId, userCpf} = req.body;
+
+    try {
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            line_items: [
+                {
+                    price_data: {
+                        currency: 'brl',
+                        product_data: {
+                            name: nomeProd,
+                            description: descricao,
+
+                            // Adicione outros detalhes do produto, como preço, quantidade, etc.
+                        },
+                        unit_amount: 50, // Preço em centavos
+                    },
+                    quantity: quant, // Quantidade do produto
+                },
+            ],
+            mode: 'payment',
+            success_url: 'http://localhost:3000/ListProdutorIntermed',
+            cancel_url: 'https://localhost:3000/cancel',
+            metadata: {
+              doacaoId: doacaoId,
+              usuarioId: userId,
+          }
+        });
+        res.json({ sessionId: session.id });
+    } catch (error) {
+        console.error('Erro ao criar sessão de checkout:', error);
+        res.status(500).json({ error: 'Erro ao criar sessão de checkout' });
+    }
+});
+
+
+// Rota para receber o webhook do Stripe após o pagamento ser concluído com sucesso
+//Vai ser usada para colocar a doacao em doacao coletada e produto comprado
+app.post('/webhook', async function (req, res) {
+  const sig = req.headers['stripe-signature'];
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+  } catch (err) {
+    res.status(400).send(`Webhook Error: ${err.message}`);
+    return;
+  }
+
+  // Verifique se o evento é de pagamento bem-sucedido
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+
+    // Acesse os IDs da doação e do usuário a partir do metadata da sessão
+    const doacaoId = session.metadata.doacaoId;
+    const usuarioId = session.metadata.usuarioId;
+
+    // Execute a lógica de venda após o sucesso do pagamento
+    try {
+        // Sua lógica de venda aqui, como atualizar o status da compra no banco de dados, enviar e-mails de confirmação, etc.
+        await coletarDoacao(doacaoId, usuarioId);
+        console.log('Venda concluída com sucesso para a sessão:', session.id);
+    } catch (error) {
+        console.error('Erro ao processar a venda:', error);
+        // Se houver um erro ao processar a venda, retorne um código de status adequado
+        return res.status(500).json({ error: 'Erro ao processar a venda' });
+    }
+    
+    // Retorne uma resposta de sucesso para o webhook do Stripe
+    res.json({ received: true });
+  }
+});

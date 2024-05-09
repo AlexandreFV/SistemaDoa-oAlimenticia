@@ -42,6 +42,10 @@ const usuariodoador = sequelize.define('usuariodoador', {
   recoveryToken:{
     type: DataTypes.STRING,
     allowNull: true,
+  },
+  idStripe:{
+    type: DataTypes.STRING,
+    allowNull: false,
   }
 });
 

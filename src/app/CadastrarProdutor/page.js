@@ -20,11 +20,20 @@ export default function CadastroDoador(){
     const router = useRouter();
     const [erroCadastro, setErroCadastro] = useState(""); // Estado para armazenar a mensagem de erro
     const [telefone, setTelefone] = useState("");
+    const [NumerAgen,setNumerAgen] = useState("");
+    const [NumerConta, setNumeroConta ] = useState("");
+    const [dataNasc, setDataNasc] = useState("");
+    const [NomeBanc,setNomeBanc] = useState("");
+    const [isLoading, setIsLoading] = useState(false); // Estado para indicar se o formulário está sendo enviado
 
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
-    
-        if(nome != "" && email != "" && cpf != "" && senha != "" && rua != "" && cidade != "" && numero != "" && telefone != ""){
+        setIsLoading(true); // Define isLoading como true durante o envio do formulário
+
+        if(nome != "" && email != "" && cpf != "" && senha != "" && rua != "" && cidade != "" && numero != "" && telefone != "" 
+          && NumerAgen != "" && NumerConta != "" && dataNasc != "" && NomeBanc != ""
+        ){
 
         try {
           const response = await fetch("http://localhost:3001/CadastrarDoador", {
@@ -40,7 +49,11 @@ export default function CadastroDoador(){
               cidade,
               rua,
               numero,
-              telefone
+              telefone,
+              NumerAgen,
+              NumerConta,
+              dataNasc,
+              NomeBanc
             }),
           });
     
@@ -61,7 +74,9 @@ export default function CadastroDoador(){
         } catch (error) {
           console.error("Erro ao realizar requisição:", error.message);
           // Exibir uma mensagem de erro aqui
-        }
+        } finally {
+          setIsLoading(false); // Define isLoading como false após o envio do formulário
+      }
       } else {
         setErroCadastro("Preencha todos os campos!");
       }      
@@ -112,7 +127,7 @@ export default function CadastroDoador(){
 
     <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"10px"}}>
         <label for="exampleInputEmail1">CPF</label>
-        <input type="text" class="form-control" id="exampleInputEmail1" 
+        <input type="number" class="form-control" id="exampleInputEmail1" 
         aria-describedby="emailHelp" placeholder="XXX.XXX.XXX-XX" 
         style={{backgroundColor:"transparent"}} name="cpf"
         value={cpf} onChange={(e) => setCpf(e.target.value)}/>
@@ -174,12 +189,49 @@ value={telefone} onChange={(e) => setTelefone(e.target.value)}/>
     </div>
 
 
+    <div className="DFBCD1">
+    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"20px"}}>
+        <label for="exampleInputEmail1">Data de Nascimento</label>
+        <input type="date" class="form-control" id="exampleInputEmail1" 
+        aria-describedby="emailHelp" placeholder="Digite sua Data de Nascimento..." 
+        style={{backgroundColor:"transparent"}} name="dataNasc"
+        value={dataNasc} onChange={(e) => setDataNasc(e.target.value)}/>
+    </div>
+
+    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"20px"}}>
+        <label for="exampleInputEmail1">Numero da Conta</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" 
+        aria-describedby="emailHelp" placeholder="Digite seu numero da conta do Banco..." 
+        style={{backgroundColor:"transparent"}} name="NumerConta"
+        value={NumerConta} onChange={(e) => setNumeroConta(e.target.value)}/>
+    </div>
+
+    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"20px"}}>
+        <label for="exampleInputEmail1">Numero da Agencia</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" 
+        aria-describedby="emailHelp" placeholder="Digite o numero de sua Agencia..." 
+        style={{backgroundColor:"transparent"}} name="NumerAgen"
+        value={NumerAgen} onChange={(e) => setNumerAgen(e.target.value)}/>
+    </div>
+
+    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"20px"}}>
+        <label for="exampleInputEmail1">Nome do banco</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" 
+        aria-describedby="emailHelp" placeholder="Digite o nome do Banco..." 
+        style={{backgroundColor:"transparent"}} name="NomeBanc"
+        value={NomeBanc} onChange={(e) => setNomeBanc(e.target.value)}/>
+    </div>
+
+      </div>
+
         <center>
-        <button className="btn" type="submit" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color: "white",marginTop:"10px"}}>Cadastrar</button>
+        <button className="btn" type="submit" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color: "white",marginTop:"10px"}}
+        disabled={isLoading}> {isLoading ? 'Cadastrando...' : 'Cadastrar'}</button>
         </center>
         </form>
 
     </div>
+    
 
   </div>
 </div>
