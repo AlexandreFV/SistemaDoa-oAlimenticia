@@ -229,16 +229,16 @@ app.post("/CadastrarDoador", async function(req, res){
   try{
 
     // Verifique se o e-mail já está em uso por qualquer tipo de usuário
-    const [doador, intermediario, beneficiario, empresa] = await Promise.all([
-      usuariodoador.findOne({ where: { email: email } }),
-      usuariointermediario.findOne({ where: { email: email } }),
-      usuariobeneficiario.findOne({ where: { email: email } }),
-      usuarioEmpresa.findOne({ where: { email: email } })
-    ]);
+    // const [doador, intermediario, beneficiario, empresa] = await Promise.all([
+    //   usuariodoador.findOne({ where: { email: email } }),
+    //   usuariointermediario.findOne({ where: { email: email } }),
+    //   usuariobeneficiario.findOne({ where: { email: email } }),
+    //   usuarioEmpresa.findOne({ where: { email: email } })
+    // ]);
 
-  if (doador || intermediario || beneficiario || empresa) {
-    return res.status(422).json({ msg: 'E-mail já está em uso por outro usuário!' });
-  }
+  // if (doador || intermediario || beneficiario || empresa) {
+  //   return res.status(422).json({ msg: 'E-mail já está em uso por outro usuário!' });
+  // }
 
   const resultadoCriacaoStripe = await CriarProdutorStripe(nome, email, cpf, rua, cidade, telefone, NumerAgen, NumerConta, anoNasc, mesNasc, diaNasc, NomeBanc);
   
