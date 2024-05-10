@@ -126,21 +126,22 @@ export default function ColetarDoacao() {
                                                 alt={`Foto da doação ${index + 1}`} />
                                             </div>
                                             <div style={{ float: "left" }}>
-                                                <div style={{ marginLeft: "1rem", paddingTop: "0.7rem", fontSize: 19, fontFamily: "Inter", fontWeight: "bold" }}>{doacao.usuariodoador.nome}</div>
+                                                <div style={{ marginLeft: "1rem", paddingTop: "0.7rem", fontSize: 19, fontFamily: "Inter", fontWeight: "bold",overflow: "hidden",maxWidth:"100px",maxHeight:"40px" }}>{doacao.usuariodoador.nome}</div>
                                                 <div style={{ marginLeft: "1rem", marginTop: "1rem", fontSize: 19, fontFamily: 'Inter', fontWeight: '500', wordWrap: 'break-word' }}><b>Produto:</b> {doacao.nome_alimento}</div>
                                             </div>
                                             <div style={{ display: "flex", justifyContent: "center", textAlign: "center", flexWrap: "wrap" }}>
-                                                <div style={{ paddingTop: "1.5rem", flex: "1", marginRight: "-5rem", marginLeft: "-10%" }}>
-                                                    <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: 'bold' }}>Categoria</div>
-                                                    <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '400' }}>{doacao.categoria}</div>
-                                                </div>
+                    
                                                 <div style={{ paddingTop: "1.5rem", flex: "1", marginRight: "-5rem" }}>
                                                     <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: 'bold' }}>Formato</div>
-                                                    <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '400' }}>Caixa</div>
+                                                    <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '400' }}>{doacao.formato}</div>
                                                 </div>
-                                                <div style={{ paddingTop: "1.5rem", flex: "1" }}>
+                                                <div style={{ paddingTop: "1.5rem", flex: "1",marginRight: "-5rem"}}>
                                                     <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: 'bold' }}>Quantidade</div>
                                                     <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '400' }}>{doacao.quantidade}</div>
+                                                </div>
+                                                <div style={{ paddingTop: "1.5rem", flex: "1" }}>
+                                                    <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: 'bold' }}>Preço</div>
+                                                    <div style={{ fontSize: 16, fontFamily: 'Inter', fontWeight: '400' }}>{doacao.preco}</div>
                                                 </div>
                                                 <div style={{ marginLeft: "auto", marginTop: "2.5rem", marginRight: "1.5rem" }}>
                                                     <div>

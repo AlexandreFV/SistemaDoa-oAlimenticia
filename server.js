@@ -634,7 +634,7 @@ app.listen(3001, () => {
 
 
 app.post("/EnviarDoacao", upload.single('foto'), checkToken, verificarUsuarioDoador, async function(req, res) {
-  const { nome_alimento, quantidade, rua, numero, cidade, validade, descricao,categoria } = req.body;
+  const { nome_alimento, quantidade, rua, numero, cidade, validade, descricao,categoria, formato, preco } = req.body;
   const foto = req.file.buffer; // Obtenha os dados binários da imagem
 
   try {
@@ -654,6 +654,8 @@ app.post("/EnviarDoacao", upload.single('foto'), checkToken, verificarUsuarioDoa
       validade: validade,
       descricao: descricao,
       categoria: categoria,
+      formato: formato,
+      preco: preco,
     });
 
     // Se a doação for criada com sucesso, envie uma resposta de sucesso
@@ -790,6 +792,8 @@ app.post("/ComprarProdutoSEMPAGAR/:id",checkToken,verificarUsuarioIntermediario,
         dataColeta: dataAtual,
         usuariodoadorId: doacao1.usuariodoadorId,
         usuariointermediarioId:usuarioId,
+        formato: doacao1.formato,
+        preco: doacao1.preco,
     };
       await doacaoColetada.create(doacaoColetadaValues);
       await produtoCompradoOriginal.create(doacaoColetadaValues);
@@ -842,6 +846,8 @@ async function coletarDoacao(id, usuarioId) {
         dataColeta: dataAtual,
         usuariodoadorId: doacao1.usuariodoadorId,
         usuariointermediarioId:usuarioId,
+        formato: doacao1.formato,
+        preco: doacao1.preco,
     };
 
       await doacaoColetada.create(doacaoColetadaValues);

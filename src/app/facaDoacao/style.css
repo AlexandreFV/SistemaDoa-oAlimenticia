@@ -116,8 +116,13 @@
 
 .categoriaLabelFACADOA {
 
-    padding-left: 80px;
+    padding-left: 0px;
     padding-top: 20px;
+
+}
+
+.precoLabelFACADOA{
+    padding-left: 60px;
 
 }
 
@@ -134,7 +139,7 @@
 
 .quantFACADOA {
 
-    width: 30%;
+    width: 40%;
     position: relative;
     display: inline-block;
 
@@ -143,7 +148,7 @@
 .categoFACADOA {
 
     position: relative;
-    width: 60%;
+    width: 100%;
 
 
 }
@@ -190,3 +195,11 @@
     /* Mantém a cor de fundo ao passar o mouse, focar ou clicar */
 }
 
+
+.formatoFACADOA{
+    width: 50%;
+}
+
+.formatoLabelFACADOA{
+    padding-left: 75px;
+}

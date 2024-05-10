@@ -50,6 +50,15 @@ const doacao = sequelize.define('doacao', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  preco:{
+    type:DataTypes.FLOAT,
+    allowNull: false,
+  },
+  formato:{
+    type:DataTypes.STRING,
+    allowNull:false,
+  },
+  
 });
 
 

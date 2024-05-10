@@ -54,7 +54,14 @@ const produtoCompradoOriginal = sequelize.define('produtoComprado', {
       dataColeta: {
         type: DataTypes.DATE,
         allowNull: true
-      }
+      },  preco:{
+        type:DataTypes.FLOAT,
+        allowNull: false,
+      },
+      formato:{
+        type:DataTypes.STRING,
+        allowNull:false,
+      },
 
 });
 

@@ -144,12 +144,11 @@ export default function InfoProduto() {
                                     <div style={{ marginLeft: "1.5rem", marginTop: "4.5rem" }}>
                                         <p style={{ alignItems: "center", fontSize: "1.1rem", fontWeight: "bold" }}>Nome do Produto</p>
                                         <p style={{ fontSize: "1.1rem" }}>{doacao && doacao.nome_alimento}</p>
-                                        <p>{doacao && doacao.preco}</p>
 
                                     </div>
                                     <div style={{ marginLeft: "1.2rem", marginTop: "2.5rem" }}>
                                         <p style={{ alignItems: "center", fontSize: "1.1rem", fontWeight: "bold" }}>Formato</p>
-                                        <p style={{ fontSize: "1.1rem" }}>Caixa</p>
+                                            <p style={{ fontSize: "1.1rem" }}>{doacao && doacao.formato}</p>
                                     </div>
                                     <div style={{ marginLeft: "1.2rem", marginTop: "2.5rem" }}>
                                         <p style={{ alignItems: "center", fontSize: "1.1rem", fontWeight: "bold" }}>Validade</p>
@@ -172,6 +171,8 @@ export default function InfoProduto() {
                                     <div>
                                         <p style={{ marginLeft: "1.5rem", overflowWrap: "break-word" }}>{doacao && doacao.descricao}</p>
                                     </div>
+                                    <div style={{ marginTop: "4.5rem", marginLeft: "1.5rem" }}><p style={{ fontWeight: "bold", fontSize: "1.1rem" }}>Preço Total</p></div>
+                                    <p style={{ marginLeft: "1.5rem", overflowWrap: "break-word" }}>{doacao && doacao.preco}</p>
                                     <button onClick={handleClickStripe}>Pagar com Stripe</button>
                                     <button 
                 className="btn btn-success" 

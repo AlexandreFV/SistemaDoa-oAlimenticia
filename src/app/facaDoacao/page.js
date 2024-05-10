@@ -23,9 +23,9 @@ export default function FacaDoacao() {
   const [erroCadastro, setErroCadastro] = useState(""); // Estado para armazenar a mensagem de erro
   const [succesCadastro, setSuccesCadastro] = useState(""); // Estado para armazenar a mensagem de erro
   const [fileError, setFileError] = useState(""); // Estado para armazenar a mensagem de erro do campo de arquivo
-
+  const [preco, setPreco] = useState("");
   const router = useRouter();
-
+  const [formato, setFormato] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem('token'); // Verifica se há um token no armazenamento local
@@ -74,7 +74,7 @@ export default function FacaDoacao() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (nome_alimento !== "" && quantidade !== "" && foto !== null && rua !== "" && numero !== "" && cidade !== "") {
+    if (nome_alimento !== "" && quantidade !== "" && foto !== null && rua !== "" && numero !== "" && cidade !== "" && preco != "" && formato != "") {
 
       try {
 
@@ -88,6 +88,8 @@ export default function FacaDoacao() {
         formData.append("validade", validade);
         formData.append("descricao", descricao);
         formData.append("categoria", categoria);
+        formData.append("preco", preco);
+        formData.append("formato", formato);
 
 
         const response = await fetch("http://localhost:3001/EnviarDoacao", {
@@ -198,30 +200,37 @@ export default function FacaDoacao() {
                   <label>
                     Nome do Produto:
                   </label>
+                  <label className="precoLabelFACADOA">
+                    Preço Total:
+                  </label>
+                  
+                  <div class="form-groupFACADOA">
                   <input type="text" name="nome_alimento" class="form-control"
-                    placeholder="Digite o nome do produto..." value={nome_alimento}
-                    onChange={(e) => setNome(e.target.value)} />
+                    placeholder="Produto..." value={nome_alimento}
+                    onChange={(e) => setNome(e.target.value)} style={{width:"40%"}} />
+                    <input type="number" name="preco" class="form-control"
+                    placeholder="Preço..." value={preco}
+                    onChange={(e) => setPreco(e.target.value)} style={{width:"50%"}} />
+                  </div>
 
+    
+  
                   <label className="quantLabelFACADOA">
                     Quantidade:
                   </label>
-                  <label className="categoriaLabelFACADOA">
-                    Categoria:
+                  <label className="formatoLabelFACADOA">
+                    Formato:
                   </label>
 
                   <div class="form-groupFACADOA">
                     <input type="number" name="quantidade" class="form-control quantFACADOA"
                       placeholder="quant." value={quantidade}
                       onChange={(e) => setQuant(e.target.value)} min={1} pattern="[0-9]*"  />
-                    <select name="categoria" className="form-control categoFACADOA" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
-                      <option value="">Selecione a categoria</option>
-                      <option value="fruta">Fruta</option>
-                      <option value="tuberculo">Tubérculo</option>
-                      <option value="hortalicia">Hortaliça</option>
-                      <option value="marmita">Marmita</option>
-                      <option value="Carnes e Aves">Carnes e Aves</option>
-                      <option value="Peixes e Frutos do Mar">Peixes e Frutos do Mar</option>
-                      <option value="Produtos de Padaria">Produtos de Padaria</option>
+                    <select name="formato" className="form-control formatoFACADOA" value={formato} onChange={(e) => setFormato(e.target.value)}>
+                      <option value="">Selecione...</option>
+                      <option value="Kilograma">Kilograma</option>
+                      <option value="Gramas">Gramas</option>
+                      <option value="Unidades">Unidades</option>
 
                     </select>
                   </div>
@@ -258,19 +267,44 @@ export default function FacaDoacao() {
                     onChange={(e) => setDescricao(e.target.value)} />
 
 
-                  <label className="ruaLabelFACADOA">
-                    Rua:
-                  </label>
-                  <input type="text" name="rua" class="form-control" value={rua}
-                    onChange={(e) => setRua(e.target.value)} />
+<div style={{ display: "flex", alignItems: "center" }}>
+  <div style={{ marginRight: "10px" }}>
+    <label className="ruaLabelFACADOA">Rua:</label>
+    <input 
+      type="text" 
+      name="rua" 
+      class="form-control" 
+      value={rua} 
+      onChange={(e) => setRua(e.target.value)} 
+      style={{ width: "100%" }} 
+    />
+  </div>
 
+  <div style={{ paddingLeft: "30px",paddingTop:"20px" }}>
+    <label className="numeroLabel">Numero:</label>
+    <input 
+      type="text" 
+      name="numero" 
+      class="form-control" 
+      value={numero} 
+      onChange={(e) => setNumero(e.target.value)} 
+      style={{ width: "100%" }} 
+    />
+  </div>
+</div>
 
-                  <label className="numeroLabel">
-                    Numero:
-                  </label>
-                  <input type="text" name="numero" class="form-control" value={numero}
-                    onChange={(e) => setNumero(e.target.value)} />
+                  <label className="categoriaLabelFACADOA">Categoria:</label>
+                    <select name="categoria" className="form-control categoFACADOA" value={categoria} onChange={(e) => setCategoria(e.target.value)}>
+                      <option value="">Selecione a categoria</option>
+                      <option value="fruta">Fruta</option>
+                      <option value="tuberculo">Tubérculo</option>
+                      <option value="hortalicia">Hortaliça</option>
+                      <option value="marmita">Marmita</option>
+                      <option value="Carnes e Aves">Carnes e Aves</option>
+                      <option value="Peixes e Frutos do Mar">Peixes e Frutos do Mar</option>
+                      <option value="Produtos de Padaria">Produtos de Padaria</option>
 
+                    </select>
                 </div>
 
                 <button className="btnEnviFACADOA" type='submit'>Enviar</button>

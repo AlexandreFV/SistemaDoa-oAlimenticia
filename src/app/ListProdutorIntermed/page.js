@@ -97,7 +97,7 @@
                         <div style={{ flexWrap: "wrap", marginLeft: "2rem", marginRight: "auto", marginTop: "1rem" }}>
                             <p style={{ fontFamily: "Inter" }}>Produto coletado: {meuIntermedio.nome_alimento}</p>
                             <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Categoria: {meuIntermedio.categoria}</p>
-                            <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Formato: Caixa</p>
+                            <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Formato: {meuIntermedio.formato}</p>
                             <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Quantidade: {meuIntermedio.quantidade}</p>
                         </div>
                     </div>

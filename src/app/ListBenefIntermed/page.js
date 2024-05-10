@@ -150,7 +150,7 @@ export default function ListProdutorIntermed() {
                                                         <div style={{ flexWrap: "wrap", marginLeft: "2rem", marginRight: "auto", marginTop: "1rem" }}>
                                                             <p style={{ fontFamily: "Inter" }}>Produto comprado: {meusprodutos.nome_alimento}</p>
                                                             <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Categoria: {meusprodutos.categoria}</p>
-                                                            <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Formato: Caixa</p>
+                                                            <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Formato: {meusprodutos.formato}</p>
                                                             <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Quantidade: {meusprodutos.quantidade}</p>
                                                         </div>
                                                         <button style={{ marginRight: "10px", padding: "0px", opacity: produtosEnviados && produtosEnviados.some(prod => prod.produtoCompradoId === meusprodutos.id) ? "1" : "0.5", pointerEvents: produtosEnviados && produtosEnviados.some(prod => prod.produtoCompradoId === meusprodutos.id) ? "auto" : "none" }} onClick={() => handleExibirBenef(meusprodutos.usuariointermediarioId, meusprodutos.id, meusprodutos.nome_alimento)}>

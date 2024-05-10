@@ -91,7 +91,7 @@ export default function DistribuicaoProduto({idUser, idProd,nomeProduto}) {
                                                 <div style={{ flexWrap: "wrap", marginLeft: "2rem", marginRight: "auto", marginTop: "1rem" }}>
                                                     <p style={{ fontFamily: "Inter" }}>Produto comprado: {meusIntermedios.produtoComprado.nome_alimento}</p>
                                                     <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Categoria: {meusIntermedios.produtoComprado.categoria}</p>
-                                                    <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Formato: Caixa</p>
+                                                    <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Formato: {meusIntermedios.formato}</p>
                                                     <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Quantidade: {meusIntermedios.quantidade}</p>
                                                 </div>
                                             </div>
