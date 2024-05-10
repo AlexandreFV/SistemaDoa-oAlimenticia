@@ -1174,13 +1174,13 @@ app.get("/MeusIntermedios/:id/:idProd",checkToken, verificarUsuarioIntermediario
 })
 
 
-app.get("/RankingTop10", async function(req, res){
+app.get("/RankingTop6", async function(req, res){
   try{
       const topRanking = await rankingProdUnit.findAll({
           order: [
               ['quantidade', 'DESC'] // Ordena em ordem decrescente de quantidade
           ],
-          limit: 10, // Obtém apenas os 10 primeiros registros
+          limit: 6, // Obtém apenas os 10 primeiros registros
           include:{
             model:usuariodoador,
             attributes: ["nome","telefone"]

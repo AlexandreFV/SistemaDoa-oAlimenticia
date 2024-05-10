@@ -69,7 +69,7 @@ export default function Navbar({ isAuthenticated, userEmail, userType }) {
             {userType === 'beneficiario' && (
               <button className="dropdown-item" type="button">Doações Recebidas</button>
             )}
-            <button className="dropdown-item" type="button">Ranking de Doações</button>
+            <Link href={"/ClassificacaoGeral"} className="dropdown-item" type="button">Ranking de Doações</Link>
             <button className="dropdown-item" type="button">Meu perfil</button>
           </div>
         </div>
