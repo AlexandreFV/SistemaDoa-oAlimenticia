@@ -8,7 +8,7 @@ import { BackButton, CustomButton } from "../components/customButton";
 import Link from "next/link";
 import SucErroAddDoacao from "../components/SucErroAddDoacao";
 
-export default function ContribFinanceiraFormPix() {
+export default function ContribFinanceiraFormaPag() {
 
     const [categoria, setCategoria] = useState("");
 
@@ -50,6 +50,45 @@ export default function ContribFinanceiraFormPix() {
                                 <form className="FormPix">
                                     <div className="DadosFinanc" style={{ display: "flex", justifyContent: "center" }}>
                                         <p style={{ marginTop: "1.8rem", fontSize: "1.1rem", marginBottom: "1.8rem", fontWeight: "bold" }}>Enviar com Pix</p>
+                                    </div>
+                                    <div style={{ width: "75%", margin: "0 auto" }}>
+
+                                        <label>
+                                            Nome do Contribuinte:
+                                        </label>
+                                        <input type="text" name="nome_alimento" className="form-control"
+                                            placeholder="Digite seu nome ou da empresa..." /*value={nome_alimento}
+                                        onChange={(e) => setNome(e.target.value)}*/ />
+
+                                    </div>
+                                    <div style={{ width: "75%", margin: "0 auto", marginTop: "1.5rem" }}>
+
+                                        <label>
+                                            CPF/CNPJ do contribuinte
+                                        </label>
+                                        <input type="text" name="nome_alimento" className="form-control"
+                                            placeholder="Digite seu CPF ou CNPJ da empresa..." /*value={nome_alimento}
+                                        onChange={(e) => setNome(e.target.value)}*/ />
+
+                                    </div>
+                                    <div style={{ width: "75%", margin: "0 auto", marginTop: "1.5rem" }}>
+
+                                        <label>
+                                            Valor de envio
+                                        </label>
+                                        <input type="text" name="nome_alimento" className="form-control"
+                                            placeholder="Digite o valor à ser enviado..." /*value={nome_alimento}
+                                        onChange={(e) => setNome(e.target.value)}*/ />
+
+                                    </div>
+                                    <Link href="/ContribFinanceiraEnviarPix">
+                                        <button className="btnEnvi" type='submit'>Enviar</button>
+                                    </Link>
+                                </form>
+
+                                <form className="FormBoleto">
+                                    <div className="DadosFinanc" style={{ display: "flex", justifyContent: "center" }}>
+                                        <p style={{ marginTop: "1.8rem", fontSize: "1.1rem", marginBottom: "1.8rem", fontWeight: "bold" }}>Enviar com Boleto</p>
                                     </div>
                                     <div style={{ width: "75%", margin: "0 auto" }}>
 

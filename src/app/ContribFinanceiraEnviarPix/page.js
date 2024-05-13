@@ -91,7 +91,7 @@ export default function ContribFinanceiraEnviarPix() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div style={{ display: "flex", justifyContent: "center", marginTop: "2rem", fontWeight: "bold", fontSize: "1.2rem" }}>
+                                    <div style={{ display: "flex", justifyContent: "center", marginTop: "2rem", fontWeight: "bold", fontSize: "1.2rem", textAlign: "center" }}>
                                         <p>Observação: O pagamento deverá ser realizado no prazo de 24 horas.</p>
                                     </div>
 
