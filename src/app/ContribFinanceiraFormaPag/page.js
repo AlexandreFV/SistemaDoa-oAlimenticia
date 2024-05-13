@@ -12,13 +12,24 @@ export default function ContribFinanceiraFormaPag() {
 
     const [categoria, setCategoria] = useState("");
 
-    const [activeButton, setActiveButton] = useState(null); // Estado para controlar o botão ativo
-
+    // Estado para controlar qual botão está ativo
+    const [activeButton, setActiveButton] = useState(3);
+    const [classificacao, setClassificacao] = useState([]);
     // Função para lidar com o clique do botão
     const handleButtonClick = (button) => {
+        // Se o botão clicado for o mesmo que já está ativo, retorna sem fazer nada
+        if (button === activeButton) {
+            return;
+        }
+
         // Define o botão clicado como ativo
         setActiveButton(button);
     };
+
+    // Efeito para definir o botão "Produtor" como ativo ao carregar a página
+    useEffect(() => {
+        setActiveButton(3); // Define o botão "Produtor" como ativo
+    }, []);
 
 
     return (
@@ -45,9 +56,42 @@ export default function ContribFinanceiraFormaPag() {
                                     </div>
                                 </div>
                                 <div style={{ backgroundColor: "black", height: "2px", width: "100%" }}></div>
+                                <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+                                    <a href="#"
+                                        className={activeButton === 1 ? 'active btnCardCred' : 'btnCardCred'}
+                                        onClick={(e) => {
+                                            e.preventDefault(); // Evita que o link seja seguido
+                                            handleButtonClick(1);
+                                        }} >
+                                        <p className="textbtnCardCred">Cartão de Crédito</p>
+                                    </a>
+                                    <a href="#"
+                                        className={activeButton === 2 ? 'active btnCardDebt' : 'btnCardDebt'}
+                                        onClick={(e) => {
+                                            e.preventDefault(); // Evita que o link seja seguido
+                                            handleButtonClick(2);
+                                        }}>
+                                        <p className="textbtnCardDebt">Cartão de Débito</p>
+                                    </a>
+                                    <a href="#"
+                                        className={activeButton === 3 ? 'active btnPix' : 'btnPix'}
+                                        onClick={(e) => {
+                                            e.preventDefault(); // Evita que o link seja seguido
+                                            handleButtonClick(3);
+                                        }} >
+                                        <p className="textbtnPix">Pix</p>
+                                    </a>
+                                    <a href="#"
+                                        className={activeButton === 4 ? 'active btnBoleto' : 'btnBoleto'}
+                                        onClick={(e) => {
+                                            e.preventDefault(); // Evita que o link seja seguido
+                                            handleButtonClick(4);
+                                        }}>
+                                        <p className="textbtnBoleto">Boleto</p>
+                                    </a>
+                                </div>
 
-
-                                <form className="FormPix">
+                                <form className="FormPix" style={{ display: activeButton === 3 ? 'block' : 'none' }}>
                                     <div className="DadosFinanc" style={{ display: "flex", justifyContent: "center" }}>
                                         <p style={{ marginTop: "1.8rem", fontSize: "1.1rem", marginBottom: "1.8rem", fontWeight: "bold" }}>Enviar com Pix</p>
                                     </div>
@@ -86,7 +130,7 @@ export default function ContribFinanceiraFormaPag() {
                                     </Link>
                                 </form>
 
-                                <form className="FormBoleto">
+                                <form className="FormBoleto" style={{ display: activeButton === 4 ? 'block' : 'none' }}>
                                     <div className="DadosFinanc" style={{ display: "flex", justifyContent: "center" }}>
                                         <p style={{ marginTop: "1.8rem", fontSize: "1.1rem", marginBottom: "1.8rem", fontWeight: "bold" }}>Enviar com Boleto</p>
                                     </div>
@@ -120,7 +164,7 @@ export default function ContribFinanceiraFormaPag() {
                                         onChange={(e) => setNome(e.target.value)}*/ />
 
                                     </div>
-                                    <Link href="/ContribFinanceiraEnviarPix">
+                                    <Link href="/ContribFinanceiraEnviarBoleto">
                                         <button className="btnEnvi" type='submit'>Enviar</button>
                                     </Link>
                                 </form>

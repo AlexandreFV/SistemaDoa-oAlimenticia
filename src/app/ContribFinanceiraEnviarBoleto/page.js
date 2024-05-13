@@ -59,8 +59,8 @@ export default function ContribFinanceiraEnviarBoleto() {
                                         <p style={{ fontSize: "0.8rem", fontWeight: "bold" }}>XXXXX.XXXXX XXXXX.XXXXXX XXXXX.XXXXXX X XXXXXXXXXXXXXX</p>
                                     </div>
                                     <div style={{ display: "flex", justifyContent: "center", marginTop: "2rem", gap: "3rem" }}>
-                                        <button className="btnCopiaCola" type='submit'>Copiar código <img src="/icon_CopiaCola.png" style={{ width: "1rem", marginLeft: "0.5rem" }}></img></button>
-                                        <button className="btnCopiaCola" type='submit'>Ver boleto <img src="/Icon_Boletopdf.png" style={{ width: "1.2rem", marginLeft: "0.5rem" }}></img></button>
+                                        <button className="btnCopiaCod" type='submit'>Copiar código <img src="/icon_CopiaCola.png" style={{ width: "1rem", marginLeft: "0.5rem" }}></img></button>
+                                        <button className="btnVerBoleto" type='submit'>Ver boleto <img src="/Icon_Boletopdf.png" style={{ width: "1.2rem", marginLeft: "0.5rem" }}></img></button>
                                     </div>
                                     <div style={{ display: "flex", justifyContent: "center", marginTop: "2rem", fontWeight: "bold", fontSize: "1.2rem", textAlign: "center" }}>
                                         <p>Observação: O pagamento deverá ser realizado no prazo de 01 semana.</p>

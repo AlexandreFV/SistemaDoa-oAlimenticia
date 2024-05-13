@@ -100,7 +100,8 @@
 
 }
 
-.btnCopiaCola {
+.btnCopiaCod,
+.btnVerBoleto {
 
     align-items: center;
     display: flex;

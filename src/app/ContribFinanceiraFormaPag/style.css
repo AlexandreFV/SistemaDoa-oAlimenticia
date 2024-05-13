@@ -158,13 +158,12 @@
 }
 
 /* Estilo de clique para todos os botões */
-.active {
+/*.active {
     transform: translate(100px, 100px);
     border: 3px solid #7D9E65;
-    /* Move 100px para a direita e 100px para baixo */
+    /* Move 100px para a direita e 100px para baixo 
 }
-
-
+*/
 
 
 
@@ -251,4 +250,105 @@
     .valorEnvio {
         gap: 7%;
     }
+}
+
+
+
+
+.btnCardCred {
+    background-color: white;
+    width: 35%;
+    height: 3rem;
+    box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.25);
+    color: black;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.textbtnCardCred {
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.btnCardDebt {
+    background-color: white;
+    width: 35%;
+    height: 3rem;
+    box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.25);
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+.textbtnCardDebt {
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.btnPix {
+    background-color: white;
+    width: 35%;
+    height: 3rem;
+    box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.25);
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+.textbtnPix {
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.btnBoleto {
+    background-color: white;
+    width: 35%;
+    height: 3rem;
+    box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.25);
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.textbtnBoleto {
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.btnPix.active,
+.btnBoleto.active,
+.btnCardCred.active,
+.btnCardDebt.active {
+    background-color: #7D9E65;
+    color: white;
+    height: 3.2rem;
+    width: 36%;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+.FormPix,
+.FormBoleto {
+    /*Inicialmente oculto*/
+    display: none;
+}
+
+.FormPix.active,
+.FormBoleto.active {
+    /*Ativa quando o botão for clicado*/
+    display: block;
 }
