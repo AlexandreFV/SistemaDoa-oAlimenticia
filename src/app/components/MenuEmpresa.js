@@ -46,7 +46,7 @@ export default function MenuEmpresa() {
 
                 <div style={{ paddingTop: "40px", }}>
                     <div style={{ float: "left" }}>
-                        <CustomButton href={"/ContribFinanceiraInserirDados"} className={"btnn"} buttonText={"Contribuição Financeira"} textStyle={{ marginLeft: "1rem" }} onClick={() => handleButtonClick("ContribuicaoFinanceira")} />
+                        <CustomButton href={"/ContribFinanceiraEmpresa"} className={"btnn"} buttonText={"Contribuição Financeira"} textStyle={{ marginLeft: "1rem" }} onClick={() => handleButtonClick("ContribuicaoFinanceira")} />
                     </div>
                     <img id="arrow1" src="/SetaDireita.png" style={{ marginTop: "4px", visibility: shouldShowImage("ContribuicaoFinanceira") ? "visible" : "hidden" }}></img>
                 </div>

@@ -1,10 +1,10 @@
-.DivFilho {
+.DivFilhoFormaPag {
     display: flex;
     flex-direction: row;
 }
 
 
-.DivImagem {
+.DivImagemFormaPag {
 
     position: relative;
     background-size: cover;
@@ -19,7 +19,7 @@
     width: 100%;
 }
 
-.DivFundoPai {
+.DivFundoPaiFormaPag {
 
     position: absolute;
     /* Define a posição absoluta */
@@ -36,10 +36,10 @@
     justify-content: center;
     /* Centraliza horizontalmente */
     font-family: "Inter";
-
+    padding-bottom: 2rem;
 }
 
-.DivFundoFilho {
+.DivFundoFilhoFormaPag {
 
     background-color: white;
     width: 90%;
@@ -51,7 +51,6 @@
     border-radius: 5px;
     position: relative;
     margin-top: 50px;
-    max-height: 450px;
     overflow-y: auto;
 }
 
@@ -79,9 +78,8 @@
     }
 }
 
-.posfundoFilho {
+.posfundoFilhoFormaPag {
     background-color: white;
-    width: 35rem;
     height: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -118,6 +116,58 @@
     opacity: 100%;
 
 }
+
+.h1FormaPag {
+
+    text-align: center;
+    justify-content: center;
+    padding-top: 20px;
+    display: inline-block;
+    position: relative;
+    margin: 0 auto;
+    font-family: 'Inter';
+    font-size: 1.2rem;
+    font-weight: bold;
+
+}
+
+.imgFiltrarFormaPag {
+    width: 20px;
+    display: inline-block;
+    height: 25px;
+
+}
+
+.CartaoCredito,
+.CartaoDebito,
+.Boleto,
+.Pix {
+    background-color: #EFECEC;
+    width: 13rem;
+    height: 8rem;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
+    /* Transição suave para todas as propriedades */
+}
+
+.button {
+    /* Adicione aqui seus estilos padrão para os botões */
+    transition: transform 1s ease;
+    /* Transição suave para a propriedade transform */
+}
+
+/* Estilo de clique para todos os botões */
+.active {
+    transform: translate(100px, 100px);
+    border: 3px solid #7D9E65;
+    /* Move 100px para a direita e 100px para baixo */
+}
+
+
+
+
+
 
 .form-group {
     display: flex;
@@ -173,7 +223,7 @@
     height: 40px;
     border-radius: 10px;
     margin-bottom: 10px;
-    margin-top: 4rem;
+    margin-top: 3rem;
 }
 
 .btnEnvi:hover,
