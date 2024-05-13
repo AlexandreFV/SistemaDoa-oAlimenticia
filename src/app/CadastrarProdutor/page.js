@@ -53,7 +53,7 @@ export default function CadastroDoador(){
               NumerAgen,
               NumerConta,
               dataNasc,
-              NomeBanc
+              NomeBanc,
             }),
           });
     

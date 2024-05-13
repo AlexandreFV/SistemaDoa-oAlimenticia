@@ -35,6 +35,7 @@ export default function EntrarDoador(){
               if (response.ok) {
                 const data = await response.json(); // Extrai o corpo da resposta como JSON
                 const token = data.token; // Assume que a resposta contém um campo 'token'
+                const idStripe = data.userStripeId;
 
                 console.log("Entrou!" + token);
 
@@ -42,7 +43,7 @@ export default function EntrarDoador(){
                 // Armazene o token no cabeçalho
                 localStorage.setItem("token",token);
                 localStorage.setItem("userType", "doador");
-
+                localStorage.setItem("IdStripe", idStripe);
                 router.push("/");
     
               } else {

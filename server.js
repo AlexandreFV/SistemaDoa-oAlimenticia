@@ -292,7 +292,7 @@ const bankAccountToken = await stripe.tokens.create({
 
   // 3. Criar a conta na Stripe com o token da conta bancária
   const account = await stripe.accounts.create({
-    type: 'custom',
+    type: 'express',
     country: 'BR',
     email: email,
     external_account: bankAccountToken.id,
@@ -330,15 +330,6 @@ const bankAccountToken = await stripe.tokens.create({
   });
     
 
-  const account1 = await stripe.accounts.update(
-    account.id,
-    {
-      tos_acceptance: {
-        date: 1609798905,
-        ip: '8.8.8.8',
-      },
-    }
-  );
 
   const conta = await stripe.accounts.retrieve(account.id);
   if(!conta){
@@ -531,8 +522,8 @@ app.post("/EntrarDoador", async function(req, res) {
 
     const secret = process.env.SECRET;
     const token = jwt.sign({ id: user.id, email: user.email }, secret);
-
-    return res.status(200).json({ msg: 'Autenticação bem-sucedida', token });
+    const userStripeId = user.idStripe;
+    return res.status(200).json({ msg: 'Autenticação bem-sucedida', token,userStripeId });
   } catch (error) {
     console.error('Erro:', error); // Log do erro específico
     return res.status(500).json({ msg: 'Ocorreu um erro ao autenticar o usuário' });
@@ -1441,5 +1432,32 @@ app.post('/webhook', async function (req, res) {
     
     // Retorne uma resposta de sucesso para o webhook do Stripe
     res.json({ received: true });
+  }
+});
+
+app.get("/ObterLinkDashboard/:userIdStripe", async function (req, res) {
+  const userIdStripe = req.params.userIdStripe;
+
+  try {
+    const account = await stripe.accounts.retrieve(userIdStripe);
+
+    if (account.requirements.currently_due.length === 0) {
+      // A conta está totalmente integrada, retorna o loginLink
+      const loginLink = await stripe.accounts.createLoginLink(userIdStripe);
+      res.status(200).json({ loginLink });
+    } else {
+      // A conta ainda não está totalmente integrada, retorna linkDeIntegracao
+      const loginLink = await stripe.accountLinks.create({
+        account: userIdStripe,
+        refresh_url: 'https://example.com/reauth',
+        return_url: 'https://example.com/return',
+        type: 'account_onboarding',
+      });
+      res.status(200).json({ loginLink });
+    }
+
+  } catch (error) {
+    console.error('Erro ao buscar usuário Stripe:', error);
+    res.status(500).json({ msg: "Erro ao buscar usuário Stripe" });
   }
 });

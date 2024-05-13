@@ -1,17 +1,46 @@
 "use client"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link'
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { Germania_One } from 'next/font/google';
 
 
 export default function Navbar({ isAuthenticated, userEmail, userType }) {
   const router = useRouter();
+  const [linkDashboard, setLinkDashboard] = useState('');
+
+  useEffect(() => {
+    const userIdStripe = localStorage.getItem("IdStripe");
+    const obterLinkDashboard = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/ObterLinkDashboard/${userIdStripe}`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.loginLink) {
+            //setLinkDashboard(data.linkDeIntegracao.url);
+            setLinkDashboard(data.loginLink.url);
+
+          } else {
+            console.error('Erro ao obter o link de integração:', data.msg);
+          }
+        } else {
+          console.error('Erro ao chamar a endpoint:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Erro ao chamar a endpoint:', error.message);
+      }
+    };
+
+    obterLinkDashboard();
+  }, []); // A dependência vazia [] garante que o useEffect seja executado apenas uma vez, ao montar o componente
+
 
   const handleLogout = () => {
     // Limpar o token do armazenamento local
     localStorage.removeItem('token');
     localStorage.removeItem('userType');
+    localStorage.removeItem('IdStripe');
     // Redirecionar o usuário para a página de login
     router.push('/Cadastrar');
   };
@@ -70,7 +99,9 @@ export default function Navbar({ isAuthenticated, userEmail, userType }) {
               <button className="dropdown-item" type="button">Doações Recebidas</button>
             )}
             <Link href={"/ClassificacaoGeral"} className="dropdown-item" type="button">Ranking de Doações</Link>
-            <button className="dropdown-item" type="button">Meu perfil</button>
+            {isAuthenticated && (
+            <Link href={linkDashboard} className="dropdown-item" type="button">Meu perfil</Link>
+            )}
           </div>
         </div>
 
