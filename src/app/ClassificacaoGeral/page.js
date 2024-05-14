@@ -14,6 +14,7 @@ export default function ClassificacaoGeral() {
     // Estado para controlar qual botão está ativo
     const [activeButton, setActiveButton] = useState(1);
     const [classificacao, setClassificacao] = useState([]);
+
     // Função para lidar com o clique do botão
     const handleButtonClick = (button) => {
         // Se o botão clicado for o mesmo que já está ativo, retorna sem fazer nada
@@ -102,7 +103,7 @@ export default function ClassificacaoGeral() {
                                 <div className="Primeirolugar">
                                     <div style={{}}>
                                         <center>
-                                            <p style={{ marginTop: "1rem", fontFamily: "Rubik One", fontSize: "1.2rem" }}>{classificacao.length > 0 ? classificacao[0].usuariodoador.nome : "Não Ocupado"}</p>
+                                            <p style={{ marginTop: "1rem", fontFamily: "Rubik One", fontSize: "1.2rem" }}>  {classificacao?.[0]?.usuariodoador?.nome ?? "Não Ocupado"}</p>
                                             <img style={{ width: "3.2rem", height: "3.2rem" }} src="/medalha-de-ouro.png" />
                                             <div style={{ backgroundColor: "#E3CA6F", width: "4rem", height: "6.5rem", marginTop: "0.4rem", boxShadow: "0px 2px 2px 0px rgba(0, 0, 0, 0.25)" }}></div>
                                             <p>{classificacao.length > 0 ? classificacao[0].quantidade + " Vendas" : "0 Vendas"}</p>

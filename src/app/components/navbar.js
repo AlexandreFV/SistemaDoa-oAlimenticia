@@ -12,6 +12,10 @@ export default function Navbar({ isAuthenticated, userEmail, userType }) {
 
   useEffect(() => {
     const userIdStripe = localStorage.getItem("IdStripe");
+    const userType = localStorage.getItem("userType");
+    if(userType === "doador" || userType === "intermediario"){
+
+  
     const obterLinkDashboard = async () => {
       try {
         const response = await fetch(`http://localhost:3001/ObterLinkDashboard/${userIdStripe}`);
@@ -31,8 +35,8 @@ export default function Navbar({ isAuthenticated, userEmail, userType }) {
         console.error('Erro ao chamar a endpoint:', error.message);
       }
     };
-
     obterLinkDashboard();
+  }
   }, []); // A dependência vazia [] garante que o useEffect seja executado apenas uma vez, ao montar o componente
 
 

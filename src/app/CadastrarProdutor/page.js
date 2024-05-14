@@ -79,6 +79,7 @@ export default function CadastroDoador(){
       }
       } else {
         setErroCadastro("Preencha todos os campos!");
+        setIsLoading(false);
       }      
     };
     

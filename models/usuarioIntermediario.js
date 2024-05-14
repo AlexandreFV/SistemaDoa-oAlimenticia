@@ -42,6 +42,10 @@ const usuariointermediario = sequelize.define('usuariointermediario', {
   recoveryToken:{
     type: DataTypes.STRING,
     allowNull: true,
+  },
+  idStripe:{
+    type: DataTypes.STRING,
+    allowNull: false,
   }
 });
 

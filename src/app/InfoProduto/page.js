@@ -84,13 +84,13 @@ export default function InfoProduto() {
         }
     };
 
-    const handleClickStripe = async () => {
+    const handleClickStripe = async (idProd, idVendedor) => {
         try {
             const token = localStorage.getItem('token');
             const decodedToken = jwt.decode(token);
-            const usuariodoadorId = decodedToken.id;
+            const usuarioCompradorId = decodedToken.id;
     
-            const response = await fetch(`http://localhost:3001/ComprarProduto`, {
+            const response = await fetch(`http://localhost:3001/ComprarProduto/${idProd}`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -100,9 +100,9 @@ export default function InfoProduto() {
                     nomeProd: doacao.nome_alimento,
                     quant: doacao.quantidade,
                     descricao: doacao.descricao,
-                    doacaoId: doacao.id,
-                    userId: usuariodoadorId,
-                    userCpf: doacao.usuariodoador.cpf,
+                    usuarioCompradorId: usuarioCompradorId,
+                    usuarioVendedorId: idVendedor,
+                    precoTotal: doacao.preco,
                 }),
             });
     
@@ -173,7 +173,7 @@ export default function InfoProduto() {
                                     </div>
                                     <div style={{ marginTop: "4.5rem", marginLeft: "1.5rem" }}><p style={{ fontWeight: "bold", fontSize: "1.1rem" }}>Preço Total</p></div>
                                     <p style={{ marginLeft: "1.5rem", overflowWrap: "break-word" }}>{doacao && doacao.preco}</p>
-                                    <button onClick={handleClickStripe}>Pagar com Stripe</button>
+                                    <button onClick={() => handleClickStripe(doacao.id, doacao.usuariodoador.id)}>Pagar com Stripe</button>
                                     <button 
                 className="btn btn-success" 
                 style={{ position: "absolute", marginLeft: "150px", marginTop: "100px" }}

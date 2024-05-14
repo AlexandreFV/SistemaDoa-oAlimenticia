@@ -16,6 +16,7 @@ var smtpPool = require('nodemailer-smtp-pool');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const endpointSecret = "whsec_3c9585386e4c4471c1f88efa04be199e3e2c2e2c34211adddfc8318605b69088";
 
+
 // Use o middleware cors
 app.use(cors());
 
@@ -240,7 +241,7 @@ app.post("/CadastrarDoador", async function(req, res){
     return res.status(422).json({ msg: 'E-mail já está em uso por outro usuário!' });
   }
 
-  const resultadoCriacaoStripe = await CriarProdutorStripe(nome, email, cpf, rua, cidade, telefone, NumerAgen, NumerConta, anoNasc, mesNasc, diaNasc, NomeBanc);
+  const resultadoCriacaoStripe = await CriarProdutorIntermedStripe(nome, email, cpf, rua, cidade, telefone, NumerAgen, NumerConta, anoNasc, mesNasc, diaNasc, NomeBanc);
   
   if (!resultadoCriacaoStripe) {
     return res.status(500).json({ msg: 'Erro ao criar conta na Stripe.' });
@@ -274,7 +275,7 @@ res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
 });
 
 
-const CriarProdutorStripe = async (nome, email, cpf, rua, cidade, telefone, NumerAgen, NumerConta, anoNasc, mesNasc, diaNasc, NomeBanc) => {
+const CriarProdutorIntermedStripe = async (nome, email, cpf, rua, cidade, telefone, NumerAgen, NumerConta, anoNasc, mesNasc, diaNasc, NomeBanc) => {
   // 1. Coletar informações bancárias durante o cadastro do usuário
   const bankAccountInfo = {
     country: 'BR',
@@ -343,12 +344,14 @@ const bankAccountToken = await stripe.tokens.create({
 
 
 app.post("/CadastrarIntermediario", async function(req, res){
-  const { nome, email, cnpj, senha, rua, cidade, numero, telefone } = req.body;
+  const { nome, email, cnpj, senha,rua,cidade,numero,telefone,NumerAgen,NumerConta,dataNasc,NomeBanc   } = req.body;
 
-  if (!nome || !email || !cnpj || !senha || !rua || !cidade || !numero || !telefone) {
-    return res.status(400).json({ msg: 'Por favor, preencha todos os campos obrigatórios.' });
+  if (!nome || !email || !cnpj || !senha || !rua || !cidade || !numero || !telefone || !NumerAgen || !NumerConta 
+    || !dataNasc || !NomeBanc) {
+      return res.status(400).json({ msg: 'Por favor, preencha todos os campos obrigatórios.' });
   }
-
+    // Separando a data de nascimento em dia, mês e ano
+    const [anoNasc, mesNasc, diaNasc] = dataNasc.split('-');
   try{
 
    // Verifique se o e-mail já está em uso por qualquer tipo de usuário
@@ -363,7 +366,12 @@ app.post("/CadastrarIntermediario", async function(req, res){
   if (doador || intermediario || beneficiario || empresa) {
     return res.status(422).json({ msg: 'E-mail já está em uso por outro usuário!' });
   }
+
+  const resultadoCriacaoStripe = await CriarProdutorIntermedStripe(nome, email, cnpj, rua, cidade, telefone, NumerAgen, NumerConta, anoNasc, mesNasc, diaNasc, NomeBanc);
   
+  if (!resultadoCriacaoStripe) {
+    return res.status(500).json({ msg: 'Erro ao criar conta na Stripe.' });
+  }
       // Crie um hash da senha usando bcrypt
   const salt = await bcrypt.genSalt(12);
   const passwordHash = await bcrypt.hash(senha, salt);
@@ -377,7 +385,8 @@ app.post("/CadastrarIntermediario", async function(req, res){
     rua,
     numero,
     cidade,
-    telefone
+    telefone,
+    idStripe: resultadoCriacaoStripe.id,
 });
 
 res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
@@ -385,7 +394,6 @@ res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
 
   } catch (error){
 
-    res.status(500).json({msg: error})
     res.status(500).json({ msg: "Erro ao cadastrar Intermediario", error: error.message });
 
   }
@@ -463,7 +471,6 @@ app.get("/",checkToken, async function(req, res) {
       return res.status(404).json({ msg: 'Usuário não encontrado' });
     }
   } catch (error) {
-    console.error('Erro ao obter informações do usuário:', error);
     res.status(500).json({ msg: 'Ocorreu um erro ao buscar informações do usuário' });
   }
 });
@@ -494,7 +501,6 @@ app.post("/EntrarBeneficiario", async function(req, res) {
 
     return res.status(200).json({ msg: 'Autenticação bem-sucedida', token });
   } catch (error) {
-    console.error('Erro:', error); // Log do erro específico
     return res.status(500).json({ msg: 'Ocorreu um erro ao autenticar o usuário' });
   }
 });
@@ -525,7 +531,6 @@ app.post("/EntrarDoador", async function(req, res) {
     const userStripeId = user.idStripe;
     return res.status(200).json({ msg: 'Autenticação bem-sucedida', token,userStripeId });
   } catch (error) {
-    console.error('Erro:', error); // Log do erro específico
     return res.status(500).json({ msg: 'Ocorreu um erro ao autenticar o usuário' });
   }
 });
@@ -555,10 +560,10 @@ app.post("/EntrarIntermediario", async function(req, res) {
 
     const secret = process.env.SECRET;
     const token = jwt.sign({ id: user.id, email: user.email }, secret);
+    const userStripeId = user.idStripe;
 
-    return res.status(200).json({ msg: 'Autenticação bem-sucedida', token });
+    return res.status(200).json({ msg: 'Autenticação bem-sucedida', token, userStripeId });
   } catch (error) {
-    console.error('Erro:', error); // Log do erro específico
     return res.status(500).json({ msg: 'Ocorreu um erro ao autenticar o usuário' });
   }
 });
@@ -588,7 +593,6 @@ app.post("/EntrarEmpresa", async function(req, res) {
 
     return res.status(200).json({ msg: 'Autenticação bem-sucedida', token });
   } catch (error) {
-    console.error('Erro:', error); // Log do erro específico
     return res.status(500).json({ msg: 'Ocorreu um erro ao autenticar o usuário' });
   }
 });
@@ -694,7 +698,6 @@ app.get("/ObterDadosEndereco", checkToken, verificarUsuarioDoador, async functio
       }
   } catch (error) {
       // Se ocorrer um erro ao buscar os dados do endereço, retorne um erro 500
-      console.error("Erro ao obter dados do endereço:", error);
       return res.status(500).json({ message: "Erro interno do servidor" });
   }
 });
@@ -726,7 +729,6 @@ app.get("/ColetarDoacao/:id", checkToken,verificarUsuarioIntermediario, async fu
 
     res.status(200).json(doacoesComImagens); // Retorna as doações como resposta
   }catch (error) {
-    console.error("Erro ao buscar doações:", error);
     res.status(500).json({ error: "Erro ao buscar doações" }); // Retorna um erro em caso de falha
   }
 
@@ -754,7 +756,6 @@ app.get("/InfoProduto/:id", checkToken, verificarUsuarioIntermediario, async fun
 
     res.status(200).json(doacoes);
   } catch (error) {
-    console.error("Erro ao buscar doação:", error);
     res.status(500).json({ error: "Erro ao buscar doação" });
   }
 });
@@ -808,7 +809,6 @@ app.post("/ComprarProdutoSEMPAGAR/:id",checkToken,verificarUsuarioIntermediario,
       // Responder ao cliente com sucesso
       res.status(200).json({ message: "Doação coletada com sucesso" });
   } catch (error) {
-      console.error("Erro ao coletar produto:", error);
       res.status(500).json({ error: "Erro ao coletar produto" });
   }
 });
@@ -867,7 +867,6 @@ async function coletarDoacao(id, usuarioId) {
       // Responder ao cliente com sucesso
       return { message: "Doação coletada com sucesso" };
     } catch (error) {
-      console.error("Erro ao coletar produto:", error);
       return { error: "Erro ao coletar produto" };
   }
 };
@@ -903,7 +902,6 @@ app.get("/ListProdutorIntermed", checkToken, verificarUsuarioIntermediario, asyn
 
     res.status(200).json({ meusIntermedios });
   } catch (error) {
-    console.error("Erro ao buscar doações intermediárias:", error);
     res.status(500).json({ message: "Erro ao processar a solicitação" });
   }
 });
@@ -923,7 +921,6 @@ app.get("/ListarBeneficiario/:id", checkToken, verificarUsuarioIntermediario, as
 
       res.status(200).json({ beneficiariosDispo });
   } catch (error) {
-      console.error("Erro:", error);
       res.status(500).json({ message: "Erro interno do servidor." });
   }
 });
@@ -944,7 +941,6 @@ app.get("/InfoMinhaDoacao/:id",checkToken, verificarUsuarioDoador, async functio
 
     res.status(200).json(doacaoEncontrada);
   } catch (error) {
-    console.error("Erro ao buscar doação:", error);
     res.status(500).json({ error: "Erro ao buscar doação" });
   }
 });
@@ -1070,7 +1066,6 @@ app.post("/EnviarParaBenef", checkToken, verificarUsuarioIntermediario, async fu
       // Resposta de sucesso
       res.status(200).json({ message: "Produtos enviados com sucesso para o beneficiário." });
   } catch (error) {
-      console.error('Erro ao enviar produtos para o beneficiário:', error.message);
       // Resposta de erro
       res.status(500).json({ error: "Erro ao enviar produtos para o beneficiário." });
   }
@@ -1361,10 +1356,27 @@ const [doador, intermediario, beneficiario,empresa] = await Promise.all([
     }
   });
   
-app.post("/ComprarProduto", checkToken, verificarUsuarioIntermediario, async function (req, res) {
-    const {nomeProd, quant, descricao, doacaoId, userId, userCpf} = req.body;
+app.post("/ComprarProduto/:id", checkToken, verificarUsuarioIntermediario, async function (req, res) {
+    const {nomeProd, quant, descricao, usuarioCompradorId, usuarioVendedorId,precoTotal} = req.body;
+    const idProduto = req.params.id;
 
     try {
+        const produto = await doacao.findByPk(idProduto, {
+          include: {
+            model: usuariodoador,
+            attributes: ["idStripe"],
+          }
+        });
+        const precoEmCentavos = precoTotal * 100;
+        
+        //Intermediario
+        const usuarioComprador = await usuariointermediario.findByPk(usuarioCompradorId);
+        const nomeComprador = await usuarioComprador.nome;
+        const idStripeComprador = await usuarioComprador.idStripe;
+
+        //Doador
+        const idStripeVendedor = await produto.usuariodoador.idStripe;
+
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [
@@ -1377,17 +1389,25 @@ app.post("/ComprarProduto", checkToken, verificarUsuarioIntermediario, async fun
 
                             // Adicione outros detalhes do produto, como preço, quantidade, etc.
                         },
-                        unit_amount: 50, // Preço em centavos
+                        unit_amount: precoEmCentavos , // Preço em centavos
                     },
                     quantity: quant, // Quantidade do produto
                 },
             ],
             mode: 'payment',
             success_url: 'http://localhost:3000/ListProdutorIntermed',
-            cancel_url: 'https://localhost:3000/cancel',
+            cancel_url: 'http://localhost:3000/',
+            payment_intent_data: {
+              application_fee_amount: 200, // Taxa de aplicação em centavos (ex: R$ 2,00)
+              transfer_data: {
+                destination: idStripeVendedor, // ID da conta Stripe conectada do usuário
+              },
+              statement_descriptor: nomeComprador.substring(0, 22) // Max 22 chars for statement descriptors
+            },      
             metadata: {
-              doacaoId: doacaoId,
-              usuarioId: userId,
+              doacaoId: idProduto,
+              usuarioId: usuarioCompradorId,
+              usuarioIdStripe: idStripeComprador,
           }
         });
         res.json({ sessionId: session.id });
@@ -1397,43 +1417,6 @@ app.post("/ComprarProduto", checkToken, verificarUsuarioIntermediario, async fun
     }
 });
 
-
-// Rota para receber o webhook do Stripe após o pagamento ser concluído com sucesso
-//Vai ser usada para colocar a doacao em doacao coletada e produto comprado
-app.post('/webhook', async function (req, res) {
-  const sig = req.headers['stripe-signature'];
-  let event;
-
-  try {
-    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-  } catch (err) {
-    res.status(400).send(`Webhook Error: ${err.message}`);
-    return;
-  }
-
-  // Verifique se o evento é de pagamento bem-sucedido
-  if (event.type === 'checkout.session.completed') {
-    const session = event.data.object;
-
-    // Acesse os IDs da doação e do usuário a partir do metadata da sessão
-    const doacaoId = session.metadata.doacaoId;
-    const usuarioId = session.metadata.usuarioId;
-
-    // Execute a lógica de venda após o sucesso do pagamento
-    try {
-        // Sua lógica de venda aqui, como atualizar o status da compra no banco de dados, enviar e-mails de confirmação, etc.
-        await coletarDoacao(doacaoId, usuarioId);
-        console.log('Venda concluída com sucesso para a sessão:', session.id);
-    } catch (error) {
-        console.error('Erro ao processar a venda:', error);
-        // Se houver um erro ao processar a venda, retorne um código de status adequado
-        return res.status(500).json({ error: 'Erro ao processar a venda' });
-    }
-    
-    // Retorne uma resposta de sucesso para o webhook do Stripe
-    res.json({ received: true });
-  }
-});
 
 app.get("/ObterLinkDashboard/:userIdStripe", async function (req, res) {
   const userIdStripe = req.params.userIdStripe;
@@ -1449,8 +1432,8 @@ app.get("/ObterLinkDashboard/:userIdStripe", async function (req, res) {
       // A conta ainda não está totalmente integrada, retorna linkDeIntegracao
       const loginLink = await stripe.accountLinks.create({
         account: userIdStripe,
-        refresh_url: 'https://example.com/reauth',
-        return_url: 'https://example.com/return',
+        refresh_url: 'http://localhost:3000/',
+        return_url: 'http://localhost:3000/',
         type: 'account_onboarding',
       });
       res.status(200).json({ loginLink });
