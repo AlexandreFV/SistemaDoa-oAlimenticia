@@ -108,3 +108,21 @@
     display: flex;
     justify-content: center;
 }
+
+.divNPossuiIntermed {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+    padding-top: 50px;
+  }
+  
+  .IT {
+    margin-bottom: 20px; 
+  }
+  
+  .HND, .PSP {
+    margin: 0; 
+  }
+  

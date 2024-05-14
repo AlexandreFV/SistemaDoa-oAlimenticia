@@ -102,6 +102,13 @@ export default function Navbar({ isAuthenticated, userEmail, userType }) {
             {userType === 'beneficiario' && (
               <button className="dropdown-item" type="button">Doações Recebidas</button>
             )}
+            {userType === 'empresa' && (
+              <div>
+                <Link href={"/ContribFinanceiraEmpresa"} className="dropdown-item" type="button">Realizar doacão</Link>
+                <Link href={"/HistoricoContribuicao"} className="dropdown-item" type="button">Minhas Doacoes</Link>
+              </div>
+
+              )}
             <Link href={"/ClassificacaoGeral"} className="dropdown-item" type="button">Ranking de Doações</Link>
             {isAuthenticated && (
             <Link href={linkDashboard} className="dropdown-item" type="button">Meu perfil</Link>

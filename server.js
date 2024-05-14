@@ -1402,7 +1402,7 @@ app.post("/ComprarProduto/:id", checkToken, verificarUsuarioIntermediario, async
               transfer_data: {
                 destination: idStripeVendedor, // ID da conta Stripe conectada do usuário
               },
-              statement_descriptor: nomeComprador.substring(0, 22) // Max 22 chars for statement descriptors
+              statement_descriptor: nomeComprador.substring(0, 22) // Max 22 chars
             },      
             metadata: {
               doacaoId: idProduto,
@@ -1444,3 +1444,30 @@ app.get("/ObterLinkDashboard/:userIdStripe", async function (req, res) {
     res.status(500).json({ msg: "Erro ao buscar usuário Stripe" });
   }
 });
+
+app.get("/IntermediariosDisponiveis/:id", checkToken, async function(req,res){
+    const id = req.params.id;
+
+    try
+    {
+      const usuario = await usuarioEmpresa.findByPk(id);
+
+      const intermediariosDisponiveis = await usuariointermediario.findAll({
+        where: {
+          cidade: usuario.cidade
+        },
+        attributes: {
+          exclude: ["idStripe", "recoveryToken", "senha"]
+        }
+      });      
+    
+    if(!intermediariosDisponiveis || intermediariosDisponiveis.length === 0)
+    {
+      return res.status(404).json ({msg: "Não há intermediarios Disponiveis ou Cadastrados"});
+    }
+
+    res.status(200).json({intermediariosDisponiveis});
+    }catch(error){
+    res.status(500).json({msg: "Erro ao buscar Intermediarios"});
+    }
+})
