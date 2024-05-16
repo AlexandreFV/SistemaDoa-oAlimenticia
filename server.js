@@ -37,6 +37,7 @@ const produtoCompradoOriginal = require('./models/ProdutoComprado');  //Tabela q
 const rankingProdUnit = require("./models/RankingVendaUnitario");
 const SMTPPool = require('nodemailer/lib/smtp-pool');
 const { Html } = require('next/document');
+
   // Configurações de conexão com o banco de dados
 const connection = mysql.createPool({ 
   host: 'localhost',
@@ -217,10 +218,10 @@ app.post("/CadastrarBeneficiario", async function(req, res){
 
 
 app.post("/CadastrarDoador", async function(req, res){
-  const { nome, email, cpf, senha,rua,cidade,numero,telefone,NumerAgen,NumerConta,dataNasc,NomeBanc   } = req.body;
+  const { nome, email, cpf, senha,rua,cidade,numero,telefone,NumerAgen,NumerConta,dataNasc,selectedBank   } = req.body;
 
   if (!nome || !email || !cpf || !senha || !rua || !cidade || !numero || !telefone || !NumerAgen || !NumerConta 
-    || !dataNasc || !NomeBanc) {
+    || !dataNasc || !selectedBank) {
     return res.status(400).json({ msg: 'Por favor, preencha todos os campos obrigatórios.' });
   }
 
@@ -241,7 +242,7 @@ app.post("/CadastrarDoador", async function(req, res){
     return res.status(422).json({ msg: 'E-mail já está em uso por outro usuário!' });
   }
 
-  const resultadoCriacaoStripe = await CriarProdutorIntermedStripe(nome, email, cpf, rua, cidade, telefone, NumerAgen, NumerConta, anoNasc, mesNasc, diaNasc, NomeBanc);
+  const resultadoCriacaoStripe = await CriarProdutorIntermedStripe(nome, email, cpf, rua, cidade, telefone, NumerAgen, NumerConta, anoNasc, mesNasc, diaNasc, selectedBank);
   
   if (!resultadoCriacaoStripe) {
     return res.status(500).json({ msg: 'Erro ao criar conta na Stripe.' });
@@ -275,15 +276,15 @@ res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
 });
 
 
-const CriarProdutorIntermedStripe = async (nome, email, cpf, rua, cidade, telefone, NumerAgen, NumerConta, anoNasc, mesNasc, diaNasc, NomeBanc) => {
+const CriarProdutorIntermedStripe = async (nome, email, cpf, rua, cidade, telefone, NumerAgen, NumerConta, anoNasc, mesNasc, diaNasc, selectedBank) => {
   // 1. Coletar informações bancárias durante o cadastro do usuário
   const bankAccountInfo = {
     country: 'BR',
     currency: 'brl',
     account_holder_name: nome,
     account_holder_type: 'individual',
-    routing_number: '110-0000', // Para contas do brasil o cod de compensasao + cod da agencia
-    account_number: '0001234'	, // Número da conta
+    routing_number: selectedBank + NumerAgen, // Para contas do brasil o cod de compensasao + cod da agencia, para testes, apenas 110-0000, para producao selectedBank + NumerAgen
+    account_number: NumerConta, // Número da conta, para testes, apenas 0001234, para producao NumerConta
   };
   
 // 2. Criar um token da conta bancária
@@ -344,10 +345,10 @@ const bankAccountToken = await stripe.tokens.create({
 
 
 app.post("/CadastrarIntermediario", async function(req, res){
-  const { nome, email, cnpj, senha,rua,cidade,numero,telefone,NumerAgen,NumerConta,dataNasc,NomeBanc   } = req.body;
+  const { nome, email, cnpj, senha,rua,cidade,numero,telefone,NumerAgen,NumerConta,dataNasc,selectedBank   } = req.body;
 
   if (!nome || !email || !cnpj || !senha || !rua || !cidade || !numero || !telefone || !NumerAgen || !NumerConta 
-    || !dataNasc || !NomeBanc) {
+    || !dataNasc || !selectedBank) {
       return res.status(400).json({ msg: 'Por favor, preencha todos os campos obrigatórios.' });
   }
     // Separando a data de nascimento em dia, mês e ano
@@ -367,7 +368,7 @@ app.post("/CadastrarIntermediario", async function(req, res){
     return res.status(422).json({ msg: 'E-mail já está em uso por outro usuário!' });
   }
 
-  const resultadoCriacaoStripe = await CriarProdutorIntermedStripe(nome, email, cnpj, rua, cidade, telefone, NumerAgen, NumerConta, anoNasc, mesNasc, diaNasc, NomeBanc);
+  const resultadoCriacaoStripe = await CriarProdutorIntermedStripe(nome, email, cnpj, rua, cidade, telefone, NumerAgen, NumerConta, anoNasc, mesNasc, diaNasc, selectedBank);
   
   if (!resultadoCriacaoStripe) {
     return res.status(500).json({ msg: 'Erro ao criar conta na Stripe.' });
