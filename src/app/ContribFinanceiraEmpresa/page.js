@@ -8,11 +8,30 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
 import jwt, { decode } from 'jsonwebtoken';
+import { loadStripe } from '@stripe/stripe-js';
+import ModalValor from '../components/modalValorPagamento';
 
 export default function ContribFinanceiraEmpresa() {
-    const router = useRouter();
+    const router = useRouter(); 
     const [meusIntermediarios, setIntermediarios] = useState([]);
-    
+    const stripePromise = loadStripe('pk_test_51PCbkzB0I0kVCHBEihpetEBp7kXq1YVpTKrS6bXZYxRlH354snfCHDaGO4C4hV792xqpN0KeDmOmnSJsOZOLcZdw00oLulsgGR'); // Substitua pelo seu publishable key
+    const [modalValor, setModalValor] = useState();
+    const [decricao, setDescricao] = useState();
+    const [userEmpresaId, setUserId] = useState();
+    const [idStripe, setIdStripe] = useState();
+
+    const definirValor = async (idStripeIntermediario) => { 
+    const token = localStorage.getItem("token");
+    const decodedToken = jwt.decode(token);
+    const userEmpresaId = decodedToken.id;
+    setIdStripe(idStripeIntermediario);
+    setDescricao(meusIntermediarios.descricao);
+    setUserId(userEmpresaId);
+    setModalValor(true);
+    }
+
+
+
     useEffect(() => {
         const token = localStorage.getItem("token");
          
@@ -44,8 +63,8 @@ export default function ContribFinanceiraEmpresa() {
 
             if(response.ok){
                 const data = await response.json();
-                setIntermediarios(data.intermediariosDisponiveis);
-                console.log(data.intermediariosDisponiveis);
+                setIntermediarios(data.intermediariosIntegrados);
+                console.log(data.intermediariosIntegrados);
             }
             
             }catch(error){
@@ -60,6 +79,9 @@ export default function ContribFinanceiraEmpresa() {
             <Navbar></Navbar>
             <div className="DFBF">
                 <MenuDireito />
+                {modalValor && (
+  <ModalValor descricao={decricao} idStripe={idStripe} userEmpresaId={userEmpresaId} />
+)}
                 <div className="DIBF">
                     <div className="DFPBF">
                         <BackButton />
@@ -82,7 +104,7 @@ export default function ContribFinanceiraEmpresa() {
                             ) : (
                                 <div>
                                 {meusIntermediarios.map((intermediario, index) => (
-                                <div className="CDBF" key={index} >
+                                <div className="CDBF" key={index} onClick={() => definirValor(intermediario.idStripe)} data-toggle="modal" data-target="#exampleModalCenter">
                                 <div style={{ float: "left", flexWrap: "wrap", marginLeft: "0", marginRight: "0",width:"50%" }}>
                                     <div style={{ marginLeft: "2rem", marginTop: "1rem", fontSize: 18, fontFamily: "Inter", fontWeight: "bold" }}>{intermediario.nome}</div>
                                     <div style={{ marginLeft: "2rem", marginTop: "1.2rem", fontSize: "1rem", fontFamily: 'Inter', fontWeight: '500', wordWrap: 'break-word', display: "flex", alignItems: "center" }}>

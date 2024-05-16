@@ -1452,12 +1452,16 @@ app.get("/IntermediariosDisponiveis/:id", checkToken, async function(req,res){
     {
       const usuario = await usuarioEmpresa.findByPk(id);
 
+      if (!usuario) {
+        return res.status(404).json({ msg: "Usuário não encontrado" });
+      }
+
       const intermediariosDisponiveis = await usuariointermediario.findAll({
         where: {
           cidade: usuario.cidade
         },
         attributes: {
-          exclude: ["idStripe", "recoveryToken", "senha"]
+          exclude: ["recoveryToken", "senha"]
         }
       });      
     
@@ -1466,8 +1470,76 @@ app.get("/IntermediariosDisponiveis/:id", checkToken, async function(req,res){
       return res.status(404).json ({msg: "Não há intermediarios Disponiveis ou Cadastrados"});
     }
 
-    res.status(200).json({intermediariosDisponiveis});
+    const intermediariosIntegradosPromises = intermediariosDisponiveis.map(async intermediario => {
+      if (intermediario.idStripe) {
+        const account = await stripe.accounts.retrieve(intermediario.idStripe);
+        return account.details_submitted ? intermediario : null;
+      }
+      return null;
+    });
+
+    const intermediariosIntegradosResults = await Promise.all(intermediariosIntegradosPromises);
+    const intermediariosIntegrados = intermediariosIntegradosResults.filter(intermediario => intermediario !== null);
+
+
+    if (intermediariosIntegrados.length === 0) {
+      return res.status(404).json({ msg: "Não há intermediários integrados ao Stripe disponíveis ou cadastrados" });
+    }
+
+    //Busca apenas os usuarios completamente integrados com o stripe
+    res.status(200).json({intermediariosIntegrados });
     }catch(error){
     res.status(500).json({msg: "Erro ao buscar Intermediarios"});
     }
 })
+
+app.post("/RealizarDoacao/:idStripeIntermediario", async function(req, res) {
+  const idStripeIntermediario = req.params.idStripeIntermediario;
+  const {userId, valor } = req.body;
+
+  try {
+      const usuarioPaga = await usuarioEmpresa.findByPk(userId);
+      const nomePaga = await usuarioPaga.nome;
+      const usuarioRecebedor = await usuariointermediario.findOne( { where: {idStripe: idStripeIntermediario}});
+      const nomeRecebedor = await usuarioRecebedor.nome;
+      const session = await stripe.checkout.sessions.create({
+        line_items: [
+            {
+                price_data: {
+                    currency: 'brl',
+                    product_data: {
+                      name: "Doação",
+                        description: "Doação em dinheiro para " + nomeRecebedor,
+
+                        // Adicione outros detalhes do produto, como preço, quantidade, etc.
+                    },
+                    unit_amount: valor * 100 , // Preço em centavos
+                },
+                quantity: 1, // Quantidade do produto
+            },
+        ],
+        mode: 'payment',
+        success_url: 'http://localhost:3000/ContribFinanceiraEmpresa',
+        cancel_url: 'http://localhost:3000/',
+        payment_intent_data: {
+          application_fee_amount: 200, // Taxa de aplicação em centavos (ex: R$ 2,00)
+          transfer_data: {
+            destination: idStripeIntermediario, // ID da conta Stripe conectada do usuário
+          },
+          statement_descriptor: nomePaga.substring(0, 22) // Max 22 chars
+        },      
+        metadata: {
+          usuarioId: userId,
+      }
+    });
+
+
+      res.json({ sessionId: session.id }); // Retornar o link de pagamento para o cliente
+    } catch (error) {
+      console.error('Erro ao criar sessão de checkout:', error);
+      res.status(500).json({ error: 'Erro ao criar sessão de checkout' });
+  }
+});
+
+//WebHook, após pagamento coletar doacao
+//WebHook, após doacao financeira, criar um objeto de pagamento para o pagador
