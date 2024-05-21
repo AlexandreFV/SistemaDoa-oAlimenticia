@@ -6,7 +6,6 @@ import { useState } from "react";
 import ErroCadastro from '../components/erroCadastro';
 import CustomButton from '../components/customButton';
 import "./style.css";
-import Select from 'react-select';
 
 export default function CadastroIntermediario(){
 
@@ -32,7 +31,7 @@ export default function CadastroIntermediario(){
         setIsLoading(true); // Define isLoading como true durante o envio do formulário
 
         if(nome != "" && email != "" && cnpj != "" && senha != "" && rua != "" && cidade != "" && numero != "" && telefone != ""
-        && NumerAgen != "" && NumerConta != "" && dataNasc != ""
+        && NumerAgen != "" && NumerConta != "" && dataNasc != ""  && selectedBank != "invalido"
         ){
 
         try {
@@ -67,12 +66,16 @@ export default function CadastroIntermediario(){
             const responseData = await response.json();
             if (responseData.msg === 'E-mail já está em uso por outro usuário!') {
               setErroCadastro("E-mail já está em uso!");
+              setIsLoading(false);
             }
+
             console.error("Erro ao cadastrar doador:", response.statusText);
+            setIsLoading(false);
             // Exibir uma mensagem de erro aqui
           }
         } catch (error) {
           console.error("Erro ao realizar requisição:", error.message);
+          setIsLoading(false);
           // Exibir uma mensagem de erro aqui
         }finally {
           setIsLoading(false); // Define isLoading como false após o envio do formulário
@@ -226,6 +229,7 @@ value={telefone} onChange={(e) => setTelefone(e.target.value)}/>
         value={selectedBank} 
         onChange={(e) => setSelectedBank(e.target.value)}
       >
+  <option value="invalido">Selecione um Banco...</option>
   <option value="001">Banco do Brasil</option>
   <option value="104">Caixa Econômica Federal</option>
   <option value="341">Itaú</option>

@@ -13,7 +13,7 @@ export default function Navbar({ isAuthenticated, userEmail, userType }) {
   useEffect(() => {
     const userIdStripe = localStorage.getItem("IdStripe");
     const userType = localStorage.getItem("userType");
-    if(userType === "doador" || userType === "intermediario"){
+    if(userType === "doador" || userType === "intermediario" || userType === "empresa"){
 
   
     const obterLinkDashboard = async () => {

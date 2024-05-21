@@ -20,11 +20,19 @@ export default function CadastrarEmpresa(){
     const router = useRouter();
     const [erroCadastro, setErroCadastro] = useState(""); // Estado para armazenar a mensagem de erro
     const [telefone, setTelefone] = useState("");
+    const [NumerAgen,setNumerAgen] = useState("");
+    const [NumerConta, setNumeroConta ] = useState("");
+    const [dataNasc, setDataNasc] = useState("");
+    const [selectedBank, setSelectedBank] = useState('');
+    const [isLoading, setIsLoading] = useState(false); // Estado para indicar se o formulário está sendo enviado
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-    
-        if(nome != "" && email != "" && cnpj != "" && senha != "" && rua != "" && cidade != "" && numero != "" && telefone != ""){
+        setIsLoading(true); // Define isLoading como true durante o envio do formulário
+
+        if(nome != "" && email != "" && cnpj != "" && senha != "" && rua != "" && cidade != "" && numero != "" && telefone != ""
+        && NumerAgen != "" && NumerConta != "" && dataNasc != "" && selectedBank != "invalido"
+        ){
 
         try {
           const response = await fetch("http://localhost:3001/CadastrarEmpresa", {
@@ -40,7 +48,11 @@ export default function CadastrarEmpresa(){
               cidade,
               rua,
               numero,
-              telefone
+              telefone,
+              NumerAgen,
+              NumerConta,
+              dataNasc,
+              selectedBank,
             }),
           });
     
@@ -54,16 +66,23 @@ export default function CadastrarEmpresa(){
             const responseData = await response.json();
             if (responseData.msg === 'E-mail já está em uso por outro usuário!') {
               setErroCadastro("E-mail já está em uso!");
+              setIsLoading(false);
             }
             console.error("Erro ao cadastrar empresa:", response.statusText);
             // Exibir uma mensagem de erro aqui
+            setIsLoading(false);
           }
         } catch (error) {
           console.error("Erro ao realizar requisição:", error.message);
           // Exibir uma mensagem de erro aqui
-        }
+          setIsLoading(false);
+        }finally {
+          setIsLoading(false); // Define isLoading como false após o envio do formulário
+      }
       } else {
         setErroCadastro("Preencha todos os campos!");
+        setIsLoading(false);
+
       }      
     };
     
@@ -175,9 +194,54 @@ value={telefone} onChange={(e) => setTelefone(e.target.value)}/>
         value={senha} onChange={(e) => setSenha(e.target.value)} />
     </div>
     
+    <div className="DFBCD1">
+    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"20px"}}>
+        <label for="exampleInputEmail1">Data de Nascimento</label>
+        <input type="date" class="form-control" id="exampleInputEmail1" 
+        aria-describedby="emailHelp" placeholder="Digite sua Data de Nascimento..." 
+        style={{backgroundColor:"transparent"}} name="dataNasc"
+        value={dataNasc} onChange={(e) => setDataNasc(e.target.value)}/>
+    </div>
+
+    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"20px"}}>
+        <label for="exampleInputEmail1">Numero da Conta</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" 
+        aria-describedby="emailHelp" placeholder="Digite seu numero da conta do Banco..." 
+        style={{backgroundColor:"transparent"}} name="NumerConta"
+        value={NumerConta} onChange={(e) => setNumeroConta(e.target.value)}/>
+    </div>
+
+    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"20px"}}>
+        <label for="exampleInputEmail1">Numero da Agencia</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" 
+        aria-describedby="emailHelp" placeholder="Digite o numero de sua Agencia..." 
+        style={{backgroundColor:"transparent"}} name="NumerAgen"
+        value={NumerAgen} onChange={(e) => setNumerAgen(e.target.value)}/>
+    </div>
+
+    <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"20px"}}>
+        <label for="exampleInputEmail1">Nome do banco</label>
+        <select 
+        className="form-control" 
+        id="selectBanco"
+        style={{ backgroundColor: "transparent" }} 
+        name="NomeBanc"
+        value={selectedBank} 
+        onChange={(e) => setSelectedBank(e.target.value)}
+      >
+          <option value="invalido">Selecione um Banco...</option>
+  <option value="001">Banco do Brasil</option>
+  <option value="104">Caixa Econômica Federal</option>
+  <option value="341">Itaú</option>
+  <option value="237">Bradesco</option>
+  <option value="033">Santander</option>
+
+        </select>
+</div>
+</div>
         <center>
-        <button className="btn" type="submit" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color: "white",marginTop:"10px"}}>Cadastrar</button>
-        </center>
+        <button className="btn" type="submit" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color: "white",marginTop:"10px"}}
+        disabled={isLoading}> {isLoading ? 'Cadastrando...' : 'Cadastrar'}</button>    </center>
         </form>
 
     </div>

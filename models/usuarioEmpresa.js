@@ -41,6 +41,9 @@ const usuarioEmpresa = sequelize.define('usuarioEmpresa', {
   },  recoveryToken:{
     type: DataTypes.STRING,
     allowNull: true,
+  }, idStripe:{
+    type: DataTypes.STRING,
+    allowNull: false,
   }
 });
 

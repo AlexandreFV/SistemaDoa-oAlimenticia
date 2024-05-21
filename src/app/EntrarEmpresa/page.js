@@ -35,10 +35,12 @@ export default function EntrarEmpresa(){
                 const data = await response.json(); // Extrai o corpo da resposta como JSON
                 const token = data.token; // Assume que a resposta contém um campo 'token'
                 console.log("Entrou!" + token);
+                const idStripe = data.userStripeId;
 
                 // Armazene o token no cabeçalho
                 localStorage.setItem("token",token);
                 localStorage.setItem("userType", "empresa");
+                localStorage.setItem("IdStripe", idStripe);
 
                 router.push("/");
     

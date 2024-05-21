@@ -283,8 +283,8 @@ const CriarProdutorIntermedStripe = async (nome, email, cpf, rua, cidade, telefo
     currency: 'brl',
     account_holder_name: nome,
     account_holder_type: 'individual',
-    routing_number: selectedBank + NumerAgen, // Para contas do brasil o cod de compensasao + cod da agencia, para testes, apenas 110-0000, para producao selectedBank + NumerAgen
-    account_number: NumerConta, // Número da conta, para testes, apenas 0001234, para producao NumerConta
+    routing_number: "110-0000", // Para contas do brasil o cod de compensasao + cod da agencia, para testes, apenas 110-0000, para producao selectedBank + NumerAgen
+    account_number: "0001234", // Número da conta, para testes, apenas 0001234, para producao NumerConta
   };
   
 // 2. Criar um token da conta bancária
@@ -402,11 +402,13 @@ res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
 });
 
 app.post("/CadastrarEmpresa", async function(req, res){
-  const { nome, email, cnpj, senha, rua, cidade, numero, telefone } = req.body;
+  const { nome, email, cnpj, senha, rua, cidade, numero, telefone,NumerAgen,NumerConta,dataNasc,selectedBank   } = req.body;
 
-  if (!nome || !email || !cnpj || !senha || !rua || !cidade || !numero || !telefone) {
+  if (!nome || !email || !cnpj || !senha || !rua || !cidade || !numero || !telefone || !NumerAgen || !NumerConta 
+    || !dataNasc || !selectedBank) {
     return res.status(400).json({ msg: 'Por favor, preencha todos os campos obrigatórios.' });
   }
+  const [anoNasc, mesNasc, diaNasc] = dataNasc.split('-');
 
   try{
 
@@ -420,6 +422,12 @@ app.post("/CadastrarEmpresa", async function(req, res){
 
   if (doador || intermediario || beneficiario || empresa) {
     return res.status(422).json({ msg: 'E-mail já está em uso por outro usuário!' });
+  }
+
+  const resultadoCriacaoStripe = await CriarProdutorIntermedStripe(nome, email, cnpj, rua, cidade, telefone, NumerAgen, NumerConta, anoNasc, mesNasc, diaNasc, selectedBank);
+  
+  if (!resultadoCriacaoStripe) {
+    return res.status(500).json({ msg: 'Erro ao criar conta na Stripe.' });
   }
   
       // Crie um hash da senha usando bcrypt
@@ -435,7 +443,8 @@ app.post("/CadastrarEmpresa", async function(req, res){
     rua,
     numero,
     cidade,
-    telefone
+    telefone,
+    idStripe: resultadoCriacaoStripe.id,
 });
 
 res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
@@ -530,6 +539,7 @@ app.post("/EntrarDoador", async function(req, res) {
     const secret = process.env.SECRET;
     const token = jwt.sign({ id: user.id, email: user.email }, secret);
     const userStripeId = user.idStripe;
+
     return res.status(200).json({ msg: 'Autenticação bem-sucedida', token,userStripeId });
   } catch (error) {
     return res.status(500).json({ msg: 'Ocorreu um erro ao autenticar o usuário' });
@@ -591,8 +601,9 @@ app.post("/EntrarEmpresa", async function(req, res) {
 
     const secret = process.env.SECRET;
     const token = jwt.sign({ id: user.id, email: user.email }, secret);
+    const userStripeId = user.idStripe;
 
-    return res.status(200).json({ msg: 'Autenticação bem-sucedida', token });
+    return res.status(200).json({ msg: 'Autenticação bem-sucedida', token,userStripeId });
   } catch (error) {
     return res.status(500).json({ msg: 'Ocorreu um erro ao autenticar o usuário' });
   }

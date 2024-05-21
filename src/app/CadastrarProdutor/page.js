@@ -23,7 +23,7 @@ export default function CadastroDoador(){
     const [NumerAgen,setNumerAgen] = useState("");
     const [NumerConta, setNumeroConta ] = useState("");
     const [dataNasc, setDataNasc] = useState("");
-    const [NomeBanc,setNomeBanc] = useState("");
+    const [selectedBank, setSelectedBank] = useState('');
     const [isLoading, setIsLoading] = useState(false); // Estado para indicar se o formulário está sendo enviado
 
     
@@ -32,7 +32,7 @@ export default function CadastroDoador(){
         setIsLoading(true); // Define isLoading como true durante o envio do formulário
 
         if(nome != "" && email != "" && cpf != "" && senha != "" && rua != "" && cidade != "" && numero != "" && telefone != "" 
-          && NumerAgen != "" && NumerConta != "" && dataNasc != "" && NomeBanc != ""
+          && NumerAgen != "" && NumerConta != "" && dataNasc != ""  && selectedBank != "invalido"
         ){
 
         try {
@@ -53,7 +53,7 @@ export default function CadastroDoador(){
               NumerAgen,
               NumerConta,
               dataNasc,
-              NomeBanc,
+              selectedBank,
             }),
           });
     
@@ -68,11 +68,16 @@ export default function CadastroDoador(){
             if (responseData.msg === 'E-mail já está em uso por outro usuário!') {
               setErroCadastro("E-mail já está em uso!");
             }
+
             console.error("Erro ao cadastrar doador:", response.statusText);
+            setIsLoading(false);
+
             // Exibir uma mensagem de erro aqui
           }
         } catch (error) {
           console.error("Erro ao realizar requisição:", error.message);
+          setIsLoading(false);
+
           // Exibir uma mensagem de erro aqui
         } finally {
           setIsLoading(false); // Define isLoading como false após o envio do formulário
@@ -217,10 +222,23 @@ value={telefone} onChange={(e) => setTelefone(e.target.value)}/>
 
     <div class="form-group" style={{width:"90%",marginLeft:"5%",marginRight:"5%",marginTop:"20px"}}>
         <label for="exampleInputEmail1">Nome do banco</label>
-        <input type="text" class="form-control" id="exampleInputEmail1" 
-        aria-describedby="emailHelp" placeholder="Digite o nome do Banco..." 
-        style={{backgroundColor:"transparent"}} name="NomeBanc"
-        value={NomeBanc} onChange={(e) => setNomeBanc(e.target.value)}/>
+        <select 
+        className="form-control" 
+        id="selectBanco"
+        style={{ backgroundColor: "transparent" }} 
+        name="NomeBanc"
+        value={selectedBank} 
+        onChange={(e) => setSelectedBank(e.target.value)}
+      >
+          <option value="invalido">Selecione um Banco...</option>
+  <option value="001">Banco do Brasil</option>
+  <option value="104">Caixa Econômica Federal</option>
+  <option value="341">Itaú</option>
+  <option value="237">Bradesco</option>
+  <option value="033">Santander</option>
+
+        </select>
+
     </div>
 
       </div>
