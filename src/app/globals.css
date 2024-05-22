@@ -6,9 +6,9 @@
 
 
 body {
-  
+
   background-color: #D3D3D3;
-  font-family: 'Carter One';
+  font-family: 'Rubik One';
 
 }
 
@@ -18,7 +18,7 @@ body {
   }
 }
 
-.background-image{
+.background-image {
 
   position: relative;
   width: 100%;
@@ -34,7 +34,8 @@ body {
 }
 
 #exampleInputEmail1::placeholder {
-  color: white  ; /* Cor do placeholder */
+  color: white;
+  /* Cor do placeholder */
   opacity: 0.5;
 }
 
@@ -44,6 +45,7 @@ body {
     transform: translateY(100%);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -55,6 +57,7 @@ body {
     transform: translateY(0);
     opacity: 1;
   }
+
   to {
     transform: translateY(100%);
     opacity: 0;

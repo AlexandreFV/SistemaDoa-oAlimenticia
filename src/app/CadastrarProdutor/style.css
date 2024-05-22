@@ -21,13 +21,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 60px;
+    margin-top: 90px;
 }
 
 .DBNCD {
 
     background-color: #EDEDED;
-    height: 500px;
+    height: 580px;
     width: 60%;
     position: relative;
     display: flex;
@@ -76,7 +76,7 @@
     color: white;
     background-color: #578925;
     width: 430px;
-    height: 550px;
+    height: 665px;
     border-radius: 10px;
     position: absolute;
     right: 0;
@@ -89,4 +89,22 @@
     margin-top: 15px;
     font-family: Poller One cursive;
     font-weight: 800;
+}
+
+.formCadProd1,
+.formCadProd2 {
+    /*Inicialmente oculto*/
+    display: none;
+}
+
+.formCadProd1.active,
+.formCadProd2.active {
+    /*Ativa quando o botão for clicado*/
+    display: block;
+}
+
+@media (max-height: 860px) {
+    .BCCD {
+        overflow-y: auto;
+    }
 }

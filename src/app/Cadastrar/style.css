@@ -1,7 +1,6 @@
 body {
 
   background-color: #D3D3D3;
-  font-family: 'Carter One';
 
 }
 
@@ -406,6 +405,11 @@ body {
 }
 
 @media (max-height: 860px) {
+  .BCKCC {
+    overflow-y: auto;
+    padding-bottom: 8rem;
+  }
+
   .DVN {
 
     display: flex;
