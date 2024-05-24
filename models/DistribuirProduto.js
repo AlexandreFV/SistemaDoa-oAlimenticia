@@ -9,12 +9,10 @@ const Intermediario = require('./usuarioIntermediario'); // Importando o modelo 
 const ProdutoComprado = require('./ProdutoComprado'); // Importando o modelo Doador
 
 const DistribuirProduto = sequelize.define('DistribuirProduto', {
-    
       quantidade: {
         type: DataTypes.INTEGER,
         allowNull: false
       },
-
 });
 
 DistribuirProduto.belongsTo(beneficiário); 

@@ -46,6 +46,9 @@ const usuariodoador = sequelize.define('usuariodoador', {
   idStripe:{
     type: DataTypes.STRING,
     allowNull: false,
+  },idCliente: {
+    type: DataTypes.STRING,
+    allowNull: false,
   }
 });
 

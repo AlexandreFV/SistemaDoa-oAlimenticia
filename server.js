@@ -16,15 +16,6 @@ var smtpPool = require('nodemailer-smtp-pool');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const endpointSecret = "whsec_3c9585386e4c4471c1f88efa04be199e3e2c2e2c34211adddfc8318605b69088";
 
-
-// Use o middleware cors
-app.use(cors());
-
-// Middleware para analisar o corpo da solicitação como JSON
-app.use(express.json());
-
-app.use(express.static('public'));
-
 const usuariobeneficiario = require("./models/usuarioBeneficiario"); //Tabela que armazena as informacoes de beneficiario
 const usuariodoador = require("./models/usuariodoador"); //Tabela que armazena as informacoes de doador
 const usuariointermediario = require("./models/usuarioIntermediario"); //Tabela que armazena as informacoes de intermediario
@@ -37,6 +28,7 @@ const produtoCompradoOriginal = require('./models/ProdutoComprado');  //Tabela q
 const rankingProdUnit = require("./models/RankingVendaUnitario");
 const SMTPPool = require('nodemailer/lib/smtp-pool');
 const { Html } = require('next/document');
+const Transacao = require("./models/HistoricoContribuicao");
 
   // Configurações de conexão com o banco de dados
 const connection = mysql.createPool({ 
@@ -53,6 +45,51 @@ const sequelize = new Sequelize('teste', 'root', '', {
   dialect: 'mysql'
 });
 
+
+app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+  } catch (err) {
+    console.error(`⚠️  Falha na verificação da assinatura do webhook: ${err.message}`);
+    return res.sendStatus(400);
+  }
+
+  // Lidar com o evento
+  switch (event.type) {
+    case 'checkout.session.completed':
+      const session = event.data.object;
+
+      // Verifique o metadata para determinar o tipo de sessão (venda de produto ou doacao Monetaria)
+      if (session.metadata && session.metadata.doacaoId) {
+        // Lógica para venda de produto
+        const doacaoId = session.metadata.doacaoId; //id Do produto Vendido
+        const usuarioId = session.metadata.usuarioId; //Id do usuario que vai receber o pagamento
+        handleProductSale(doacaoId,usuarioId);
+
+      } else if (session.metadata && session.metadata.doacaoMonetaria) {
+        handleDonation(session);
+      }
+      break;
+    // Adicione outros casos para lidar com diferentes tipos de eventos se necessário
+    default:
+      console.log(`Evento não tratado: ${event.type}`);
+  }
+
+  // Retorne uma resposta 200 para reconhecer que recebemos o evento
+  res.json({ received: true });
+});
+
+
+
+
+// Use o middleware cors
+app.use(cors());
+// Middleware para analisar o corpo da solicitação como JSON
+app.use(express.json());
+app.use(express.static('public'));
 
 connection.getConnection((err, connection)=> {
   if (err) {
@@ -261,7 +298,8 @@ app.post("/CadastrarDoador", async function(req, res){
     numero,
     cidade,
     telefone,
-    idStripe: resultadoCriacaoStripe.id,
+    idStripe: resultadoCriacaoStripe.conta.id,
+    idCliente: resultadoCriacaoStripe.cliente.id,
 });
 
 res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
@@ -331,15 +369,22 @@ const bankAccountToken = await stripe.tokens.create({
     },  
   });
     
+  const customer = await stripe.customers.create({
+    email: email,
+    name: nome,
+    metadata: {
+      usuarioId: account.id, // Usando o ID da conta Stripe como metadata para associar o cliente ao produtor intermediário
+    },
+  });
 
 
   const conta = await stripe.accounts.retrieve(account.id);
+
   if(!conta){
     return null;
   }
 
-  return conta;
-
+  return { conta: account, cliente: customer };
 
 }
 
@@ -387,7 +432,8 @@ app.post("/CadastrarIntermediario", async function(req, res){
     numero,
     cidade,
     telefone,
-    idStripe: resultadoCriacaoStripe.id,
+    idStripe: resultadoCriacaoStripe.conta.id,
+    idCliente: resultadoCriacaoStripe.cliente.id,
 });
 
 res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
@@ -444,7 +490,8 @@ app.post("/CadastrarEmpresa", async function(req, res){
     numero,
     cidade,
     telefone,
-    idStripe: resultadoCriacaoStripe.id,
+    idStripe: resultadoCriacaoStripe.conta.id,
+    idCliente: resultadoCriacaoStripe.cliente.id,
 });
 
 res.status(201).json({ msg: "Usuário criado com sucesso!", user: newUser });
@@ -825,63 +872,6 @@ app.post("/ComprarProdutoSEMPAGAR/:id",checkToken,verificarUsuarioIntermediario,
   }
 });
 
-async function coletarDoacao(id, usuarioId) {
-
-  try {
-      // Encontrar a doação na tabela doacaos com base no ID fornecido
-      const doacao1 = await doacao.findByPk(id);
-
-      if (!doacao1) {
-          return res.status(404).json({ error: "Doação não encontrada" });
-      }
-      const dataAtual = new Date();
-
-      const doacaoColetadaValues = {
-        nome_alimento: doacao1.nome_alimento,
-        quantidade: doacao1.quantidade,
-        foto: doacao1.foto,
-        rua: doacao1.rua,
-        numero: doacao1.numero,
-        cidade: doacao1.cidade,
-        validade: doacao1.validade,
-        descricao: doacao1.descricao,
-        categoria: doacao1.categoria,
-        dataColeta: dataAtual,
-        usuariodoadorId: doacao1.usuariodoadorId,
-        usuariointermediarioId:usuarioId,
-        formato: doacao1.formato,
-        preco: doacao1.preco,
-    };
-
-      await doacaoColetada.create(doacaoColetadaValues);
-      await produtoCompradoOriginal.create(doacaoColetadaValues);
-
-      let RankingDoador = await rankingProdUnit.findOne({
-        where: {
-            usuariodoadorId: doacao1.usuariodoadorId
-        }
-    });
-      
-
-      if(!RankingDoador){
-        RankingDoador = await rankingProdUnit.create({
-          usuariodoadorId: doacao1.usuariodoadorId,
-          quantidade: 1, //Inicia com 1 pois é a primeira venda
-        });
-      }else{
-        RankingDoador.quantidade += 1; 
-      }
-      await RankingDoador.save();
-
-      // Remover a doação encontrada da tabela doacaos
-      await doacao1.destroy();
-
-      // Responder ao cliente com sucesso
-      return { message: "Doação coletada com sucesso" };
-    } catch (error) {
-      return { error: "Erro ao coletar produto" };
-  }
-};
 
 app.get("/MeusIntermedios", checkToken, verificarUsuarioIntermediario, async function (req,res){
   res.status(200).json({ mensagem: 'Você está autorizado a acessar esta rota.' });
@@ -1114,7 +1104,12 @@ app.get("/MeusProdutosDistribuidos/:id", checkToken, verificarUsuarioIntermediar
   const id = req.params.id;
 
   try {
-      const produtosDistribuidos = await DistribuirProduto.findAll({ where: { usuariointermediarioId: id } });
+      const produtosDistribuidos = await DistribuirProduto.findAll({ where: { usuariointermediarioId: id },
+      include: {
+        model: produtoCompradoOriginal,
+        attributes: ["preco"],
+      } });
+
       if (!produtosDistribuidos) {
           return res.status(404).json({ error: "Nenhum Produto Distribuído Encontrado!" });
       }
@@ -1379,16 +1374,20 @@ app.post("/ComprarProduto/:id", checkToken, verificarUsuarioIntermediario, async
             attributes: ["idStripe"],
           }
         });
+        if (!produto){
+          return res.status(404).json ({ msg: "Produto não disponivel"});
+        }
+
         const precoEmCentavos = precoTotal * 100;
         
         //Intermediario
         const usuarioComprador = await usuariointermediario.findByPk(usuarioCompradorId);
         const nomeComprador = await usuarioComprador.nome;
         const idStripeComprador = await usuarioComprador.idStripe;
-
+        
         //Doador
         const idStripeVendedor = await produto.usuariodoador.idStripe;
-
+  
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [
@@ -1414,7 +1413,7 @@ app.post("/ComprarProduto/:id", checkToken, verificarUsuarioIntermediario, async
               transfer_data: {
                 destination: idStripeVendedor, // ID da conta Stripe conectada do usuário
               },
-              statement_descriptor: nomeComprador.substring(0, 22) // Max 22 chars
+              statement_descriptor: nomeComprador.substring(0, 22), // Max 22 chars
             },      
             metadata: {
               doacaoId: idProduto,
@@ -1512,9 +1511,13 @@ app.post("/RealizarDoacao/:idStripeIntermediario", async function(req, res) {
   try {
       const usuarioPaga = await usuarioEmpresa.findByPk(userId);
       const nomePaga = await usuarioPaga.nome;
+      const usuarioEmpresaStripe = await usuarioPaga.idStripe;
       const usuarioRecebedor = await usuariointermediario.findOne( { where: {idStripe: idStripeIntermediario}});
       const nomeRecebedor = await usuarioRecebedor.nome;
+      const usuarioPagadorIdCliente = usuarioPaga.idCliente;
+      const idIntermediario = usuarioRecebedor.id;
       const session = await stripe.checkout.sessions.create({
+        customer: usuarioPagadorIdCliente, // Associar o PaymentIntent ao cliente 
         line_items: [
             {
                 price_data: {
@@ -1542,6 +1545,12 @@ app.post("/RealizarDoacao/:idStripeIntermediario", async function(req, res) {
         },      
         metadata: {
           usuarioId: userId,
+          doacaoMonetaria: "Sim",
+          NomeusuarioRecebedor: nomeRecebedor,
+          usuarioPagadorStripe: usuarioEmpresaStripe,
+          idIntermediario: idIntermediario,
+          valorTotal: valor*100,
+          description: "Doação em dinheiro para " + nomeRecebedor,
       }
     });
 
@@ -1552,6 +1561,129 @@ app.post("/RealizarDoacao/:idStripeIntermediario", async function(req, res) {
       res.status(500).json({ error: 'Erro ao criar sessão de checkout' });
   }
 });
+
+
+const handleDonation = async (session) => {
+  try {
+    const valor = session.metadata.valorTotal;
+    const descricao = session.metadata.description;
+    const intermediarioId = session.metadata.idIntermediario;
+    const usuarioId = session.metadata.usuarioId;
+
+      const pagamento = await Transacao.create({
+        usuariointermediarioId: intermediarioId,
+        usuarioEmpresaId: usuarioId,
+        descricao: descricao,
+        Valor: valor,
+        paymentIntentId: session.payment_intent,
+      })
+      
+      // Retornar os IDs do PaymentIntent
+      return { pagamento};
+
+    
+  } catch (error) {
+      // Lidar com erros
+      console.error("Erro ao criar objeto de pagamento:", error);
+      throw error;
+  }
+};
+
+
+const handleProductSale = async (id,usuarioId) => {
+  try {
+    const result = await coletarDoacao(id, usuarioId);
+    return result;
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+
+
+async function coletarDoacao(id, usuarioId) {
+
+  try {
+      // Encontrar a doação na tabela doacaos com base no ID fornecido
+      const doacao1 = await doacao.findByPk(id);
+
+      if (!doacao1) {
+          return res.status(404).json({ error: "Doação não encontrada" });
+      }
+
+      const dataAtual = new Date();
+
+      const doacaoColetadaValues = {
+        nome_alimento: doacao1.nome_alimento,
+        quantidade: doacao1.quantidade,
+        foto: doacao1.foto,
+        rua: doacao1.rua,
+        numero: doacao1.numero,
+        cidade: doacao1.cidade,
+        validade: doacao1.validade,
+        descricao: doacao1.descricao,
+        categoria: doacao1.categoria,
+        dataColeta: dataAtual,
+        usuariodoadorId: doacao1.usuariodoadorId,
+        usuariointermediarioId:usuarioId,
+        formato: doacao1.formato,
+        preco: doacao1.preco,
+    };
+
+      await doacaoColetada.create(doacaoColetadaValues);
+      await produtoCompradoOriginal.create(doacaoColetadaValues);
+
+      let RankingDoador = await rankingProdUnit.findOne({
+        where: {
+            usuariodoadorId: doacao1.usuariodoadorId
+        }
+    });
+      
+
+      if(!RankingDoador){
+        RankingDoador = await rankingProdUnit.create({
+          usuariodoadorId: doacao1.usuariodoadorId,
+          quantidade: 1, //Inicia com 1 pois é a primeira venda
+        });
+      }else{
+        RankingDoador.quantidade += 1; 
+      }
+      await RankingDoador.save();
+
+      // Remover a doação encontrada da tabela doacaos
+      await doacao1.destroy();
+
+      // Responder ao cliente com sucesso
+      return { message: "Doação coletada com sucesso" };
+    } catch (error) {
+      return { error: "Erro ao coletar produto" };
+  }
+};
+
+app.get("/HistoricoContribuicao/:id", checkToken, async function(req,res){
+    const idEmpresa = req.params.id;
+
+    try{
+
+      const minhasTransacoes = await Transacao.findAll({
+        where: {
+          usuarioEmpresaId: idEmpresa 
+        },
+        include: {
+          model:usuariointermediario,
+          attributes: ['nome', 'telefone', 'cnpj'],
+        }
+      });
+
+      if(!minhasTransacoes || minhasTransacoes.length === 0){
+        return res.status(404).json ({ msg: "Não há transacoes!"});
+      }
+
+      res.status(200).json ({minhasTransacoes});
+    }catch (error){
+      res.status(500).json({ error: 'Erro ao obter transacoes' });
+    }
+
+})
 
 //WebHook, após pagamento coletar doacao
 //WebHook, após doacao financeira, criar um objeto de pagamento para o pagador

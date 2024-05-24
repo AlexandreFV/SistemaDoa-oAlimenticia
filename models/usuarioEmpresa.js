@@ -44,6 +44,9 @@ const usuarioEmpresa = sequelize.define('usuarioEmpresa', {
   }, idStripe:{
     type: DataTypes.STRING,
     allowNull: false,
+  },idCliente: {
+    type: DataTypes.STRING,
+    allowNull: false,
   }
 });
 

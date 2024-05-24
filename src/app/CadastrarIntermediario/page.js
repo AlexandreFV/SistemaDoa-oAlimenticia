@@ -67,6 +67,9 @@ export default function CadastroIntermediario(){
             if (responseData.msg === 'E-mail já está em uso por outro usuário!') {
               setErroCadastro("E-mail já está em uso!");
               setIsLoading(false);
+            } if (responseData.msg === 'Número de telefone inválido.') {
+              setErroCadastro("Número de telefone inválido");
+              setIsLoading(false);
             }
 
             console.error("Erro ao cadastrar doador:", response.statusText);

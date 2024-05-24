@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 
+
 export default function modalValorPagamento({idStripe, userEmpresaId}){
     const [valor, setValor] = useState();
     const token = localStorage.getItem("token");
@@ -37,28 +38,29 @@ export default function modalValorPagamento({idStripe, userEmpresaId}){
     }
     return(
 
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade modalPagamento" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <h5 class="modal-title h5ModalPagamento" id="exampleModalLongTitle">Enviar Pagamento</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <label>Digite o valor desejado para doação</label>
-        <input
+        <br ></br>
+        <input class="form-control"
               name="valor"
               type="number"
               value={valor}
               onChange={(e) => setValor(e.target.value)} // Atualiza o estado com o valor do input
             />
-            <button onClick={RealizarDoacao}>Confirmar</button> {/* Chama a função RealizarDoacao ao clicar */}
+
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button class="btn btn-primary" data-dismiss="modal">Close</button>
+        <button onClick={RealizarDoacao} class="btn btn-primary">Confirmar</button> {/* Chama a função RealizarDoacao ao clicar */}
       </div>
     </div>
   </div>

@@ -46,8 +46,10 @@ const usuariointermediario = sequelize.define('usuariointermediario', {
   idStripe:{
     type: DataTypes.STRING,
     allowNull: false,
-  }
-});
+  },idCliente: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  }});
 
 // Sincronizar o modelo com o banco de dados e criar a tabela, forçando a recriação se já existir
 /*usuariointermediario.sync({ force: true }).then(() => {

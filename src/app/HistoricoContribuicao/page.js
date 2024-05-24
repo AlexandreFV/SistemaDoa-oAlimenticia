@@ -12,7 +12,8 @@ import { Cedarville_Cursive } from "next/font/google";
 
 export default function HistoricoContribuicao() {
     const router = useRouter();
-    
+    const [minhasTransacoes, setTransacoes] = useState("");
+
     useEffect(() => {
         const token = localStorage.getItem("token");
          
@@ -27,6 +28,32 @@ export default function HistoricoContribuicao() {
         }
         } 
     })
+
+    useEffect(() => {
+
+        const ExibirTransacao = async () => {
+        const token = localStorage.getItem("token");
+        const decodedToken = jwt.decode(token);
+        const usuarioEmpresaId = decodedToken.id;
+
+        try{
+            const response = await fetch(`http://localhost:3001/HistoricoContribuicao/${usuarioEmpresaId}`, {
+                method: "GET",
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if(response.ok){
+                const data = await response.json();
+                setTransacoes(data.minhasTransacoes);
+                console.log(data.minhasTransacoes);
+            }
+        } catch (error){
+            console.error("Erro ao obter transações:", response.status);
+        }
+    }
+    ExibirTransacao();
+}, []);
+
     return (
         <div className="DVBF">
             <Navbar></Navbar>
@@ -45,27 +72,41 @@ export default function HistoricoContribuicao() {
                                 </div>
                             </div>
                             <div style={{ backgroundColor: "black", width: "100%", height: "2px" }}></div>
-                            <div className="CDBF" >
-
+                            {minhasTransacoes.length === 0 ? (
+                                        <div>
+                                            <img src="/triste.png" className="LISTBENEFINTERIMG"></img>
+                                            <h1 className="LISTBENEFINTERTXT1">Não temos produtos disponíveis no momento.</h1>
+                                            <p className="LISTBENEFINTERTXT2">Aguarde até que tenhamos um novo produto.</p>
+                                        </div>
+                                    ) : (
+                            <div>
+                                {minhasTransacoes.map((minhaTransacao, index) => (
+                                <div key={index} className="CDBF">
                                 <div style={{ float: "left", flexWrap: "wrap", marginLeft: "0", marginRight: "0" }}>
-                                    <div style={{ marginLeft: "2rem", marginTop: "1rem", fontSize: 18, fontFamily: "Inter", fontWeight: "bold" }}>Nome do Intermediário</div>
+                                    <div style={{ marginLeft: "2rem", marginTop: "1rem", fontSize: 18, fontFamily: "Inter", fontWeight: "bold" }}>{minhaTransacao.usuariointermediario.nome}</div>
                                     <div style={{ marginLeft: "2rem", marginTop: "1.2rem", fontSize: "1rem", fontFamily: 'Inter', fontWeight: '500', wordWrap: 'break-word', display: "flex", alignItems: "center" }}>
-                                        <img src="/icon_document.png" style={{ marginRight: "0.1rem", width: "1.3rem" }}></img>CNPJ/CPF: XXX.XXX.XXX-XX
+                                        <img src="/icon_document.png" style={{ marginRight: "0.1rem", width: "1.3rem" }}></img>CNPJ/CPF: {minhaTransacao.usuariointermediario.cnpj}
                                     </div>
                                     <div style={{ marginLeft: "2rem", marginTop: "0.5rem", fontSize: "1rem", fontFamily: 'Inter', fontWeight: '500', wordWrap: 'break-word', display: "flex", alignItems: "center" }}>
-                                        <img src="/icon_tel.png" style={{ marginRight: "0.32rem", width: "1.1rem" }}></img>Contato: (00) 0 0000-0000
+                                        <img src="/icon_tel.png" style={{ marginRight: "0.32rem", width: "1.1rem" }}></img>Contato: {minhaTransacao.usuariointermediario.telefone}
                                     </div>
                                 </div>
                                 <div className="linha_vertical" style={{ backgroundColor: "black", height: "100%", width: "2px", marginLeft: "auto", marginRight: "0" }}></div>
                                 <div style={{ flexWrap: "wrap", marginLeft: "2rem", marginRight: "auto", marginTop: "1rem" }}>
-                                    <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Data da Contribuição: 00/00/0000</p>
-                                    <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Valor enviado: R$0.000,00</p>
+                                    <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Data da Contribuição: {minhaTransacao.createdAt && new Date(minhaTransacao.createdAt).toLocaleDateString()}</p>
+                                    <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Valor enviado: R${minhaTransacao.Valor}</p>
                                 </div>
                             </div>
+                    ))}
+
                         </div>
+                )}
+
                     </div>
+
                 </div>
             </div>
+        </div>
         </div>
     );
 }

@@ -68,6 +68,10 @@ export default function CadastrarEmpresa(){
               setErroCadastro("E-mail já está em uso!");
               setIsLoading(false);
             }
+            if (responseData.msg === 'Número de telefone inválido.') {
+              setErroCadastro("Número de telefone inválido");
+              setIsLoading(false);
+            }
             console.error("Erro ao cadastrar empresa:", response.statusText);
             // Exibir uma mensagem de erro aqui
             setIsLoading(false);

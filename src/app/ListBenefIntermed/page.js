@@ -149,7 +149,7 @@ export default function ListProdutorIntermed() {
                                                         <div className="linha_vertical" style={{ backgroundColor: "black", height: "100%", width: "2px", marginLeft: "auto", marginRight: "0" }}></div>
                                                         <div style={{ flexWrap: "wrap", marginLeft: "2rem", marginRight: "auto", marginTop: "1rem" }}>
                                                             <p style={{ fontFamily: "Inter" }}>Produto comprado: {meusprodutos.nome_alimento}</p>
-                                                            <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Categoria: {meusprodutos.categoria}</p>
+                                                            <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Valor de Compra: {meusprodutos.preco}</p>
                                                             <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Formato: {meusprodutos.formato}</p>
                                                             <p style={{ fontFamily: "Inter", marginTop: "0.4rem" }}>Quantidade: {meusprodutos.quantidade}</p>
                                                         </div>
