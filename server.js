@@ -122,7 +122,8 @@ async function sincronizarTabela() {
     await produtoCompradoOriginal.sync({force : true});
     await DistribuirProduto.sync({force : true});
     await rankingProdUnit.sync({force: true});
-
+    await Transacao.sync({force: true});
+    
     console.log('Tabela sincronizada com sucesso.');
   } catch (error) {
     console.error('Erro ao sincronizar tabela:', error);
