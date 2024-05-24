@@ -6,6 +6,7 @@
     background-image: url("/Background_-_Cadastro.png");
     background-size: 100% 100%;
     filter: brightness(95%);
+    overflow-y: auto;
 }
 
 .DPCE {

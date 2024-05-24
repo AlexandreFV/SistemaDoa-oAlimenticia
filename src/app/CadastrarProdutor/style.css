@@ -6,6 +6,7 @@
     background-image: url("/Background_-_Cadastro.png");
     background-size: 100% 100%;
     filter: brightness(95%);
+    overflow-y: auto;
 }
 
 .DPCD {
@@ -91,20 +92,6 @@
     font-weight: 800;
 }
 
-.formCadProd1,
-.formCadProd2 {
-    /*Inicialmente oculto*/
-    display: none;
-}
 
-.formCadProd1.active,
-.formCadProd2.active {
-    /*Ativa quando o botão for clicado*/
-    display: block;
-}
 
-@media (max-height: 860px) {
-    .BCCD {
-        overflow-y: auto;
-    }
-}
+@media (max-height: 860px) {}

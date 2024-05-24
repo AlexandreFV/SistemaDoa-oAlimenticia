@@ -6,6 +6,7 @@
     background-image: url("/Background_-_Cadastro.png");
     background-size: 100% 100%;
     filter: brightness(95%);
+    overflow-y: auto;
 }
 
 .DVCB {
@@ -91,12 +92,12 @@
     font-weight: 800;
 }
 
-.rua{
+.rua {
 
     width: 100%;
 }
 
-.numero{
+.numero {
 
     width: 100%;
 }

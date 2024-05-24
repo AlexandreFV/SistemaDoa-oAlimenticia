@@ -9,25 +9,7 @@ import "./style.css";
 
 export default function CadastroDoador() {
 
-  // Estado para controlar qual botão está ativo
-  const [activeButton, setActiveButton] = useState(1);
 
-
-  // Função para lidar com o clique do botão
-  const handleButtonClick = (button) => {
-    // Se o botão clicado for o mesmo que já está ativo, retorna sem fazer nada
-    if (button === activeButton) {
-      return;
-    }
-
-    // Define o botão clicado como ativo
-    setActiveButton(button);
-  };
-
-  // Efeito para definir o botão "Produtor" como ativo ao carregar a página
-  useEffect(() => {
-    setActiveButton(1); // Define o botão "Produtor" como ativo
-  }, []);
 
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
@@ -133,7 +115,7 @@ export default function CadastroDoador() {
                 <h1 className='h1CadastrarCD'>Cadastro Produtor</h1>
               </center>
 
-              <form className="formCadProd1" style={{ display: activeButton === 1 ? 'block' : 'none' }}>
+              <form className="formCadProd1" >
                 <p style={{ fontWeight: "bold", fontSize: "1.2rem", marginTop: "1rem", textAlign: "center" }}>Dados Pessoais</p>
                 <div class="form-group" style={{ width: "90%", marginLeft: "5%", marginRight: "5%", marginTop: "20px" }}>
                   <label for="exampleInputEmail1">Nome Completo</label>
@@ -219,20 +201,11 @@ export default function CadastroDoador() {
                     value={senha} onChange={(e) => setSenha(e.target.value)} />
                 </div>
 
-                <center>
-                  <button className={"btn"}
-                    onClick={(e) => {
-                      e.preventDefault(); // Evita que o link seja seguido
-                      handleButtonClick(1);
-                    }} type="submit" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color: "white", marginTop: "10px", border: "none" }}
-                  >Próximo</button>
-                </center>
-
               </form>
 
 
 
-              <form onSubmit={handleSubmit} className="formCadProd2" style={{ display: activeButton === 2 ? 'block' : 'none' }}>
+              <form onSubmit={handleSubmit} className="formCadProd2" >
                 <div className="DFBCD1">
 
 
