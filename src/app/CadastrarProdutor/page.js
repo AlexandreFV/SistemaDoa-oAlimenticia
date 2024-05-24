@@ -9,7 +9,24 @@ import "./style.css";
 
 export default function CadastroDoador() {
 
+  // Estado para controlar qual botão está ativo
+  const [activeButton, setActiveButton] = useState(1);
+  const [classificacao, setClassificacao] = useState([]);
+  // Função para lidar com o clique do botão
+  const handleButtonClick = (button) => {
+    // Se o botão clicado for o mesmo que já está ativo, retorna sem fazer nada
+    if (button === activeButton) {
+      return;
+    }
 
+    // Define o botão clicado como ativo
+    setActiveButton(button);
+  };
+
+  // Efeito para definir o botão "Produtor" como ativo ao carregar a página
+  useEffect(() => {
+    setActiveButton(1); // Define o botão "Produtor" como ativo
+  }, []);
 
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
@@ -115,7 +132,7 @@ export default function CadastroDoador() {
                 <h1 className='h1CadastrarCD'>Cadastro Produtor</h1>
               </center>
 
-              <form className="formCadProd1" >
+              <form onSubmit={handleSubmit} className="formCadProd1" style={{ display: activeButton === 1 ? 'block' : 'none' }} >
                 <p style={{ fontWeight: "bold", fontSize: "1.2rem", marginTop: "1rem", textAlign: "center" }}>Dados Pessoais</p>
                 <div class="form-group" style={{ width: "90%", marginLeft: "5%", marginRight: "5%", marginTop: "20px" }}>
                   <label for="exampleInputEmail1">Nome Completo</label>
@@ -201,60 +218,74 @@ export default function CadastroDoador() {
                     value={senha} onChange={(e) => setSenha(e.target.value)} />
                 </div>
 
-              </form>
-
-
-
-              <form onSubmit={handleSubmit} className="formCadProd2" >
-                <div className="DFBCD1">
-
-
-                  <div class="form-group" style={{ width: "90%", marginLeft: "5%", marginRight: "5%", marginTop: "20px" }}>
-                    <label for="exampleInputEmail1">Numero da Conta</label>
-                    <input type="text" class="form-control" id="exampleInputEmail1"
-                      aria-describedby="emailHelp" placeholder="Digite seu numero da conta do Banco..."
-                      style={{ backgroundColor: "transparent" }} name="NumerConta"
-                      value={NumerConta} onChange={(e) => setNumeroConta(e.target.value)} />
-                  </div>
-
-                  <div class="form-group" style={{ width: "90%", marginLeft: "5%", marginRight: "5%", marginTop: "20px" }}>
-                    <label for="exampleInputEmail1">Numero da Agencia</label>
-                    <input type="text" class="form-control" id="exampleInputEmail1"
-                      aria-describedby="emailHelp" placeholder="Digite o numero de sua Agencia..."
-                      style={{ backgroundColor: "transparent" }} name="NumerAgen"
-                      value={NumerAgen} onChange={(e) => setNumerAgen(e.target.value)} />
-                  </div>
-
-                  <div class="form-group" style={{ width: "90%", marginLeft: "5%", marginRight: "5%", marginTop: "20px" }}>
-                    <label for="exampleInputEmail1">Nome do banco</label>
-                    <select
-                      className="form-control"
-                      id="selectBanco"
-                      style={{ backgroundColor: "transparent" }}
-                      name="NomeBanc"
-                      value={selectedBank}
-                      onChange={(e) => setSelectedBank(e.target.value)}
-                    >
-                      <option value="invalido">Selecione um Banco...</option>
-                      <option value="001">Banco do Brasil</option>
-                      <option value="104">Caixa Econômica Federal</option>
-                      <option value="341">Itaú</option>
-                      <option value="237">Bradesco</option>
-                      <option value="033">Santander</option>
-
-                    </select>
-
-                  </div>
-
-                </div>
-
-
                 <center>
-                  <button className={"btn"} type="submit" style={{ backgroundColor: "rgba(63, 173, 180, 0.87)", color: "white", marginTop: "10px" }}
-                    disabled={isLoading}> {isLoading ? 'Cadastrando...' : 'Cadastrar'}</button>
+                  <button className={activeButton === 2 ? 'active button' : 'button'}
+                    onClick={() => {
+                      handleButtonClick(2);
+                    }} type="submit"
+                  >Próximo</button>
                 </center>
 
+
               </form>
+
+
+
+              <div>
+
+                <form onSubmit={handleSubmit} className="formCadProd2" style={{ display: activeButton === 2 ? 'block' : 'none' }}>
+                  <p style={{ fontWeight: "bold", fontSize: "1.2rem", marginTop: "1rem", textAlign: "center" }}>Dados Bancários</p>
+                  <div className="DFBCD1">
+
+
+                    <div class="form-group" style={{ width: "90%", marginLeft: "5%", marginRight: "5%", marginTop: "20px" }}>
+                      <label for="exampleInputEmail1">Numero da Conta</label>
+                      <input type="text" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="Digite seu numero da conta do Banco..."
+                        style={{ backgroundColor: "transparent" }} name="NumerConta"
+                        value={NumerConta} onChange={(e) => setNumeroConta(e.target.value)} />
+                    </div>
+
+                    <div class="form-group" style={{ width: "90%", marginLeft: "5%", marginRight: "5%", marginTop: "20px" }}>
+                      <label for="exampleInputEmail1">Numero da Agencia</label>
+                      <input type="text" class="form-control" id="exampleInputEmail1"
+                        aria-describedby="emailHelp" placeholder="Digite o numero de sua Agencia..."
+                        style={{ backgroundColor: "transparent" }} name="NumerAgen"
+                        value={NumerAgen} onChange={(e) => setNumerAgen(e.target.value)} />
+                    </div>
+
+                    <div class="form-group" style={{ width: "90%", marginLeft: "5%", marginRight: "5%", marginTop: "20px" }}>
+                      <label for="exampleInputEmail1">Nome do banco</label>
+                      <select
+                        className="form-control"
+                        id="selectBanco"
+                        style={{ backgroundColor: "transparent" }}
+                        name="NomeBanc"
+                        value={selectedBank}
+                        onChange={(e) => setSelectedBank(e.target.value)}
+                      >
+                        <option value="invalido">Selecione um Banco...</option>
+                        <option value="001">Banco do Brasil</option>
+                        <option value="104">Caixa Econômica Federal</option>
+                        <option value="341">Itaú</option>
+                        <option value="237">Bradesco</option>
+                        <option value="033">Santander</option>
+
+                      </select>
+
+                    </div>
+
+                  </div>
+
+                  <center>
+                    <button className='button'
+                      type="submit"
+                      disabled={isLoading}> {isLoading ? 'Cadastrando...' : 'Cadastrar'}</button>
+                  </center>
+
+
+                </form>
+              </div>
 
             </div>
 
@@ -262,6 +293,6 @@ export default function CadastroDoador() {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
