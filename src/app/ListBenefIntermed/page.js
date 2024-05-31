@@ -132,7 +132,7 @@ export default function ListProdutorIntermed() {
                                         </div>
                                     ) : (
                                         <div>
-                                            {produtosComprados.map((meusprodutos, index) => (
+                                            {produtosComprados.length >= 1 && produtosComprados.map((meusprodutos, index) => (
 
                                                 <div key={index}>
                                                     <div className="CardProduct" style={{ width: "90%", height: "9rem", background: "#EBEBEB", borderRadius: "10px", marginTop: "2rem", marginLeft: "auto", marginRight: "auto", display: "flex", justifyContent: "center" }}>

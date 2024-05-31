@@ -173,11 +173,10 @@ export default function InfoProduto() {
                                     </div>
                                     <div style={{ marginTop: "4.5rem", marginLeft: "1.5rem" }}><p style={{ fontWeight: "bold", fontSize: "1.1rem" }}>Preço Total</p></div>
                                     <p style={{ marginLeft: "1.5rem", overflowWrap: "break-word" }}>{doacao && doacao.preco}</p>
-                                    <button onClick={() => handleClickStripe(doacao.id, doacao.usuariodoador.id)}>Pagar com Stripe</button>
                                     <button 
                 className="btn btn-success" 
                 style={{ position: "absolute", marginLeft: "150px", marginTop: "100px" }}
-                onClick={() => handleConfirmarCompra(doacao.id)}
+                onClick={() => handleClickStripe(doacao.id, doacao.usuariodoador.id)}
                 disabled={comprando} // Desativa o botão enquanto a compra está em andamento
             >
                 {comprando ? 'Comprando...' : 'Confirmar Compra'}

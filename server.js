@@ -195,6 +195,65 @@ async function sincronizarTabela() {
     }
   };
 
+  const verificarUsuarioEmpresa = async (req, res, next) => {
+    // Verifique se o usuário está autenticado
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ mensagem: 'Acesso não autorizado. Faça login para acessar esta rota.' });
+    }
+  
+    // Verifique se o token é válido
+    try {
+      const secret = process.env.SECRET;
+      const decodedToken = jwt.verify(token, secret);
+  
+      // Verifique se o usuário é do tipo empresa
+      const userId = decodedToken.id;
+      const userEmail = decodedToken.email;
+      const user = await usuarioEmpresa.findOne({ where: { id: userId, email: userEmail } });
+
+      if (!user) {
+        return res.status(403).json({ mensagem: 'Acesso proibido. Você não tem permissão para acessar esta rota.' });
+      }
+  
+      // Se o usuário estiver autenticado e for do tipo empresa, prossiga para a próxima função de rota
+      next();
+    } catch (error) {
+      return res.status(401).json({ mensagem: 'Token inválido.' });
+    }
+  };
+
+  const verificarUsuarioBeneficiario = async (req, res, next) => {
+    // Verifique se o usuário está autenticado
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ mensagem: 'Acesso não autorizado. Faça login para acessar esta rota.' });
+    }
+  
+    // Verifique se o token é válido
+    try {
+      const secret = process.env.SECRET;
+      const decodedToken = jwt.verify(token, secret);
+  
+      // Verifique se o usuário é do tipo beneficiario
+      const userId = decodedToken.id;
+      const userEmail = decodedToken.email;
+      const user = await usuariobeneficiario.findOne({ where: { id: userId, email: userEmail } });
+
+      if (!user) {
+        return res.status(403).json({ mensagem: 'Acesso proibido. Você não tem permissão para acessar esta rota.' });
+      }
+  
+      // Se o usuário estiver autenticado e for do tipo beneficiario, prossiga para a próxima função de rota
+      next();
+    } catch (error) {
+      return res.status(401).json({ mensagem: 'Token inválido.' });
+    }
+  };
+
+
 
 // Aplique o Middleware às Rotas Protegidas
 app.get('/MinhasDoacoes',checkToken, verificarUsuarioDoador, function(req, res) {
@@ -251,8 +310,6 @@ app.post("/CadastrarBeneficiario", async function(req, res){
     }
 
 });
-
-
 
 
 app.post("/CadastrarDoador", async function(req, res){
@@ -688,15 +745,21 @@ app.listen(3001, () => {
 })
 
 
-app.post("/EnviarDoacao", upload.single('foto'), checkToken, verificarUsuarioDoador, async function(req, res) {
-  const { nome_alimento, quantidade, rua, numero, cidade, validade, descricao,categoria, formato, preco } = req.body;
+app.post("/EnviarDoacao/:id", upload.single('foto'), checkToken, verificarUsuarioDoador, async function(req, res) {
+  const { nome_alimento, quantidade, rua, numero, cidade, validade, descricao,categoria, formato, preco} = req.body;
   const foto = req.file.buffer; // Obtenha os dados binários da imagem
+  const usuariodoadorId = req.params.id;
+
+  const usuarioDoador = await usuariodoador.findOne({ where:{
+    id: usuariodoadorId,
+  }})
+  const VerificacaoStripe = await verificarIntegracao(usuarioDoador.idStripe);
+
+  if(VerificacaoStripe){
+    return res.status(404).json ({msg: "Usuario não Integrado ao Stripe"});
+  }
 
   try {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(" ")[1];
-    const decodedToken = jwt.verify(token, process.env.SECRET);
-    const usuariodoadorId = decodedToken.id;
 
     const novaDoacao = await doacao.create({
       nome_alimento: nome_alimento,
@@ -1430,6 +1493,46 @@ app.post("/ComprarProduto/:id", checkToken, verificarUsuarioIntermediario, async
 });
 
 
+
+app.get("/VerificarIntegracao/:userIdStripe", async function (req, res){
+    const userIdStripe = req.params.userIdStripe;
+
+    if (!userIdStripe) {
+      return res.status(400).json({ msg: 'ID do Stripe não Encontrado.' });
+    }
+
+    try {
+      const loginLink = await verificarIntegracao(userIdStripe);
+  
+      if (!loginLink) {
+        res.status(200).json({ msg: 'Usuário já integrado' });
+      } else {
+        res.status(200).json({ loginLink });
+      }
+    } catch (error) {
+      res.status(500).json({ msg: 'Erro ao verificar integração', error: error.message });
+    }
+  });
+
+async function verificarIntegracao(userIdStripe) {
+
+    const account = await stripe.accounts.retrieve(userIdStripe);
+
+    if (account.requirements.currently_due.length === 0) {
+      return null;
+    } else {
+      // A conta ainda não está totalmente integrada, retorna linkDeIntegracao
+      const loginLink = await stripe.accountLinks.create({
+        account: userIdStripe,
+        refresh_url: 'http://localhost:3000/',
+        return_url: 'http://localhost:3000/',
+        type: 'account_onboarding',
+      });
+      return loginLink;
+    }
+}
+
+//Define o link de integracao para o menu da navbar
 app.get("/ObterLinkDashboard/:userIdStripe", async function (req, res) {
   const userIdStripe = req.params.userIdStripe;
 
@@ -1457,7 +1560,7 @@ app.get("/ObterLinkDashboard/:userIdStripe", async function (req, res) {
   }
 });
 
-app.get("/IntermediariosDisponiveis/:id", checkToken, async function(req,res){
+app.get("/IntermediariosDisponiveis/:id", checkToken, verificarUsuarioEmpresa, async function(req,res){
     const id = req.params.id;
 
     try
@@ -1505,7 +1608,7 @@ app.get("/IntermediariosDisponiveis/:id", checkToken, async function(req,res){
     }
 })
 
-app.post("/RealizarDoacao/:idStripeIntermediario", async function(req, res) {
+app.post("/RealizarDoacao/:idStripeIntermediario", checkToken, verificarUsuarioEmpresa, async function(req, res) {
   const idStripeIntermediario = req.params.idStripeIntermediario;
   const {userId, valor } = req.body;
 
@@ -1660,7 +1763,7 @@ async function coletarDoacao(id, usuarioId) {
   }
 };
 
-app.get("/HistoricoContribuicao/:id", checkToken, async function(req,res){
+app.get("/HistoricoContribuicao/:id", checkToken, verificarUsuarioEmpresa, async function(req,res){
     const idEmpresa = req.params.id;
 
     try{
@@ -1686,5 +1789,26 @@ app.get("/HistoricoContribuicao/:id", checkToken, async function(req,res){
 
 })
 
-//WebHook, após pagamento coletar doacao
-//WebHook, após doacao financeira, criar um objeto de pagamento para o pagador
+app.get("/DoacoesRecebidas/:id", checkToken, verificarUsuarioBeneficiario, async function(req, res) {
+  const usuarioBenefId = req.params.id;
+
+  try {
+    const doacoes = await DistribuirProduto.findAll({ where: { usuariobeneficiarioId: usuarioBenefId } });
+
+    // Mapear as doações para incluir as imagens redimensionadas e convertidas em base64
+    const doacoesComImagens = await Promise.all(doacoes.map(async (doacao) => {
+      // Redimensionar a imagem para 100x100 pixels mantendo a proporção
+      const imagemRedimensionada = await sharp(doacao.foto).resize({ width: 1000, height: 1000, fit: 'inside' }).toBuffer();
+      const imagemBase64 = imagemRedimensionada.toString('base64');
+      
+      return { ...doacao.toJSON(), imagemBase64 }; // Incluir a imagem convertida na representação JSON da doação
+    }));
+
+    res.status(200).json({ doacoes: doacoesComImagens });
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao buscar doações por usuário", message: error.message });
+  }
+});
+
+
+

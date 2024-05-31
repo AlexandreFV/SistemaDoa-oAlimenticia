@@ -79,8 +79,9 @@
                                 <button>n sei o que é</button>
                               </div>
                                 ) : (
+                                    
     <div>
-        {intermedio.map((meuIntermedio, index) => (
+            {intermedio.length >= 1 && intermedio.map((meuIntermedio, index) => (
             <div key={index}>
                 <a>
                     <div className="CardProduct" style={{ width: "90%", height: "9rem", background: "#EBEBEB", borderRadius: "10px", marginTop: "2rem", marginLeft: "auto", marginRight: "auto", display: "flex", justifyContent: "center" }} >
@@ -107,6 +108,8 @@
         ))}
     </div>
 )}
+
+
 
 
                                 </div>

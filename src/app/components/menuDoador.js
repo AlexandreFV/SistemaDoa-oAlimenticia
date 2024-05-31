@@ -1,12 +1,41 @@
 
+import { useEffect, useState } from "react";
 import CustomButton from "./customButton"
 import './menuDoador.css';
-export default function menuDoador() {
+import ModalIntegracao from "./modalIntegracao";
+import jwt from 'jsonwebtoken';
 
+export default function menuDoador() {
+    const [linkIntegracao,setLinkIntegracao] = useState("");
+    const [NIntegrado, setNIntegrado] = useState(false);
+
+    useEffect(() => {
+        const verificarIntegracao = async () => {
+            const userIdStripe = localStorage.getItem("IdStripe");
+            const token = localStorage.getItem('token');
+            const decodedToken = jwt.decode(token);
+            try{
+            const response = await fetch (`http://localhost:3001/VerificarIntegracao/${userIdStripe}`,{
+                'Authorization': `Bearer ${token}`
+            })
+            if(response.ok){
+            const data = await response.json();
+                if(data.loginLink){
+                setLinkIntegracao(data.loginLink.url);
+                setNIntegrado(true);
+                }
+            }
+            }catch(error){
+                console.error('Erro ao buscar integracao:', error.message);
+            }
+        }; verificarIntegracao();
+    }, []);
 
     return (
 
+        
         <div style={{ position: "relative", display: "inline-block", maxheight: "230px", maxwidth: "250px" }}>
+             {NIntegrado && <ModalIntegracao linkIntegracao={linkIntegracao} />}
 
             <div style={{
                 paddingTop: "15px", color: "white", paddingLeft: "10px", backgroundColor: "#7D9E65",

@@ -99,9 +99,11 @@ export default function Navbar({ isAuthenticated, userEmail, userType }) {
               </div>
 
             )}
+            
             {userType === 'beneficiario' && (
-              <button className="dropdown-item" type="button">Doações Recebidas</button>
+              <Link href={"/DoacoesRecebidas"} className="dropdown-item" type="button">Doações Recebidas</Link>
             )}
+
             {userType === 'empresa' && (
               <div>
                 <Link href={"/ContribFinanceiraEmpresa"} className="dropdown-item" type="button">Realizar doacão</Link>

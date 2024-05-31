@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { BackButton, CustomButton } from "../components/customButton";
 import Link from "next/link";
 import SucErroAddDoacao from "../components/SucErroAddDoacao";
+import jwt from 'jsonwebtoken';
 
 export default function FacaDoacao() {
   const [nome_alimento, setNome] = useState("");
@@ -73,6 +74,10 @@ export default function FacaDoacao() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const userIdStripe = localStorage.getItem("IdStripe");
+    const token = localStorage.getItem('token');
+    const decodedToken = jwt.decode(token);
+    const usuariodoadorId = decodedToken.id;
 
     if (nome_alimento !== "" && quantidade !== "" && foto !== null && rua !== "" && numero !== "" && cidade !== "" && preco != "" && formato != "") {
 
@@ -91,8 +96,7 @@ export default function FacaDoacao() {
         formData.append("preco", preco);
         formData.append("formato", formato);
 
-
-        const response = await fetch("http://localhost:3001/EnviarDoacao", {
+        const response = await fetch(`http://localhost:3001/EnviarDoacao/${usuariodoadorId}`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`, // Inclui o token de autenticação no cabeçalho da requisição
