@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import jwt from 'jsonwebtoken';
 import { Cedarville_Cursive } from "next/font/google";
 import { loadStripe } from '@stripe/stripe-js';
+import ModalIntegracao from "../components/modalIntegracao";
 
 export default function InfoProduto() {
     const router = useRouter();
@@ -30,6 +31,32 @@ export default function InfoProduto() {
           }
         }
       }, []);
+
+      const [linkIntegracao,setLinkIntegracao] = useState("");
+      const [NIntegrado, setNIntegrado] = useState(false);
+  
+      useEffect(() => {
+          const verificarIntegracao = async () => {
+              const userIdStripe = localStorage.getItem("IdStripe");
+              const token = localStorage.getItem('token');
+              const decodedToken = jwt.decode(token);
+              try{
+              const response = await fetch (`http://localhost:3001/VerificarIntegracao/${userIdStripe}`,{
+                  'Authorization': `Bearer ${token}`
+              })
+              if(response.ok){
+              const data = await response.json();
+                  if(data.loginLink){
+                  setLinkIntegracao(data.loginLink.url);
+                  setNIntegrado(true);
+                  }
+              }
+              }catch(error){
+                  console.error('Erro ao buscar integracao:', error.message);
+              }
+          }; verificarIntegracao();
+      }, []);
+  
 
     useEffect(() => {
         const fetchDoacoes = async () => {
@@ -131,6 +158,7 @@ export default function InfoProduto() {
                         <BackButton />
                         <h1 className="h1MinDoaINFOPROD">Informações do Produto</h1>
                         <div className="DFFINFOPROD">
+                        {NIntegrado && <ModalIntegracao linkIntegracao={linkIntegracao} />}
 
                             <div className="nome_contact" >
                                 <p style={{ float: "left", marginTop: "3.5rem", marginLeft: "2.2rem", fontSize: "1.2rem", alignItems: "center", fontWeight: "bold" }}>{doacao && doacao.usuariodoador.nome}</p>

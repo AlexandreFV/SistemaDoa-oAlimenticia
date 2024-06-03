@@ -1,10 +1,14 @@
 import CustomButton from "./customButton";
 import "./MenuEmpresa.css";
 import { useState, useEffect } from "react";
-
+import ModalIntegracao from "./modalIntegracao";
+import jwt from 'jsonwebtoken';
 export default function MenuEmpresa() {
 
     const [selectedButton, setSelectedButton] = useState(null);
+    const [linkIntegracao,setLinkIntegracao] = useState("");
+    const [NIntegrado, setNIntegrado] = useState(false);
+
 
     // Função para lidar com o clique no botão
     const handleButtonClick = (button) => {
@@ -28,6 +32,7 @@ export default function MenuEmpresa() {
     return (
 
         <div style={{ position: "relative", display: "inline-block", maxheight: "230px", maxwidth: "250px" }}>
+
 
             <div style={{
                 paddingTop: "15px", color: "white", paddingLeft: "10px", backgroundColor: "#7D9E65",

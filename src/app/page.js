@@ -74,10 +74,7 @@ export default function Home() {
 
       }
 
-      } else {
-        // Se a solicitação falhar, redirecione para a página de login
-        router.push('/Cadastrar');
-      }
+      } 
     } catch (error) {
       console.error("Erro ao buscar detalhes do usuário:", error);
     }

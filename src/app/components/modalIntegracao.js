@@ -1,7 +1,6 @@
 export default function ModalIntegracao({ linkIntegracao }) {
     return (
         <div>
-            <div className="modal-backdrop fade show"></div>
             <div className="modal fade show" id="exampleModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style={{ display: 'block' }}>
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content">

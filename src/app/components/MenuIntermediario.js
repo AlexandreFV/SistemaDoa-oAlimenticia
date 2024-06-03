@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import CustomButton from "./customButton";
 import "./MenuIntermediario.css";
-
+import ModalIntegracao from "./modalIntegracao";
+import jwt from 'jsonwebtoken';
 export default function MenuIntermediario() {
 
     const [selectedButton, setSelectedButton] = useState(null);
@@ -24,6 +25,7 @@ export default function MenuIntermediario() {
             setSelectedButton(storedButton);
         }
     }, []); // Executar apenas uma vez ao montar o componente
+
 
     return (
 

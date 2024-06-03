@@ -35,7 +35,6 @@ export default function menuDoador() {
 
         
         <div style={{ position: "relative", display: "inline-block", maxheight: "230px", maxwidth: "250px" }}>
-             {NIntegrado && <ModalIntegracao linkIntegracao={linkIntegracao} />}
 
             <div style={{
                 paddingTop: "15px", color: "white", paddingLeft: "10px", backgroundColor: "#7D9E65",

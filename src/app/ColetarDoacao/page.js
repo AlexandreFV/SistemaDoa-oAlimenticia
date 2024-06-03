@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useRouter } from "next/navigation";
 import jwt from 'jsonwebtoken';
 import { Cedarville_Cursive } from "next/font/google";
+import ModalIntegracao from "../components/modalIntegracao";
 
 export default function ColetarDoacao() {
 
@@ -31,6 +32,61 @@ export default function ColetarDoacao() {
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked);
     };
+
+
+
+    const [linkIntegracao,setLinkIntegracao] = useState("");
+    const [NIntegrado, setNIntegrado] = useState(false);
+
+    useEffect(() => {
+      const fetchData = async () => {
+          const token = localStorage.getItem('token');
+          const userIdStripe = localStorage.getItem("IdStripe");
+
+          // Verificar integração
+          try {
+              const response = await fetch(`http://localhost:3001/VerificarIntegracao/${userIdStripe}`, {
+                  headers: {
+                      'Authorization': `Bearer ${token}`
+                  }
+              });
+
+              if (response.ok) {
+                  const data = await response.json();
+                  if (data.loginLink) {
+                      setLinkIntegracao(data.loginLink.url);
+                      setNIntegrado(true);
+                      return; // Parar execução se a integração for necessária
+                  }
+              }
+          } catch (error) {
+              console.error('Erro ao buscar integração:', error.message);
+          }
+
+          // Buscar doações se a integração não for necessária
+          try {
+              const decodedToken = jwt.decode(token);
+              const usuariodoadorId = decodedToken.id;
+
+              const response = await fetch(`http://localhost:3001/ColetarDoacao/${usuariodoadorId}`, {
+                  headers: {
+                      'Authorization': `Bearer ${token}`
+                  },
+              });
+              if (response.ok) {
+                  const data = await response.json();
+                  setDoacoes(data);
+              } else {
+                  console.error('Erro ao buscar doações:', response.statusText);
+              }
+          } catch (error) {
+              console.error('Erro ao buscar doações:', error.message);
+          }
+      };
+
+      fetchData();
+  }, []);
+
 
     const handleComprarClick = async (id) => {
       console.log("ID:", id);
@@ -62,32 +118,6 @@ export default function ColetarDoacao() {
       }
     };
     
-    useEffect(() => {
-        const fetchDoacoes = async () => {
-          try {
-            const token = localStorage.getItem('token');
-            const decodedToken = jwt.decode(token);
-            const usuariodoadorId = decodedToken.id;
-  
-              const response = await fetch(`http://localhost:3001/ColetarDoacao/${usuariodoadorId}`, {
-              headers: {
-                'Authorization': `Bearer ${token}`
-              },
-              
-            });
-            if (response.ok) {
-              const data = await response.json();
-              setDoacoes(data);
-            } else {
-              console.error('Erro ao buscar doações:', response.statusText);
-            }
-          } catch (error) {
-            console.error('Erro ao buscar doações:', error.message);
-          }
-        };
-    
-        fetchDoacoes();
-      }, []);
 
 
       return (
@@ -101,7 +131,9 @@ export default function ColetarDoacao() {
                         <BackButton />
                         <h1 className="h1MinDoaCOLETARDOACAO">Coletar Doação</h1>
                         <div className="DFFCOLETARDOACAO">
+
                             <div style={{ display: "flex", alignItens: "center", textAlign: "center" }}>
+
                                 <h1 style={{ display: "flex", justifyContent: "center", alignItems: "center", left: "1.6rem" }} className="h1ProdutosEnv">Doações disponíveis</h1>
                                 <div style={{ marginRight: "1.2rem", marginTop: "1rem" }}>
                                     <img src="./filtrar.png" className="imgFiltrar" />
@@ -109,6 +141,8 @@ export default function ColetarDoacao() {
                                 </div>
                             </div>
                             <div style={{backgroundColor: "black", width: "100%", height: "2px" }}></div>
+                            {NIntegrado && <ModalIntegracao linkIntegracao={linkIntegracao} />}
+
                             {doacoes.length === 0 ? (
                               <div>
                                 <img src="/triste.png" className="COLETADOACAOIMG"></img>
@@ -117,7 +151,8 @@ export default function ColetarDoacao() {
                               </div>
                             ) : (
                                 <div>
-                                    {doacoes.map((doacao, index) => (
+
+                                    {!NIntegrado && doacoes.map((doacao, index) => (
                                         <div key={index} className="CardProduct" style={{ width: "90%", height: "6.4rem", background: "#EBEBEB", borderRadius: "10px", marginTop: "40px", marginLeft: "auto", marginRight: "auto" }}>
 
                                             <div style={{ float: "left" }}>

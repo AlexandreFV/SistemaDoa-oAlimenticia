@@ -9,6 +9,7 @@ import { BackButton, CustomButton } from "../components/customButton";
 import Link from "next/link";
 import SucErroAddDoacao from "../components/SucErroAddDoacao";
 import jwt from 'jsonwebtoken';
+import ModalIntegracao from "../components/modalIntegracao";
 
 export default function FacaDoacao() {
   const [nome_alimento, setNome] = useState("");
@@ -45,6 +46,32 @@ export default function FacaDoacao() {
       }
     }
   }, []);
+
+  const [linkIntegracao,setLinkIntegracao] = useState("");
+  const [NIntegrado, setNIntegrado] = useState(false);
+
+  useEffect(() => {
+      const verificarIntegracao = async () => {
+          const userIdStripe = localStorage.getItem("IdStripe");
+          const token = localStorage.getItem('token');
+          const decodedToken = jwt.decode(token);
+          try{
+          const response = await fetch (`http://localhost:3001/VerificarIntegracao/${userIdStripe}`,{
+              'Authorization': `Bearer ${token}`
+          })
+          if(response.ok){
+          const data = await response.json();
+              if(data.loginLink){
+              setLinkIntegracao(data.loginLink.url);
+              setNIntegrado(true);
+              }
+          }
+          }catch(error){
+              console.error('Erro ao buscar integracao:', error.message);
+          }
+      }; verificarIntegracao();
+  }, []);
+
 
   // Função para buscar as informações do usuário
   const fetchUserData = async () => {
@@ -192,6 +219,7 @@ export default function FacaDoacao() {
 
             <h1 className="tituloFACADOA">Faça sua doação</h1>
             <div className="DFFFACADOA">
+            {NIntegrado && <ModalIntegracao linkIntegracao={linkIntegracao} />}
 
               <center>
                 <h1 style={{ paddingTop: "20px" }}>Dados da Doação</h1>

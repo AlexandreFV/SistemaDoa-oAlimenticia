@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import jwt, { decode } from 'jsonwebtoken';
 import { loadStripe } from '@stripe/stripe-js';
 import ModalValor from '../components/modalValorPagamento';
+import ModalIntegracao from "../components/modalIntegracao";
 
 export default function ContribFinanceiraEmpresa() {
     const router = useRouter(); 
@@ -47,32 +48,59 @@ export default function ContribFinanceiraEmpresa() {
         } 
     })  
 
+    const [linkIntegracao,setLinkIntegracao] = useState("");
+    const [NIntegrado, setNIntegrado] = useState(false);
+
     useEffect(() => {
-        const intermediariosDispon = async () => {
+        const fetchData = async () => {
+            const token = localStorage.getItem('token');
+            const userIdStripe = localStorage.getItem("IdStripe");
 
-            const token = localStorage.getItem("token");
-            const decodedToken = jwt.decode(token);
-            const userEmpresaId = decodedToken.id;
-            try{
-            const response = await fetch(`http://localhost:3001/IntermediariosDisponiveis/${userEmpresaId}`,{
-                method: "GET",
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
+            // Verificar integração
+            try {
+                const response = await fetch(`http://localhost:3001/VerificarIntegracao/${userIdStripe}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
 
-            if(response.ok){
-                const data = await response.json();
-                setIntermediarios(data.intermediariosIntegrados);
-                console.log(data.intermediariosIntegrados);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.loginLink) {
+                        setLinkIntegracao(data.loginLink.url);
+                        setNIntegrado(true);
+                        return; // Parar execução se a integração for necessária
+                    }
+                }
+            } catch (error) {
+                console.error('Erro ao buscar integração:', error.message);
             }
-            
-            }catch(error){
-                console.log("Erro ao obter os intermediarios");
+
+            // Buscar intermediários se a integração não for necessária
+            try {
+                const decodedToken = jwt.decode(token);
+                const userEmpresaId = decodedToken.id;
+
+                const response = await fetch(`http://localhost:3001/IntermediariosDisponiveis/${userEmpresaId}`, {
+                    method: "GET",
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    setIntermediarios(data.intermediariosIntegrados);
+                } else {
+                    console.error('Erro ao buscar intermediários:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Erro ao buscar intermediários:', error.message);
             }
         };
-        intermediariosDispon();
+
+        fetchData();
     }, []);
+
 
     return (
         <div className="DVBF">
@@ -87,6 +115,8 @@ export default function ContribFinanceiraEmpresa() {
                         <BackButton />
                         <h1 className="HMDBF">Contribuição Financeira</h1>
                         <div className="DFFBF">
+                        {NIntegrado && <ModalIntegracao linkIntegracao={linkIntegracao} />}
+
                             <div style={{ display: "flex", alignItens: "center", textAlign: "center" }}>
                                 <h1 style={{ display: "flex", justifyContent: "center", alignItems: "center", left: "1.6rem" }} className="h1ProdutosEnv">Intermediários Ativos</h1>
                                 <div style={{ marginRight: "1.2rem", marginTop: "1rem" }}>
@@ -95,6 +125,7 @@ export default function ContribFinanceiraEmpresa() {
                                 </div>
                             </div>
                             <div style={{ backgroundColor: "black", width: "100%", height: "2px" }}></div>
+
                             {meusIntermediarios.length === 0 ? (
                             <div className="divNPossuiIntermed"> 
                             <img src="/triste.png" className="IT"></img>
@@ -103,7 +134,7 @@ export default function ContribFinanceiraEmpresa() {
                             </div>
                             ) : (
                                 <div>
-                                {meusIntermediarios.map((intermediario, index) => (
+                                {!NIntegrado && meusIntermediarios.map((intermediario, index) => (
                                 <div className="CDBF" key={index} onClick={() => definirValor(intermediario.idStripe)} data-toggle="modal" data-target="#exampleModalCenter">
                                 <div style={{ float: "left", flexWrap: "wrap", marginLeft: "0", marginRight: "0",width:"50%" }}>
                                     <div style={{ marginLeft: "2rem", marginTop: "1rem", fontSize: 18, fontFamily: "Inter", fontWeight: "bold" }}>{intermediario.nome}</div>
