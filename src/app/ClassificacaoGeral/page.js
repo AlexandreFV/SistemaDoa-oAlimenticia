@@ -2,12 +2,13 @@
 import Navbar from "../components/layoutCadastroLogin";
 import "./style.css";
 import MenuDireito from "../components/MenuIntermediario";
-import { BackButton, CustomButton } from "../components/customButton";
+import { CustomButton } from "../components/customButton";
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
 import jwt from 'jsonwebtoken';
 import { Cedarville_Cursive, Fleur_De_Leah } from "next/font/google";
+import { BackButton2 } from "../components/BackButton";
 
 export default function ClassificacaoGeral() {
 
@@ -33,17 +34,17 @@ export default function ClassificacaoGeral() {
 
     useEffect(() => {
         const ClassificacaoGeral = async () => {
-            try{
+            try {
                 const response = await fetch(`http://localhost:3001/RankingTop6`, {
                     method: "GET",
                 })
 
-                if(response.ok){
+                if (response.ok) {
                     const posicoes = await response.json();
                     setClassificacao(posicoes.topRanking);
                 }
 
-            }catch (error){
+            } catch (error) {
                 console.log("Não foi possivel buscar as classificacacoes");
             }
         }; ClassificacaoGeral();
@@ -53,6 +54,7 @@ export default function ClassificacaoGeral() {
         <div className="ImgfundoClassGer">
             <div className="DivPClassGer">
                 <Navbar />
+                <BackButton2 />
                 <div className="DivFClassGer">
                     <div className="TituloClassGer">
                         <p>Classificação geral</p>
@@ -78,102 +80,102 @@ export default function ClassificacaoGeral() {
                             </a>
 
                         </div>
-   
+
                         <div className="ConteudoProdutor" style={{ display: activeButton === 1 ? 'block' : 'none' }}>
-                        {classificacao.length === 0 ? (
-                            <div>
-                            <img src="/triste.png" className="IT"></img>
-                            <h1 className="HND">Ainda não há produtores.</h1>
-                            <p className="PSP">Volte mais tarde.</p>
-                            </div>
+                            {classificacao.length === 0 ? (
+                                <div>
+                                    <img src="/triste.png" className="IT"></img>
+                                    <h1 className="HND">Ainda não há produtores.</h1>
+                                    <p className="PSP">Volte mais tarde.</p>
+                                </div>
                             ) : (
-                            <div>
-                            <p style={{ marginTop: "1.5rem", display: "flex", justifyContent: "center", fontSize: "1.4rem", fontWeight: "bold" }}>Nível de doações</p>
-                            <div style={{ display: "flex", justifyContent: "center" }} className="altarclass">
-                                <div className="Segundolugar">               
-                                    <div style={{}}>
-                                        <center>
-                                        <p style={{ marginTop: "1rem", fontFamily: "Rubik One", fontSize: "1.2rem" }}>{classificacao.length > 1 ? classificacao[1].usuariodoador.nome : "Não Ocupado"}</p>
-                                            <img style={{ width: "3.2rem", height: "3.2rem" }} src="/medalha-de-prata.png" />
-                                            <div style={{ backgroundColor: "#54B9BF", width: "4rem", height: "6.5rem", marginTop: "0.4rem", boxShadow: "0px 2px 2px 0px rgba(0, 0, 0, 0.25)" }}></div>
-                                            <p>{classificacao.length > 1 ? classificacao[1].quantidade + "Vendas" : "0 Vendas"}</p>
-                                        </center>
-                                    </div>
-                                </div>
-                                <div className="Primeirolugar">
-                                    <div style={{}}>
-                                        <center>
-                                            <p style={{ marginTop: "1rem", fontFamily: "Rubik One", fontSize: "1.2rem" }}>  {classificacao?.[0]?.usuariodoador?.nome ?? "Não Ocupado"}</p>
-                                            <img style={{ width: "3.2rem", height: "3.2rem" }} src="/medalha-de-ouro.png" />
-                                            <div style={{ backgroundColor: "#E3CA6F", width: "4rem", height: "6.5rem", marginTop: "0.4rem", boxShadow: "0px 2px 2px 0px rgba(0, 0, 0, 0.25)" }}></div>
-                                            <p>{classificacao.length > 0 ? classificacao[0].quantidade + " Vendas" : "0 Vendas"}</p>
-                                        </center>
-                                    </div>
-                                </div>
-                                <div className="Terceirolugar">
-                                    <div style={{}}>
-                                        <center>
-                                            <p style={{ marginTop: "1rem", fontFamily: "Rubik One", fontSize: "1.2rem" }}>{classificacao.length > 2 ? classificacao[2].usuariodoador.nome : "Não Ocupado"}</p>
-                                            <img style={{ width: "3.2rem", height: "3.2rem" }} src="/medalha-de-bronze.png" />
-                                            <div style={{ backgroundColor: "#76BF54", width: "4rem", height: "6.5rem", marginTop: "0.4rem", boxShadow: "0px 2px 2px 0px rgba(0, 0, 0, 0.25)" }}></div>
-                                            <p>{classificacao.length > 2 ? classificacao[2].quantidade + " Vendas" : "0 Vendas"}</p>
-                                        </center>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style={{ fontWeight: "bold" }} className="CardsProdutorsInferior">
-                                <div className="CardProdutor">
-                                    <div className="PosicaoDoador">
-                                        <p>04º Lugar</p>
-                                    </div>
-                                    <div style={{ backgroundColor: "black", width: "2px", height: "100%", marginLeft: "2rem" }}></div>
-                                    <div>
-                                        <p style={{ marginLeft: "2rem" }}>{classificacao.length > 3 ? classificacao[3].usuariodoador.nome : "Não Ocupado"}</p>
-                                    </div>
-                                    <div style={{ display: "flex", marginLeft: "auto" }}>
-                                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginRight: "2rem" }}>
-                                            <p>Vendas</p>
-                                            <p>{classificacao.length > 3 ? classificacao[3].quantidade : "0"}</p>
+                                <div>
+                                    <p style={{ marginTop: "1.5rem", display: "flex", justifyContent: "center", fontSize: "1.4rem", fontWeight: "bold" }}>Nível de doações</p>
+                                    <div style={{ display: "flex", justifyContent: "center" }} className="altarclass">
+                                        <div className="Segundolugar">
+                                            <div style={{}}>
+                                                <center>
+                                                    <p style={{ marginTop: "1rem", fontFamily: "Rubik One", fontSize: "1.2rem" }}>{classificacao.length > 1 ? classificacao[1].usuariodoador.nome : "Não Ocupado"}</p>
+                                                    <img style={{ width: "3.2rem", height: "3.2rem" }} src="/medalha-de-prata.png" />
+                                                    <div style={{ backgroundColor: "#54B9BF", width: "4rem", height: "6.5rem", marginTop: "0.4rem", boxShadow: "0px 2px 2px 0px rgba(0, 0, 0, 0.25)" }}></div>
+                                                    <p>{classificacao.length > 1 ? classificacao[1].quantidade + "Vendas" : "0 Vendas"}</p>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div className="Primeirolugar">
+                                            <div style={{}}>
+                                                <center>
+                                                    <p style={{ marginTop: "1rem", fontFamily: "Rubik One", fontSize: "1.2rem" }}>  {classificacao?.[0]?.usuariodoador?.nome ?? "Não Ocupado"}</p>
+                                                    <img style={{ width: "3.2rem", height: "3.2rem" }} src="/medalha-de-ouro.png" />
+                                                    <div style={{ backgroundColor: "#E3CA6F", width: "4rem", height: "6.5rem", marginTop: "0.4rem", boxShadow: "0px 2px 2px 0px rgba(0, 0, 0, 0.25)" }}></div>
+                                                    <p>{classificacao.length > 0 ? classificacao[0].quantidade + " Vendas" : "0 Vendas"}</p>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div className="Terceirolugar">
+                                            <div style={{}}>
+                                                <center>
+                                                    <p style={{ marginTop: "1rem", fontFamily: "Rubik One", fontSize: "1.2rem" }}>{classificacao.length > 2 ? classificacao[2].usuariodoador.nome : "Não Ocupado"}</p>
+                                                    <img style={{ width: "3.2rem", height: "3.2rem" }} src="/medalha-de-bronze.png" />
+                                                    <div style={{ backgroundColor: "#76BF54", width: "4rem", height: "6.5rem", marginTop: "0.4rem", boxShadow: "0px 2px 2px 0px rgba(0, 0, 0, 0.25)" }}></div>
+                                                    <p>{classificacao.length > 2 ? classificacao[2].quantidade + " Vendas" : "0 Vendas"}</p>
+                                                </center>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="CardProdutor">
-                                    <div className="PosicaoDoador">
-                                        <p>05º Lugar</p>
-                                    </div>
-                                    <div style={{ backgroundColor: "black", width: "2px", height: "100%", marginLeft: "2rem" }}></div>
-                                    <div>
-                                        <p style={{ marginLeft: "2rem" }}>{classificacao.length > 4 ? classificacao[4].usuariodoador.nome : "Não Ocupado"}</p>
-                                    </div>
-                                    <div style={{ display: "flex", marginLeft: "auto" }}>
-                                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginRight: "2rem" }}>
-                                            <p>Vendas</p>
-                                            <p>{classificacao.length > 4 ? classificacao[4].quantidade : "0"}</p>
+                                    <div style={{ fontWeight: "bold" }} className="CardsProdutorsInferior">
+                                        <div className="CardProdutor">
+                                            <div className="PosicaoDoador">
+                                                <p>04º Lugar</p>
+                                            </div>
+                                            <div style={{ backgroundColor: "black", width: "2px", height: "100%", marginLeft: "2rem" }}></div>
+                                            <div>
+                                                <p style={{ marginLeft: "2rem" }}>{classificacao.length > 3 ? classificacao[3].usuariodoador.nome : "Não Ocupado"}</p>
+                                            </div>
+                                            <div style={{ display: "flex", marginLeft: "auto" }}>
+                                                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginRight: "2rem" }}>
+                                                    <p>Vendas</p>
+                                                    <p>{classificacao.length > 3 ? classificacao[3].quantidade : "0"}</p>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div className="CardProdutor">
-                                    <div className="PosicaoDoador">
-                                        <p>06º Lugar</p>
-                                    </div>
-                                    <div style={{ backgroundColor: "black", width: "2px", height: "100%", marginLeft: "2rem" }}></div>
-                                    <div>
-                                        <p style={{ marginLeft: "2rem" }}>{classificacao.length > 5 ? classificacao[5].usuariodoador.nome : "Não Ocupado"}</p>
-                                    </div>
-                                    <div style={{ display: "flex", marginLeft: "auto" }}>
-                                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginRight: "2rem" }}>
-                                            <p>Vendas</p>
-                                            <p>{classificacao.length > 5 ? classificacao[5].quantidade : "0"}</p>
+                                        <div className="CardProdutor">
+                                            <div className="PosicaoDoador">
+                                                <p>05º Lugar</p>
+                                            </div>
+                                            <div style={{ backgroundColor: "black", width: "2px", height: "100%", marginLeft: "2rem" }}></div>
+                                            <div>
+                                                <p style={{ marginLeft: "2rem" }}>{classificacao.length > 4 ? classificacao[4].usuariodoador.nome : "Não Ocupado"}</p>
+                                            </div>
+                                            <div style={{ display: "flex", marginLeft: "auto" }}>
+                                                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginRight: "2rem" }}>
+                                                    <p>Vendas</p>
+                                                    <p>{classificacao.length > 4 ? classificacao[4].quantidade : "0"}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="CardProdutor">
+                                            <div className="PosicaoDoador">
+                                                <p>06º Lugar</p>
+                                            </div>
+                                            <div style={{ backgroundColor: "black", width: "2px", height: "100%", marginLeft: "2rem" }}></div>
+                                            <div>
+                                                <p style={{ marginLeft: "2rem" }}>{classificacao.length > 5 ? classificacao[5].usuariodoador.nome : "Não Ocupado"}</p>
+                                            </div>
+                                            <div style={{ display: "flex", marginLeft: "auto" }}>
+                                                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginRight: "2rem" }}>
+                                                    <p>Vendas</p>
+                                                    <p>{classificacao.length > 5 ? classificacao[5].quantidade : "0"}</p>
+                                                </div>
+
+                                            </div>
                                         </div>
 
                                     </div>
                                 </div>
-                               
-                            </div>
-                            </div>
                             )};
                         </div>
-                    
+
                         <div className="ConteudoIntermed" style={{ display: activeButton === 2 ? 'block' : 'none' }}>
                             <p style={{ marginTop: "1.5rem", display: "flex", justifyContent: "center", fontSize: "1.4rem", fontWeight: "bold" }}>Nível de doações</p>
                             <div style={{ display: "flex", justifyContent: "center" }} className="altarclass">

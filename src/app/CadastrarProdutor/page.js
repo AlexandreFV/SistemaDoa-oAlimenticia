@@ -6,12 +6,24 @@ import { useState, useEffect } from "react";
 import ErroCadastro from '../components/erroCadastro';
 import CustomButton from '../components/customButton';
 import "./style.css";
+import { BackButton } from "../components/BackButton";
 
-export default function CadastroDoador() {
+export default function CadastroProdutor() {
 
   // Estado para controlar qual botão está ativo
   const [activeButton, setActiveButton] = useState(1);
   const [classificacao, setClassificacao] = useState([]);
+
+  const validateForm1 = () => {
+    if (nome === "" || email === "" || cpf === "" || senha === "" || rua === "" || cidade === "" || numero === "" || telefone === "" || dataNasc === "") {
+      setErroCadastro("Preencha todos os campos!");
+      return false;
+    }
+    setErroCadastro("");
+    return true;
+  };
+
+
   // Função para lidar com o clique do botão
   const handleButtonClick = (button) => {
     // Se o botão clicado for o mesmo que já está ativo, retorna sem fazer nada
@@ -19,13 +31,17 @@ export default function CadastroDoador() {
       return;
     }
 
+    if (button === 2 && !validateForm1()) {
+      return;
+    }
+
     // Define o botão clicado como ativo
     setActiveButton(button);
   };
 
-  // Efeito para definir o botão "Produtor" como ativo ao carregar a página
+  // Efeito para definir o form1 como ativo ao carregar a página
   useEffect(() => {
-    setActiveButton(1); // Define o botão "Produtor" como ativo
+    setActiveButton(1); // Define o botão form1 como ativo
   }, []);
 
   const [nome, setNome] = useState("");
@@ -114,7 +130,7 @@ export default function CadastroDoador() {
       <div className="BCCD">
 
         <Navbar />
-
+        <BackButton />
 
         <div className='DNCD' >
           <div className='DBNCD'>
@@ -162,7 +178,7 @@ export default function CadastroDoador() {
                   <label for="exampleInputEmail1">Data de Nascimento</label>
                   <input type="date" class="form-control" id="exampleInputEmail1"
                     aria-describedby="emailHelp" placeholder="Digite sua Data de Nascimento..."
-                    style={{ backgroundColor: "transparent", color: "#dee2e6" }} name="dataNasc"
+                    style={{ backgroundColor: "transparent", color: "#a2ba8c" }} name="dataNasc"
                     value={dataNasc} onChange={(e) => setDataNasc(e.target.value)} />
                 </div>
 

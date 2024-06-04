@@ -7,6 +7,7 @@ import Input from "../components/input";
 import CustomButton from '../components/customButton';
 import "./style.css";
 import React, { useState, useEffect } from 'react';
+import { BackButton } from "../components/BackButton";
 
 export default function Cadastrar() {
 
@@ -34,6 +35,7 @@ export default function Cadastrar() {
       <div className="BCKCC">
 
         <Navbar />
+        <BackButton />
         <center>
           <p className="TituloEscolha">Escolha o tipo de cadastro</p>
         </center>

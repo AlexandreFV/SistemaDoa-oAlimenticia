@@ -22,7 +22,9 @@ export const BackButton = () => {
     };
 
     return (
+
         <button onClick={goBack}><img src="/iconbtnvoltar.png" alt="Ícone de voltar" className="VoltarIco" /></button>
+
     );
 };
 
