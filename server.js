@@ -1793,12 +1793,16 @@ app.get("/DoacoesRecebidas/:id", checkToken, verificarUsuarioBeneficiario, async
   const usuarioBenefId = req.params.id;
 
   try {
-    const doacoes = await DistribuirProduto.findAll({ where: { usuariobeneficiarioId: usuarioBenefId } });
+    const doacoes = await DistribuirProduto.findAll({ where: { usuariobeneficiarioId: usuarioBenefId },
+    include:{
+      model: produtoCompradoOriginal,
+      attributes:
+        ["nome_alimento","quantidade","rua","numero","cidade", "foto", "categoria"]
+    } });
 
-    // Mapear as doações para incluir as imagens redimensionadas e convertidas em base64
     const doacoesComImagens = await Promise.all(doacoes.map(async (doacao) => {
       // Redimensionar a imagem para 100x100 pixels mantendo a proporção
-      const imagemRedimensionada = await sharp(doacao.foto).resize({ width: 1000, height: 1000, fit: 'inside' }).toBuffer();
+      const imagemRedimensionada = await sharp(doacao.produtoComprado.foto).resize({ width: 1000, height: 1000, fit: 'inside' }).toBuffer();
       const imagemBase64 = imagemRedimensionada.toString('base64');
       
       return { ...doacao.toJSON(), imagemBase64 }; // Incluir a imagem convertida na representação JSON da doação

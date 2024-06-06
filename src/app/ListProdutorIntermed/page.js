@@ -76,7 +76,6 @@
                                 <h1 className="HND">Você ainda não efetuou nenhuma compra.</h1>
                                 <p className="PSP">Seja parte da solução.</p>
                                 <p className="PSPD">Faça sua primeira compra</p>
-                                <button>n sei o que é</button>
                               </div>
                                 ) : (
                                     

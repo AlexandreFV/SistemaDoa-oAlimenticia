@@ -44,6 +44,7 @@ export default function DoacoesRecebidas() {
         if (response.ok) {
           const data = await response.json();
           setDoacoes(data.doacoes);
+          console.log(data.doacoes);
         } else {
           console.error('Erro ao buscar doações:', response.statusText);
         }
@@ -95,21 +96,21 @@ export default function DoacoesRecebidas() {
                         />
 
                         <div className="DNA">
-                          <p className="NomeAlm" style={{ textAlign: "center" }}>{doacao.nome_alimento}</p>
+                          <p className="NomeAlm" style={{ textAlign: "center" }}>{doacao.produtoComprado.nome_alimento}</p>
                         </div>
 
                         <div className="DC">
                           <label>Categoria</label>
-                          <p style={{ textAlign: "center" }}>{doacao.categoria}</p>
+                          <p style={{ textAlign: "center" }}>{doacao.produtoComprado.categoria}</p>
                         </div>
 
                         <div className="DC">
                           <label>Quantidade</label>
-                          <p className="quantidade" style={{ textAlign: "center" }}>{doacao.quantidade}</p>
+                          <p className="quantidade" style={{ textAlign: "center" }}>{doacao.produtoComprado.quantidade}</p>
                         </div>
                         <div className="DC">
                           <label>Cidade</label>
-                          <p className="endereco" style={{ textAlign: "center" }}>{doacao.cidade}</p>
+                          <p className="endereco" style={{ textAlign: "center" }}>{doacao.produtoComprado.cidade}</p>
                         </div>
 
                       </div>
