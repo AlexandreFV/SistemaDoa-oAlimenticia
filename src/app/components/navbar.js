@@ -13,30 +13,30 @@ export default function Navbar({ isAuthenticated, userEmail, userType }) {
   useEffect(() => {
     const userIdStripe = localStorage.getItem("IdStripe");
     const userType = localStorage.getItem("userType");
-    if(userType === "doador" || userType === "intermediario" || userType === "empresa"){
+    if (userType === "doador" || userType === "intermediario" || userType === "empresa") {
 
-  
-    const obterLinkDashboard = async () => {
-      try {
-        const response = await fetch(`http://localhost:3001/ObterLinkDashboard/${userIdStripe}`);
-        if (response.ok) {
-          const data = await response.json();
-          if (data.loginLink) {
-            //setLinkDashboard(data.linkDeIntegracao.url);
-            setLinkDashboard(data.loginLink.url);
 
+      const obterLinkDashboard = async () => {
+        try {
+          const response = await fetch(`http://localhost:3001/ObterLinkDashboard/${userIdStripe}`);
+          if (response.ok) {
+            const data = await response.json();
+            if (data.loginLink) {
+              //setLinkDashboard(data.linkDeIntegracao.url);
+              setLinkDashboard(data.loginLink.url);
+
+            } else {
+              console.error('Erro ao obter o link de integração:', data.msg);
+            }
           } else {
-            console.error('Erro ao obter o link de integração:', data.msg);
+            console.error('Erro ao chamar a endpoint:', response.statusText);
           }
-        } else {
-          console.error('Erro ao chamar a endpoint:', response.statusText);
+        } catch (error) {
+          console.error('Erro ao chamar a endpoint:', error.message);
         }
-      } catch (error) {
-        console.error('Erro ao chamar a endpoint:', error.message);
-      }
-    };
-    obterLinkDashboard();
-  }
+      };
+      obterLinkDashboard();
+    }
   }, []); // A dependência vazia [] garante que o useEffect seja executado apenas uma vez, ao montar o componente
 
 
@@ -99,7 +99,7 @@ export default function Navbar({ isAuthenticated, userEmail, userType }) {
               </div>
 
             )}
-            
+
             {userType === 'beneficiario' && (
               <Link href={"/DoacoesRecebidas"} className="dropdown-item" type="button">Doações Recebidas</Link>
             )}
@@ -110,10 +110,10 @@ export default function Navbar({ isAuthenticated, userEmail, userType }) {
                 <Link href={"/HistoricoContribuicao"} className="dropdown-item" type="button">Minhas Doacoes</Link>
               </div>
 
-              )}
+            )}
             <Link href={"/ClassificacaoGeral"} className="dropdown-item" type="button">Ranking de Doações</Link>
             {isAuthenticated && (
-            <Link href={linkDashboard} className="dropdown-item" type="button">Meu perfil</Link>
+              <Link href={linkDashboard} className="dropdown-item" type="button">Meu perfil</Link>
             )}
           </div>
         </div>
@@ -124,7 +124,7 @@ export default function Navbar({ isAuthenticated, userEmail, userType }) {
       {/* Exibir imagem de perfil e email do usuário se estiver autenticado */}
       {isAuthenticated && (
         <div style={{ position: 'fixed', top: 5, right: 30, marginTop: "15px" }}>
-          <img src="/Loign.png" alt="Perfil" width={40} height={40} />
+          <img src="/userwhite.png" alt="Perfil" width={40} height={40} />
           <span style={{ marginLeft: "10px", color: "white" }}>{userEmail}</span>
           <p style={{ color: "white", cursor: "pointer" }} onClick={handleLogout}>Sair</p>
         </div>
@@ -132,7 +132,7 @@ export default function Navbar({ isAuthenticated, userEmail, userType }) {
 
       {!isAuthenticated && (
         <div style={{ position: 'fixed', top: 5, right: 30, marginTop: "15px" }}>
-          <img src="/Loign.png" alt="Perfil" width={40} height={40} />
+          <img src="/userwhite.png" alt="Perfil" width={40} height={40} />
           <p style={{ color: "white", cursor: "pointer" }} onClick={handleLogout}>Entrar</p>
         </div>
       )}

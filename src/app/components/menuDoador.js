@@ -1,4 +1,5 @@
 
+"use client"
 import { useEffect, useState } from "react";
 import CustomButton from "./customButton"
 import './menuDoador.css';
@@ -6,7 +7,7 @@ import ModalIntegracao from "./modalIntegracao";
 import jwt from 'jsonwebtoken';
 
 export default function menuDoador() {
-    const [linkIntegracao,setLinkIntegracao] = useState("");
+    const [linkIntegracao, setLinkIntegracao] = useState("");
     const [NIntegrado, setNIntegrado] = useState(false);
 
     useEffect(() => {
@@ -14,18 +15,18 @@ export default function menuDoador() {
             const userIdStripe = localStorage.getItem("IdStripe");
             const token = localStorage.getItem('token');
             const decodedToken = jwt.decode(token);
-            try{
-            const response = await fetch (`http://localhost:3001/VerificarIntegracao/${userIdStripe}`,{
-                'Authorization': `Bearer ${token}`
-            })
-            if(response.ok){
-            const data = await response.json();
-                if(data.loginLink){
-                setLinkIntegracao(data.loginLink.url);
-                setNIntegrado(true);
+            try {
+                const response = await fetch(`http://localhost:3001/VerificarIntegracao/${userIdStripe}`, {
+                    'Authorization': `Bearer ${token}`
+                })
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.loginLink) {
+                        setLinkIntegracao(data.loginLink.url);
+                        setNIntegrado(true);
+                    }
                 }
-            }
-            }catch(error){
+            } catch (error) {
                 console.error('Erro ao buscar integracao:', error.message);
             }
         }; verificarIntegracao();
@@ -33,7 +34,7 @@ export default function menuDoador() {
 
     return (
 
-        
+
         <div style={{ position: "relative", display: "inline-block", maxheight: "230px", maxwidth: "250px" }}>
 
             <div style={{

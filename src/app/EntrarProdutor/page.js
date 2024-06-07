@@ -92,7 +92,7 @@ export default function EntrarDoador() {
                 <div class="form-group" style={{ width: "90%", marginLeft: "5%", marginRight: "5%", marginTop: "20px" }}>
                   <label for="exampleInputEmail1">Email</label>
                   <input type="text" class="form-control" id="exampleInputEmail1"
-                    aria-describedby="emailHelp" placeholder="XXX.XXX.XXX-XX"
+                    aria-describedby="emailHelp" placeholder="Digite o seu e-mail..."
                     style={{ backgroundColor: "transparent" }} name="email"
                     value={email} onChange={(e) => SetEmail(e.target.value)} />
                 </div>
