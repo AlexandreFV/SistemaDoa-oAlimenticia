@@ -7,8 +7,29 @@ import ModalIntegracao from "./modalIntegracao";
 import jwt from 'jsonwebtoken';
 
 export default function menuDoador() {
+
+    const [selectedButton, setSelectedButton] = useState(null);
     const [linkIntegracao, setLinkIntegracao] = useState("");
     const [NIntegrado, setNIntegrado] = useState(false);
+
+    // Função para lidar com o clique no botão
+    const handleButtonClick = (button) => {
+        setSelectedButton(button);
+        localStorage.setItem('selectedButton', button); // Armazenar o botão selecionado no armazenamento local
+    };
+
+    // Função para verificar se a imagem deve ser mostrada com base no botão selecionado
+    const shouldShowImage = (button) => {
+        return selectedButton === button;
+    };
+
+    useEffect(() => {
+        // Recuperar o botão selecionado do armazenamento local ao montar o componente
+        const storedButton = localStorage.getItem('selectedButton');
+        if (storedButton) {
+            setSelectedButton(storedButton);
+        }
+    }, []); // Executar apenas uma vez ao montar o componente
 
     useEffect(() => {
         const verificarIntegracao = async () => {
@@ -58,21 +79,30 @@ export default function menuDoador() {
 
                 <div style={{ paddingTop: "40px" }}>
                     <div style={{ float: "left" }}>
-                        <CustomButton rel="preload" href={"/facaDoacao"} className={"btnn"} buttonText={"Fazer Doação"} textStyle={{ marginLeft: "1rem" }} />
+                        <CustomButton rel="preload" href={"/facaDoacao"} className={"btnn"} buttonText={"Fazer Doação"} textStyle={{ marginLeft: "1rem" }} onClick={() => handleButtonClick("facaDoacao")} />
                     </div>
-                    <img src="/SetaDireita.png" style={{ marginTop: "4px" }}></img>
+                    <img id="arrow1" src="/SetaDireita.png" style={{ marginTop: "4px", visibility: shouldShowImage("facaDoacao") ? "visible" : "hidden" }}></img>
                 </div>
 
                 <div style={{ paddingTop: "15px" }}>
-                    <CustomButton rel="preload" href={"/MinhasDoacoes"} className={"btnn"} buttonText={"Meus Produtos à Venda"} textStyle={{ marginLeft: "1rem" }} />
+                    <div style={{ float: "left" }}>
+                        <CustomButton rel="preload" href={"/MinhasDoacoes"} className={"btnn"} buttonText={"Meus Produtos à Venda"} textStyle={{ marginLeft: "1rem" }} onClick={() => handleButtonClick("MinhasDoacoes")} />
+                    </div>
+                    <img id="arrow2" src="/SetaDireita.png" style={{ marginTop: "4px", visibility: shouldShowImage("MinhasDoacoes") ? "visible" : "hidden" }}></img>
                 </div>
 
                 <div style={{ paddingTop: "15px" }}>
-                    <CustomButton rel="preload" href={"/MeusProdutosVendidos"} className={"btnn"} buttonText={"Meus Produtos vendidos"} textStyle={{ marginLeft: "1rem" }} />
+                    <div style={{ float: "left" }}>
+                        <CustomButton rel="preload" href={"/MeusProdutosVendidos"} className={"btnn"} buttonText={"Meus Produtos vendidos"} textStyle={{ marginLeft: "1rem" }} onClick={() => handleButtonClick("MeusProdutosVendidos")} />
+                    </div>
+                    <img id="arrow3" src="/SetaDireita.png" style={{ marginTop: "4px", visibility: shouldShowImage("MeusProdutosVendidos") ? "visible" : "hidden" }}></img>
                 </div>
 
                 <div style={{ paddingTop: "15px" }}>
-                    <CustomButton rel="preload" href={"/MinhaClassificacaoDoador"} className={"btnn"} buttonText={"Nível de classificação"} textStyle={{ marginLeft: "1rem" }} />
+                    <div style={{ float: "left" }}>
+                        <CustomButton rel="preload" href={"/MinhaClassificacaoDoador"} className={"btnn"} buttonText={"Nível de classificação"} textStyle={{ marginLeft: "1rem" }} onClick={() => handleButtonClick("MinhaClassificacaoDoador")} />
+                    </div>
+                    <img id="arrow4" src="/SetaDireita.png" style={{ marginTop: "4px", visibility: shouldShowImage("MinhaClassificacaoDoador") ? "visible" : "hidden" }}></img>
                 </div>
             </div>
         </div>
