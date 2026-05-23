@@ -1,24 +1,121 @@
-Sistema Doa Solidário
 
-O Sistema Doa Solidário é uma plataforma desenvolvida utilizando Next.js e Node.js, projetada para facilitar a doação e distribuição de produtos avariados a preços acessíveis. A plataforma envolve quatro tipos de usuários:
+# Sistema Doa Solidário
 
-Empresa: Empresas que desejam apoiar causas sociais podem fazer doações financeiras para o Sistema Doa Solidário. Essas doações são utilizadas para financiar a compra de produtos avariados pelos intermediários.
+Plataforma web desenvolvida para gerenciamento de doações e distribuição de produtos avariados entre produtores, intermediários, empresas parceiras e beneficiários.
 
-Intermediário: Intermediários são usuários que têm a oportunidade de comprar produtos avariados a preço de custo dos produtores cadastrados na plataforma. Eles podem adquirir esses produtos para revenda ou distribuição.
+O projeto foi desenvolvido com foco em impacto social, buscando reduzir desperdícios e facilitar o acesso de pessoas em situação de vulnerabilidade a produtos essenciais.
 
-Beneficiário: Os beneficiários são indivíduos ou organizações que recebem os produtos adquiridos pelos intermediários como doações. Esses produtos podem ser alimentos, roupas, produtos de higiene pessoal, entre outros, e são destinados a ajudar pessoas em situação de vulnerabilidade.
+---
 
-Produtor: Produtores cadastrados na plataforma podem publicar anúncios de venda de produtos avariados a preço de custo. Esses produtos podem ser excedentes de produção, produtos com danos na embalagem ou próximos da data de validade, por exemplo.
+## Funcionalidades
 
-Funcionamento do Sistema:
+### Produtores
 
-Anúncios de Venda: Produtores publicam anúncios de venda de produtos avariados na plataforma, especificando detalhes como tipo de produto, quantidade disponível e preço.
+* Cadastro de produtos avariados
+* Publicação de anúncios
+* Controle de produtos disponíveis
 
-Compra pelos Intermediários: Intermediários podem acessar os anúncios disponíveis na plataforma e comprar os produtos avariados diretamente dos produtores.
+### Intermediários
 
-Doações das Empresas: As doações feitas pelas empresas são utilizadas para cobrir os custos das compras realizadas pelos intermediários, garantindo que os produtos possam ser adquiridos a preço de custo.
+* Compra de produtos cadastrados
+* Gerenciamento de pedidos
+* Distribuição para beneficiários
 
-Atribuição aos Beneficiários: Os intermediários têm a responsabilidade de atribuir as compras realizadas a beneficiários específicos, garantindo que os produtos cheguem às mãos das pessoas que mais precisam.
+### Empresas
 
-O Sistema Doa Solidário visa promover a solidariedade e o apoio mútuo, criando uma rede de colaboração entre empresas, intermediários, beneficiários e produtores, com o objetivo de ajudar comunidades em situação de vulnerabilidade e minimizar o desperdício de produtos avariados.
+* Realização de doações financeiras
+* Financiamento das compras realizadas
+
+### Beneficiários
+
+* Recebimento de produtos distribuídos
+* Controle de entregas
+
+---
+
+## Fluxo do Sistema
+
+1. Produtores anunciam produtos disponíveis
+2. Intermediários realizam compras
+3. Empresas auxiliam financeiramente as operações
+4. Produtos são destinados aos beneficiários
+
+---
+
+## Tecnologias Utilizadas
+
+### Front-end
+
+* Next.js
+* React
+* HTML5
+* CSS3
+
+### Back-end
+
+* Node.js
+
+### Banco de Dados
+
+* MySQL
+
+### Pagamentos
+
+* Integração com gateways de pagamento
+
+---
+
+## Objetivos Técnicos
+
+* Gerenciamento de múltiplos tipos de usuários
+* Controle de fluxo de compras e doações
+* Organização de produtos e pedidos
+* Integração entre front-end e back-end
+* Persistência de dados relacionais
+
+---
+
+## Funcionalidades Técnicas
+
+* Controle de permissões
+* Fluxo de autenticação
+* Gerenciamento de anúncios
+* Persistência de dados
+* Sistema de pagamentos
+* Estrutura web full stack
+
+---
+
+## Estrutura do Projeto
+
+```bash
+src/
+ ├── app/
+ ├── components/
+ ├── models/
+ ├── services/
+ └── public/
+```
+
+---
+
+## Objetivos do Projeto
+
+* Reduzir desperdícios de produtos
+* Facilitar distribuição de doações
+* Criar um fluxo organizado de ajuda social
+* Aplicar conceitos de desenvolvimento full stack
+
+---
+
+## Aprendizados Aplicados
+
+* Desenvolvimento Full Stack
+* Next.js
+* Node.js
+* Integração com banco de dados
+* Estruturação de aplicações web
+* Gerenciamento de usuários e permissões
+
+---
 
