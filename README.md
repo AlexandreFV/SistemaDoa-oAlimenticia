@@ -1,3 +1,13 @@
+![Next.js](https://img.shields.io/badge/Next.js-Frontend-black)
+![React](https://img.shields.io/badge/React-JavaScript-61DAFB)
+![Node.js](https://img.shields.io/badge/Node.js-Backend-339933)
+![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1)
+![JWT](https://img.shields.io/badge/JWT-Authentication-black)
+![REST API](https://img.shields.io/badge/API-REST-orange)
+![Payments](https://img.shields.io/badge/Payments-Integration-green)
+![Full Stack](https://img.shields.io/badge/Type-FullStack-blue)
+![Responsive](https://img.shields.io/badge/UI-Responsive-purple)
+![Social Impact](https://img.shields.io/badge/Project-Social%20Impact-success)
 
 # Sistema Doa Solidário
 
